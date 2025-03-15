@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\UserManagementController;
@@ -120,6 +121,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
         [
             'brands' => BrandController::class,
+            'faq'    => FaqController::class,
             'user'   => UserManagementController::class,
 
         ],

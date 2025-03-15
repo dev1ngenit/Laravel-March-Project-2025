@@ -4,7 +4,7 @@
     data-kt-drawer-toggle="#kt_aside_mobile_toggle">
     <div class="aside-logo flex-column-auto" id="kt_aside_logo">
 
-        <a href="{{ route('dashboard') }}">
+        <a href="{{ route('admin.dashboard') }}">
 
             {{-- <img alt="Logo"
                 src="{{ !empty($site->site_logo) && file_exists(public_path('storage/settings/' . $site->site_logo)) ? asset('storage/settings/' . $site->site_logo) : asset('') }}"
@@ -126,14 +126,23 @@
 
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.settings.index'],
+                            'routes' => ['admin.settings.index','admin.faq.index','admin.faq.create','admin.faq.edit',],
 
                             'subMenu' => [
+
                                 [
                                     'title' => 'Setting',
                                     'routes' => ['admin.settings.index'],
                                     'route' => 'admin.settings.index',
                                 ],
+
+                                [
+                                    'title' => 'Faq',
+                                    'routes' => ['admin.faq.index'],
+                                    'route' => 'admin.faq.index',
+                                ],
+
+
                             ],
                         ],
 

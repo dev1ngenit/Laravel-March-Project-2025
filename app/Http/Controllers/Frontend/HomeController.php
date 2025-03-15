@@ -11,7 +11,7 @@ class HomeController extends Controller
     //homePage
     public function homePage()
     {
-        return view('frontend.pages.home.home');
+        return view('frontend');
     }
 
 

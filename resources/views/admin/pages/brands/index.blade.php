@@ -66,13 +66,13 @@
                             <td>
                                 {{-- @if (Auth::guard('admin')->user()->can('edit.brand')) --}}
                                     <a href="{{ route('admin.brands.edit', $brand->id) }}" class="text-primary">
-                                        <i class="fa-solid fa-pencil text-primary"></i>
+                                        <i class="fa-solid fa-edit text-primary me-1 fs-4"></i>
                                     </a>
                                 {{-- @endif
 
                                 @if (Auth::guard('admin')->user()->can('delete.brand')) --}}
                                     <a href="{{ route('admin.brands.destroy', $brand->id) }}" class="delete">
-                                        <i class="fa-solid fa-trash text-danger"></i>
+                                        <i class="fa-solid fa-trash text-danger fs-4"></i>
                                     </a>
                                 {{-- @endif --}}
 
