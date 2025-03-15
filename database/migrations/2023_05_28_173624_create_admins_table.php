@@ -40,7 +40,7 @@ return new class extends Migration
             $table->date('deactivation_end')->nullable();
 
             $table->string('mail_status')->nullable();
-            $table->string('status')->default('active');
+            $table->string('status')->default('inactive');
 
             $table->rememberToken();
             $table->timestamps();

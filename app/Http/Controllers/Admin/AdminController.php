@@ -1,21 +1,18 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Admin;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
     public function dashboard()
     {
-        // Fetch admins where admin_role_type is 'site_testing'
-        $admins = Admin::whereIn('admin_role_type', ['site_testing'])->latest()->get();
+        $id     = Auth::guard('admin')->user()->id;
+        $admin  = Admin::findOrFail($id);
+        $status = $admin->status;
 
-
-        // Pass all the necessary data to the view
-        return view('admin/dashboard', compact('admins'));
+        return view('admin/dashboard', compact('status'));
     }
 }
