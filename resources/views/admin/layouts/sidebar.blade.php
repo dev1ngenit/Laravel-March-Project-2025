@@ -66,14 +66,23 @@
                             'title' => 'Frontend Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit'],
+                            'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit','admin.categories.index','admin.categories.create','admin.categories.edit'],
 
                             'subMenu' => [
+
                                 [
-                                    'title' => 'Brand List',
+                                    'title' => 'Brand',
                                     'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit'],
                                     'route' => 'admin.brands.index',
                                 ],
+
+                                [
+                                    'title' => 'Category',
+                                    'routes' => ['admin.categories.index', 'admin.categories.create', 'admin.categories.edit'],
+                                    'route' => 'admin.categories.index',
+                                ],
+
+
                             ],
                         ],
 
