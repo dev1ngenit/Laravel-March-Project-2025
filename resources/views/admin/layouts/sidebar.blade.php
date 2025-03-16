@@ -162,14 +162,23 @@
                             'title' => 'Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit'],
+                            'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit','admin.staff.index','admin.staff.create','admin.staff.edit'],
 
                             'subMenu' => [
+
+                                [
+                                    'title' => 'Staff',
+                                    'routes' => ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'],
+                                    'route' => 'admin.staff.index',
+                                ],
+
                                 [
                                     'title' => 'User',
                                     'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit'],
                                     'route' => 'admin.user.index',
                                 ],
+
+
                             ],
                         ],
                         // =================== Management Section ===================

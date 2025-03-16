@@ -20,10 +20,13 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => Hash::make('password'),
         ]);
+
         Admin::factory()->create([
             'name' => 'Ashiquzzaman',
             'email' => 'dev2.ngenit@gmail.com',
             'password' => Hash::make('password'),
+            'status' => 'active',
         ]);
+        
     }
 }
