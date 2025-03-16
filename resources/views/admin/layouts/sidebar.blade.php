@@ -66,10 +66,16 @@
                             'title' => 'Frontend Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit','admin.categories.index','admin.categories.create','admin.categories.edit'],
+                            'routes' => [
+                                'admin.brands.index',
+                                'admin.brands.create',
+                                'admin.brands.edit',
+                                'admin.categories.index',
+                                'admin.categories.create',
+                                'admin.categories.edit',
+                            ],
 
                             'subMenu' => [
-
                                 [
                                     'title' => 'Brand',
                                     'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit'],
@@ -78,11 +84,13 @@
 
                                 [
                                     'title' => 'Category',
-                                    'routes' => ['admin.categories.index', 'admin.categories.create', 'admin.categories.edit'],
+                                    'routes' => [
+                                        'admin.categories.index',
+                                        'admin.categories.create',
+                                        'admin.categories.edit',
+                                    ],
                                     'route' => 'admin.categories.index',
                                 ],
-
-
                             ],
                         ],
 
@@ -135,10 +143,25 @@
 
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.settings.index','admin.faq.index','admin.faq.create','admin.faq.edit',],
+                            'routes' => [
+                                'admin.settings.index',
+
+                                'admin.faq.index',
+                                'admin.faq.create',
+                                'admin.faq.edit',
+
+                                'admin.term.index',
+                                'admin.term.create',
+                                'admin.term.edit',
+
+                                'admin.privacy-policy.index',
+                                'admin.privacy-policy.create',
+                                'admin.privacy-policy.edit',
+
+
+                            ],
 
                             'subMenu' => [
-
                                 [
                                     'title' => 'Setting',
                                     'routes' => ['admin.settings.index'],
@@ -151,7 +174,17 @@
                                     'route' => 'admin.faq.index',
                                 ],
 
+                                [
+                                    'title' => 'Term & Condition',
+                                    'routes' => ['admin.term.index'],
+                                    'route' => 'admin.term.index',
+                                ],
 
+                                [
+                                    'title' => 'Privacy & Policy',
+                                    'routes' => ['admin.privacy-policy.index'],
+                                    'route' => 'admin.privacy-policy.index',
+                                ],
                             ],
                         ],
 
@@ -162,10 +195,16 @@
                             'title' => 'Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
-                            'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit','admin.staff.index','admin.staff.create','admin.staff.edit'],
+                            'routes' => [
+                                'admin.user.index',
+                                'admin.user.create',
+                                'admin.user.edit',
+                                'admin.staff.index',
+                                'admin.staff.create',
+                                'admin.staff.edit',
+                            ],
 
                             'subMenu' => [
-
                                 [
                                     'title' => 'Staff',
                                     'routes' => ['admin.staff.index', 'admin.staff.create', 'admin.staff.edit'],
@@ -177,8 +216,6 @@
                                     'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit'],
                                     'route' => 'admin.user.index',
                                 ],
-
-
                             ],
                         ],
                         // =================== Management Section ===================
