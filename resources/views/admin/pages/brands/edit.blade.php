@@ -53,9 +53,10 @@
                             {{ __('Brand Name') }}
                         </x-metronic.label>
                         <x-metronic.input id="name" type="text" name="name" placeholder="Enter the name"
-                            value="{{ old('name', $brand->name) }}">
+                            value="{!! old('name', $brand->name) !!}">
                         </x-metronic.input>
                     </div>
+
 
                     <div class="col-lg-12 mb-3">
                         <x-metronic.label for="short_description" class="col-form-label fw-bold fs-6 ">
