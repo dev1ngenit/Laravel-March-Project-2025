@@ -60,8 +60,8 @@
                 {{-- Site Content  --}}
                 @php
                     $menuItems = [
-                        //====================== Frontend Management ============================
 
+                        //====================== Frontend Management Start ============
                         [
                             'title' => 'Frontend Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
@@ -70,6 +70,7 @@
                                 'admin.brands.index',
                                 'admin.brands.create',
                                 'admin.brands.edit',
+
                                 'admin.categories.index',
                                 'admin.categories.create',
                                 'admin.categories.edit',
@@ -93,51 +94,9 @@
                                 ],
                             ],
                         ],
+                        //====================== Frontend Management End ==============
 
-                        // ============== Customer Support =================================
-
-                        // [
-                        //     'title' => 'Customer Support',
-                        //     'icon' => 'icons/duotune/ecommerce/ecm002.svg',
-
-                        //     'routes' => [
-
-                        //         'admin.contacts.index',
-
-                        //         'admin.faq.index',
-                        //         'admin.faq.create',
-                        //         'admin.faq.edit',
-
-                        //         'admin.newsletters.index',
-                        //     ],
-
-                        //     'subMenu' => [
-
-                        //         [
-                        //             'title' => 'Contact Messages',
-                        //             'routes' => ['admin.contacts.index'],
-                        //             'route' => 'admin.contacts.index',
-                        //         ],
-
-                        //         [
-                        //             'title' => 'FAQ Lists',
-                        //             'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
-                        //             'route' => 'admin.faq.index',
-                        //         ],
-
-                        //         [
-                        //             'title' => 'Subscribed Emails List',
-                        //             'routes' => ['admin.newsletters.index'],
-                        //             'route' => 'admin.newsletters.index',
-                        //         ],
-
-                        //     ],
-                        // ],
-
-                        // ============== Customer Support =================================
-
-                        // ========================= Setting ==============================
-
+                        // ========================= Setting Start ====================
                         [
                             'title' => 'Web Settings',
 
@@ -157,8 +116,6 @@
                                 'admin.privacy-policy.index',
                                 'admin.privacy-policy.create',
                                 'admin.privacy-policy.edit',
-
-
                             ],
 
                             'subMenu' => [
@@ -170,27 +127,30 @@
 
                                 [
                                     'title' => 'Faq',
-                                    'routes' => ['admin.faq.index'],
+                                    'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
                                     'route' => 'admin.faq.index',
                                 ],
 
                                 [
                                     'title' => 'Term & Condition',
-                                    'routes' => ['admin.term.index'],
+                                    'routes' => ['admin.term.index', 'admin.term.create', 'admin.term.edit'],
                                     'route' => 'admin.term.index',
                                 ],
 
                                 [
                                     'title' => 'Privacy & Policy',
-                                    'routes' => ['admin.privacy-policy.index'],
+                                    'routes' => [
+                                        'admin.privacy-policy.index',
+                                        'admin.privacy-policy.create',
+                                        'admin.privacy-policy.edit',
+                                    ],
                                     'route' => 'admin.privacy-policy.index',
                                 ],
                             ],
                         ],
+                        // ========================= Setting End ======================
 
-                        // ========================= Setting ==============================
-
-                        // =================== Management Section ===================
+                        // =================== Management Section Start ===============
                         [
                             'title' => 'Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
@@ -199,6 +159,7 @@
                                 'admin.user.index',
                                 'admin.user.create',
                                 'admin.user.edit',
+
                                 'admin.staff.index',
                                 'admin.staff.create',
                                 'admin.staff.edit',
@@ -218,14 +179,21 @@
                                 ],
                             ],
                         ],
-                        // =================== Management Section ===================
+                        // =================== Management Section End =================
 
-                        // =================== Role & Permission ================
-
+                        // =================== Role & Permission Start ================
                         [
                             'title' => 'Role & Permission',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
-                            'routes' => ['all.role', 'all.permission', 'all.admin.permission'],
+
+                            'routes' => [
+                                'all.role',
+                                'all.permission',
+                                'all.admin.permission',
+                                'add.roles.permission',
+                                'all.roles.permission',
+                            ],
+
                             'subMenu' => [
                                 [
                                     'title' => 'All Admin',
@@ -244,8 +212,7 @@
                                 ],
                             ],
                         ],
-
-                        // ================== Role & Permission =================
+                        // ================== Role & Permission End ===================
                     ];
                 @endphp
 
