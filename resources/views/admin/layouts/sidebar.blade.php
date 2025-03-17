@@ -60,7 +60,7 @@
                 {{-- Site Content  --}}
                 @php
                     $menuItems = [
-
+                        
                         //====================== Frontend Management Start ============
                         [
                             'title' => 'Frontend Management',
@@ -74,6 +74,18 @@
                                 'admin.categories.index',
                                 'admin.categories.create',
                                 'admin.categories.edit',
+
+                                'admin.coupon.index',
+                                'admin.coupon.create',
+                                'admin.coupon.edit',
+
+                                'admin.contact.index',
+                                'admin.contact.create',
+                                'admin.contact.edit',
+
+                                'admin.subscription.index',
+                                'admin.subscription.create',
+                                'admin.subscription.edit',
                             ],
 
                             'subMenu' => [
@@ -91,6 +103,30 @@
                                         'admin.categories.edit',
                                     ],
                                     'route' => 'admin.categories.index',
+                                ],
+
+                                [
+                                    'title' => 'Coupon',
+                                    'routes' => ['admin.coupon.index', 'admin.coupon.create', 'admin.coupon.edit'],
+                                    'route' => 'admin.coupon.index',
+                                ],
+
+                                [
+                                    'title' => 'Contact',
+                                    'routes' => ['admin.contact.index', 'admin.contact.create', 'admin.contact.edit'],
+                                    'route' => 'admin.contact.index',
+                                ],
+
+                                [
+                                    'title' => 'Subscription',
+
+                                    'routes' => [
+                                        'admin.subscription.index',
+                                        'admin.subscription.create',
+                                        'admin.subscription.edit',
+                                    ],
+
+                                    'route' => 'admin.subscription.index',
                                 ],
                             ],
                         ],

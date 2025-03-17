@@ -11,12 +11,12 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\FaqController;
-use App\Http\Controllers\Admin\PrivacyPolicyController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StaffController;
-use App\Http\Controllers\Admin\TermController;
+use App\Http\Controllers\Admin\SubscriptionController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
@@ -124,15 +124,18 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::resources(
 
         [
-            'brands'         => BrandController::class,
-            'categories'     => CategoryController::class,
+            'brands'       => BrandController::class,
+            'categories'   => CategoryController::class,
+            'coupon'       => CouponController::class,
+            'contact'      => ContactController::class,
+            'subscription' => SubscriptionController::class,
 
             // 'term'           => TermController::class,
             // 'privacy-policy' => PrivacyPolicyController::class,
             // 'faq'            => FaqController::class,
 
-            'staff'          => StaffController::class,
-            'user'           => UserManagementController::class,
+            'staff'        => StaffController::class,
+            'user'         => UserManagementController::class,
 
         ],
 
