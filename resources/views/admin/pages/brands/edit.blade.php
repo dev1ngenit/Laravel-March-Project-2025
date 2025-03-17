@@ -47,6 +47,7 @@
                                 {{ old('status', $brand->status) == 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </x-metronic.select-option>
                     </div>
+                    
 
                     <div class="col-lg-3 mb-3">
                         <x-metronic.label for="name" class="col-form-label required fw-bold fs-6">

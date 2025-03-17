@@ -105,17 +105,17 @@
                             'routes' => [
                                 'admin.settings.index',
 
-                                'admin.faq.index',
-                                'admin.faq.create',
-                                'admin.faq.edit',
+                                // 'admin.faq.index',
+                                // 'admin.faq.create',
+                                // 'admin.faq.edit',
 
-                                'admin.term.index',
-                                'admin.term.create',
-                                'admin.term.edit',
+                                // 'admin.term.index',
+                                // 'admin.term.create',
+                                // 'admin.term.edit',
 
-                                'admin.privacy-policy.index',
-                                'admin.privacy-policy.create',
-                                'admin.privacy-policy.edit',
+                                // 'admin.privacy-policy.index',
+                                // 'admin.privacy-policy.create',
+                                // 'admin.privacy-policy.edit',
                             ],
 
                             'subMenu' => [
@@ -125,27 +125,27 @@
                                     'route' => 'admin.settings.index',
                                 ],
 
-                                [
-                                    'title' => 'Faq',
-                                    'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
-                                    'route' => 'admin.faq.index',
-                                ],
+                                // [
+                                //     'title' => 'Faq',
+                                //     'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
+                                //     'route' => 'admin.faq.index',
+                                // ],
 
-                                [
-                                    'title' => 'Term & Condition',
-                                    'routes' => ['admin.term.index', 'admin.term.create', 'admin.term.edit'],
-                                    'route' => 'admin.term.index',
-                                ],
+                                // [
+                                //     'title' => 'Term & Condition',
+                                //     'routes' => ['admin.term.index', 'admin.term.create', 'admin.term.edit'],
+                                //     'route' => 'admin.term.index',
+                                // ],
 
-                                [
-                                    'title' => 'Privacy & Policy',
-                                    'routes' => [
-                                        'admin.privacy-policy.index',
-                                        'admin.privacy-policy.create',
-                                        'admin.privacy-policy.edit',
-                                    ],
-                                    'route' => 'admin.privacy-policy.index',
-                                ],
+                                // [
+                                //     'title' => 'Privacy & Policy',
+                                //     'routes' => [
+                                //         'admin.privacy-policy.index',
+                                //         'admin.privacy-policy.create',
+                                //         'admin.privacy-policy.edit',
+                                //     ],
+                                //     'route' => 'admin.privacy-policy.index',
+                                // ],
                             ],
                         ],
                         // ========================= Setting End ======================

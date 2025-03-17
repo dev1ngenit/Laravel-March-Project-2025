@@ -127,9 +127,9 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'brands'         => BrandController::class,
             'categories'     => CategoryController::class,
 
-            'term'           => TermController::class,
-            'privacy-policy' => PrivacyPolicyController::class,
-            'faq'            => FaqController::class,
+            // 'term'           => TermController::class,
+            // 'privacy-policy' => PrivacyPolicyController::class,
+            // 'faq'            => FaqController::class,
 
             'staff'          => StaffController::class,
             'user'           => UserManagementController::class,
