@@ -1,14 +1,12 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Admin\SettingRequest;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class SettingController extends Controller
 {
@@ -36,9 +34,9 @@ class SettingController extends Controller
             ];
             $uploadedFiles = [];
             foreach ($files as $key => $file) {
-                if (!empty($file)) {
+                if (! empty($file)) {
                     $filePath = 'webSetting/' . $key;
-                    $oldFile = $webSetting->$key ?? null;
+                    $oldFile  = $webSetting->$key ?? null;
 
                     if ($oldFile) {
                         Storage::delete("public/" . $oldFile);
@@ -52,17 +50,13 @@ class SettingController extends Controller
                 }
             }
 
-
-
-
-
             // dd();
             $setting = Setting::updateOrCreate([], [
                 'website_name'         => $request->website_name,
                 'site_motto'           => $request->site_motto,
-                'site_favicon'         => $uploadedFiles['site_favicon']['status']    == 1 ? $uploadedFiles['site_favicon']['file_path']   : $webSetting->site_favicon,
-                'site_logo_white'      => $uploadedFiles['site_logo_white']['status'] == 1 ? $uploadedFiles['site_logo_white']['file_path']: $webSetting->site_logo_white,
-                'site_logo_black'      => $uploadedFiles['site_logo_black']['status'] == 1 ? $uploadedFiles['site_logo_black']['file_path']: $webSetting->site_logo_black,
+                'site_favicon'         => $uploadedFiles['site_favicon']['status'] == 1 ? $uploadedFiles['site_favicon']['file_path'] : $webSetting->site_favicon,
+                'site_logo_white'      => $uploadedFiles['site_logo_white']['status'] == 1 ? $uploadedFiles['site_logo_white']['file_path'] : $webSetting->site_logo_white,
+                'site_logo_black'      => $uploadedFiles['site_logo_black']['status'] == 1 ? $uploadedFiles['site_logo_black']['file_path'] : $webSetting->site_logo_black,
                 'contact_email'        => $request->contact_email,
                 'support_email'        => $request->support_email,
                 'info_email'           => $request->info_email,
@@ -119,8 +113,6 @@ class SettingController extends Controller
                 'end_time_sunday'      => $request->end_time_sunday,
 
             ]);
-
-
 
             // $setting = Setting::updateOrCreate([], $dataToUpdateOrCreate);
 
