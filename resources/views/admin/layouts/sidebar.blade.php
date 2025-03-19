@@ -9,6 +9,7 @@
             {{-- <img alt="Logo"
                 src="{{ !empty($site->site_logo) && file_exists(public_path('storage/settings/' . $site->site_logo)) ? asset('storage/settings/' . $site->site_logo) : asset('') }}"
                 class="h-60px logo w-200px"> --}}
+
             <h3 class="text-light">New Site</h3>
 
         </a>
@@ -60,13 +61,16 @@
                 {{-- Site Content  --}}
                 @php
                     $menuItems = [
-                        
                         //====================== Frontend Management Start ============
                         [
                             'title' => 'Frontend Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
                             'routes' => [
+                                'admin.banner.index',
+                                'admin.banner.create',
+                                'admin.banner.edit',
+
                                 'admin.brands.index',
                                 'admin.brands.create',
                                 'admin.brands.edit',
@@ -89,6 +93,12 @@
                             ],
 
                             'subMenu' => [
+                                [
+                                    'title' => 'Banner',
+                                    'routes' => ['admin.banner.index', 'admin.banner.create', 'admin.banner.edit'],
+                                    'route' => 'admin.banner.index',
+                                ],
+
                                 [
                                     'title' => 'Brand',
                                     'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit'],
@@ -141,17 +151,25 @@
                             'routes' => [
                                 'admin.settings.index',
 
-                                // 'admin.faq.index',
-                                // 'admin.faq.create',
-                                // 'admin.faq.edit',
+                                'admin.faq.index',
+                                'admin.faq.create',
+                                'admin.faq.edit',
 
-                                // 'admin.term.index',
-                                // 'admin.term.create',
-                                // 'admin.term.edit',
+                                'admin.term.index',
+                                'admin.term.create',
+                                'admin.term.edit',
 
-                                // 'admin.privacy-policy.index',
-                                // 'admin.privacy-policy.create',
-                                // 'admin.privacy-policy.edit',
+                                'admin.support-policy.index',
+                                'admin.support-policy.create',
+                                'admin.support-policy.edit',
+
+                                'admin.return-policy.index',
+                                'admin.return-policy.create',
+                                'admin.return-policy.edit',
+
+                                'admin.buying-policy.index',
+                                'admin.buying-policy.create',
+                                'admin.buying-policy.edit',
                             ],
 
                             'subMenu' => [
@@ -161,27 +179,47 @@
                                     'route' => 'admin.settings.index',
                                 ],
 
-                                // [
-                                //     'title' => 'Faq',
-                                //     'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
-                                //     'route' => 'admin.faq.index',
-                                // ],
+                                [
+                                    'title' => 'Faq',
+                                    'routes' => ['admin.faq.index', 'admin.faq.create', 'admin.faq.edit'],
+                                    'route' => 'admin.faq.index',
+                                ],
 
-                                // [
-                                //     'title' => 'Term & Condition',
-                                //     'routes' => ['admin.term.index', 'admin.term.create', 'admin.term.edit'],
-                                //     'route' => 'admin.term.index',
-                                // ],
+                                [
+                                    'title' => 'Term & Condition',
+                                    'routes' => ['admin.term.index', 'admin.term.create', 'admin.term.edit'],
+                                    'route' => 'admin.term.index',
+                                ],
 
-                                // [
-                                //     'title' => 'Privacy & Policy',
-                                //     'routes' => [
-                                //         'admin.privacy-policy.index',
-                                //         'admin.privacy-policy.create',
-                                //         'admin.privacy-policy.edit',
-                                //     ],
-                                //     'route' => 'admin.privacy-policy.index',
-                                // ],
+                                [
+                                    'title' => 'Support & Policy',
+                                    'routes' => [
+                                        'admin.support-policy.index',
+                                        'admin.support-policy.create',
+                                        'admin.support-policy.edit',
+                                    ],
+                                    'route' => 'admin.support-policy.index',
+                                ],
+
+                                [
+                                    'title' => 'Return & Policy',
+                                    'routes' => [
+                                        'admin.return-policy.index',
+                                        'admin.return-policy.create',
+                                        'admin.return-policy.edit',
+                                    ],
+                                    'route' => 'admin.return-policy.index',
+                                ],
+
+                                [
+                                    'title' => 'Buying & Policy',
+                                    'routes' => [
+                                        'admin.buying-policy.index',
+                                        'admin.buying-policy.create',
+                                        'admin.buying-policy.edit',
+                                    ],
+                                    'route' => 'admin.buying-policy.index',
+                                ],
                             ],
                         ],
                         // ========================= Setting End ======================

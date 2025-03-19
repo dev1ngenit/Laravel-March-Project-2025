@@ -1,4 +1,4 @@
-<x-admin-app-layout :title="'Term and Condition'">
+<x-admin-app-layout :title="'Support and Policy'">
 
     {{-- Font Awesome CDN --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
@@ -9,7 +9,7 @@
             <div class="card-toolbar">
 
                 {{-- @if (Auth::guard('admin')->user()->can('add.term')) --}}
-                <a href="{{ route('admin.term.create') }}" class="btn btn-light-primary">
+                <a href="{{ route('admin.support-policy.create') }}" class="btn btn-light-primary">
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none">
@@ -21,7 +21,7 @@
                                 fill="currentColor" />
                         </svg>
                     </span>
-                    Add Term
+                    Add Support & Policy
                 </a>
                 {{-- @endif --}}
 
@@ -43,19 +43,22 @@
                 </thead>
                 <tbody class="fw-bold text-gray-600">
 
-                    @foreach ($terms as $key => $term)
+                    @foreach ($items as $key => $item)
                         <tr>
                             <td>{{ $key + 1 }}</td>
 
-                            <td class="text-start">{{ $term->title }}</td>
-                            <td class="text-start">{{ $term->version }}</td>
-                            <td class="text-start">{{ $term->effective_date }}</td>
-                            <td class="text-start">{{ $term->expiration_date }}</td>
+                            <td class="text-start">{{ $item->title }}</td>
+                            <td class="text-start">{{ $item->version }}</td>
+
+                            <td class="text-start">{{ \Carbon\Carbon::parse($item->effective_date)->format('F j, Y') }}
+                            </td>
+                            <td class="text-start">{{ \Carbon\Carbon::parse($item->expiration_date)->format('F j, Y') }}
+                            </td>
 
                             <td class="text-start">
                                 <p>
-                                    <span class="badge {{ $term->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                        {{ ucfirst($term->status) }}
+                                    <span class="badge {{ $item->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($item->status) }}
                                     </span>
                                 </p>
 
@@ -63,14 +66,14 @@
 
 
                             <td>
-                                {{-- @if (Auth::guard('admin')->user()->can('edit.term')) --}}
-                                <a href="{{ route('admin.term.edit', $term->id) }}" class="text-primary">
+                                {{-- @if (Auth::guard('admin')->user()->can('edit.item')) --}}
+                                <a href="{{ route('admin.support-policy.edit', $item->id) }}" class="text-primary">
                                     <i class="fa-solid fa-edit text-primary me-1 fs-4"></i>
                                 </a>
                                 {{-- @endif
 
-                                @if (Auth::guard('admin')->user()->can('delete.term')) --}}
-                                <a href="{{ route('admin.term.destroy', $term->id) }}" class="delete">
+                                @if (Auth::guard('admin')->user()->can('delete.item')) --}}
+                                <a href="{{ route('admin.support-policy.destroy', $item->id) }}" class="delete">
                                     <i class="fa-solid fa-trash text-danger fs-4"></i>
                                 </a>
                                 {{-- @endif --}}

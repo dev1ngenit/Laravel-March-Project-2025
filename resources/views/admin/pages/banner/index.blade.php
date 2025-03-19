@@ -1,4 +1,4 @@
-<x-admin-app-layout :title="'Term and Condition'">
+<x-admin-app-layout :title="'Banner'">
 
     {{-- Font Awesome CDN --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
@@ -9,7 +9,7 @@
             <div class="card-toolbar">
 
                 {{-- @if (Auth::guard('admin')->user()->can('add.term')) --}}
-                <a href="{{ route('admin.term.create') }}" class="btn btn-light-primary">
+                <a href="{{ route('admin.banner.create') }}" class="btn btn-light-primary">
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none">
@@ -21,7 +21,7 @@
                                 fill="currentColor" />
                         </svg>
                     </span>
-                    Add Term
+                    Add Banner
                 </a>
                 {{-- @endif --}}
 
@@ -33,29 +33,31 @@
                 <thead class="bg-dark text-light">
                     <tr>
                         <th width="2%">No</th>
+                        <th width="7%">Image</th>
                         <th width="10%">Name</th>
-                        <th width="10%">Version</th>
-                        <th width="10%">Effective Date</th>
-                        <th width="10%">Expiration Date</th>
                         <th width="5%">Status</th>
                         <th width="5%">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="fw-bold text-gray-600">
 
-                    @foreach ($terms as $key => $term)
+                    @foreach ($banners as $key => $banner)
                         <tr>
                             <td>{{ $key + 1 }}</td>
 
-                            <td class="text-start">{{ $term->title }}</td>
-                            <td class="text-start">{{ $term->version }}</td>
-                            <td class="text-start">{{ $term->effective_date }}</td>
-                            <td class="text-start">{{ $term->expiration_date }}</td>
+                            <td class="text-start">
+
+                                <img src="{{ !empty($banner->image) ? url('storage/' . $banner->image) : 'No Image' }}"
+                                    height="40" width="40" alt="">
+
+                            </td>
+
+                            <td class="text-start">{{ $banner->name }}</td>
 
                             <td class="text-start">
                                 <p>
-                                    <span class="badge {{ $term->status == 'active' ? 'bg-success' : 'bg-danger' }}">
-                                        {{ ucfirst($term->status) }}
+                                    <span class="badge {{ $banner->status == 'active' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($banner->status) }}
                                     </span>
                                 </p>
 
@@ -63,14 +65,14 @@
 
 
                             <td>
-                                {{-- @if (Auth::guard('admin')->user()->can('edit.term')) --}}
-                                <a href="{{ route('admin.term.edit', $term->id) }}" class="text-primary">
+                                {{-- @if (Auth::guard('admin')->user()->can('edit.banner')) --}}
+                                <a href="{{ route('admin.banner.edit', $banner->id) }}" class="text-primary">
                                     <i class="fa-solid fa-edit text-primary me-1 fs-4"></i>
                                 </a>
                                 {{-- @endif
 
-                                @if (Auth::guard('admin')->user()->can('delete.term')) --}}
-                                <a href="{{ route('admin.term.destroy', $term->id) }}" class="delete">
+                                @if (Auth::guard('admin')->user()->can('delete.banner')) --}}
+                                <a href="{{ route('admin.banner.destroy', $banner->id) }}" class="delete">
                                     <i class="fa-solid fa-trash text-danger fs-4"></i>
                                 </a>
                                 {{-- @endif --}}
