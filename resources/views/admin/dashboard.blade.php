@@ -23,8 +23,8 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->
-                                    <a href="" class="text-dark fw-bold fs-6">Total</a>
-                                    <span class="float-end fw-bolder badge bg-success"></span>
+                                    <a href="" class="text-dark fw-bold fs-6">Total User</a>
+                                    <span class="float-end fw-bolder badge bg-success">{{ $userCount }}</span>
                                 </div>
 
                             </div>
@@ -43,8 +43,8 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->
-                                    <a href="" class="text-primary fw-bold fs-6">Total</a>
-                                    <span class="float-end fw-bolder badge bg-primary"></span>
+                                    <a href="" class="text-primary fw-bold fs-6">Total Staff</a>
+                                    <span class="float-end fw-bolder badge bg-primary">{{ $adminCount }}</span>
                                 </div>
 
                             </div>
