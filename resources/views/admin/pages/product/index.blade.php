@@ -56,9 +56,9 @@
                             <td class="text-start">{{ optional($product->brand)->name }}</td>
                             <td class="text-start">{{ optional($product->category)->name }}</td>
                             <td class="text-start">{{ $product->name }}</td>
-                            <td class="text-start">{{ $product->qty }}</td>
-                            <td class="text-start">{{ $product->price }}{{ $product->currency }}</td>
-                            <td class="text-start">{{ $product->discount_price }}{{ $product->currency }}</td>
+                            <td class="text-start">{{ $product->qty }} Pcs</td>
+                            <td class="text-start">{{ $product->price }} {{ $product->currency }}</td>
+                            <td class="text-start">{{ $product->discount_price }} {{ $product->currency }}</td>
 
                             <td class="text-start">
                                 <p>

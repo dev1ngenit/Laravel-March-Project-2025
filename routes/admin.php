@@ -145,8 +145,6 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'return-policy'  => ReturnPolicyController::class,
             'buying-policy'  => BuyingPolicyController::class,
 
-            // 'privacy-policy' => PrivacyPolicyController::class,
-
             'staff'          => StaffController::class,
             'user'           => UserManagementController::class,
 
