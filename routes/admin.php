@@ -67,20 +67,6 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
-    // //Resource Controller
-    // Route::resources(
-
-    //     [
-    //         'brands' => BrandController::class,
-    //         'user'   => UserManagementController::class,
-
-    //     ],
-
-    // );
-
-    // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    // Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
-
 });
 
 // Role In Permission

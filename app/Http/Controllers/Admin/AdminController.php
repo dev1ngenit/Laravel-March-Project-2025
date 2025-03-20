@@ -1,9 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Product;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -16,7 +17,8 @@ class AdminController extends Controller
 
         $userCount  = User::where('status', 'active')->count();
         $adminCount = Admin::where('status', 'active')->count();
+        $productCount = Product::where('status', 'active')->count();
 
-        return view('admin/dashboard', compact('status', 'userCount', 'adminCount'));
+        return view('admin/dashboard', compact('status', 'userCount', 'adminCount','productCount'));
     }
 }

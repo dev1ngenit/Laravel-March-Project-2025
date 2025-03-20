@@ -66,8 +66,9 @@
                                         </svg>
                                     </span>
                                     <!--end::Svg Icon-->
-                                    <a href="#" class="text-danger fw-bold fs-6 mt-2">Total</a>
-                                    <span class="float-end fw-bolder text-danger badge bg-dark"></span>
+                                    <a href="{{ route('admin.product.index') }}" class="text-danger fw-bold fs-6 mt-2">Total Product</a>
+                                    <span
+                                        class="float-end fw-bolder text-light badge bg-danger">{{ $productCount }}</span>
                                 </div>
 
                             </div>
