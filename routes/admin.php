@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ReturnPolicyController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
@@ -66,19 +67,19 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
 
-    //Resource Controller
-    Route::resources(
+    // //Resource Controller
+    // Route::resources(
 
-        [
-            'brands' => BrandController::class,
-            'user'   => UserManagementController::class,
+    //     [
+    //         'brands' => BrandController::class,
+    //         'user'   => UserManagementController::class,
 
-        ],
+    //     ],
 
-    );
+    // );
 
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
+    // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    // Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
 
 });
 
@@ -131,6 +132,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
         [
             'brands'         => BrandController::class,
+            'product'        => ProductController::class,
             'banner'         => BannerController::class,
             'categories'     => CategoryController::class,
             'coupon'         => CouponController::class,

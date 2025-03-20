@@ -29,12 +29,13 @@ return new class extends Migration
             $table->longText('specification')->nullable();
 
             $table->integer('qty')->nullable();
-            $table->decimal('price', 10, 2)->default(0.00);
-            $table->decimal('discount_price', 10, 2)->nullable();
+            $table->string('currency')->nullable();
+            $table->double('price', 10, 2)->default(0.00);
+            $table->double('discount_price', 10, 2)->nullable();
 
             $table->string('supplier')->nullable();
             $table->string('warehouse_location')->nullable();
-            $table->decimal('weight', 8, 2)->nullable();
+            $table->string('weight')->nullable();
             $table->string('tags')->nullable();
 
             $table->boolean('is_featured')->default(0);

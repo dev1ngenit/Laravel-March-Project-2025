@@ -67,6 +67,11 @@
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
                             'routes' => [
+
+                                'admin.product.index',
+                                'admin.product.create',
+                                'admin.product.edit',
+
                                 'admin.banner.index',
                                 'admin.banner.create',
                                 'admin.banner.edit',
@@ -93,6 +98,13 @@
                             ],
 
                             'subMenu' => [
+
+                                [
+                                    'title' => 'Product',
+                                    'routes' => ['admin.product.index', 'admin.product.create', 'admin.product.edit'],
+                                    'route' => 'admin.product.index',
+                                ],
+
                                 [
                                     'title' => 'Banner',
                                     'routes' => ['admin.banner.index', 'admin.banner.create', 'admin.banner.edit'],
