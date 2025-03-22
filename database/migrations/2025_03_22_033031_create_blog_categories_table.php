@@ -26,6 +26,9 @@ return new class extends Migration
             $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null');
             $table->foreignId('update_by')->nullable()->constrained('admins')->onDelete('set null');
 
+            // $table->unsignedBigInteger('added_by');
+            // $table->foreign('added_by')->references('id')->on('admins')->onDelete('cascade');
+
             $table->timestamps();
         });
     }
