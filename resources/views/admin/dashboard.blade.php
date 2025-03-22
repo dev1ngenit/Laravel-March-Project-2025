@@ -1,7 +1,221 @@
 <x-admin-app-layout :title="'New Site'">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+
+    <style>
+        .bxs-star {
+            color: #f7941d;
+        }
+    </style>
+
     @if ($status == 'active')
-        <div class="row g-5 g-xl-8">
+        <div class="row gy-5 g-xl-8">
+
+            {{-- Total Job  --}}
+            <div class="col-xl-4">
+                <div class="card h-xl-100">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span style="font-size: 20px" class="card-label fw-bold text-gray-900">Total</span>
+                        </h3>
+                    </div>
+
+                    <div class="card-body pt-6">
+
+
+                        <div class="d-flex flex-stack">
+
+                            <div class="symbol me-5">
+                                <div class="text-inverse-danger">
+                                    <img src="https://ui-avatars.com/api/?name=Job+Offer&size=40" alt="Avatar">
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+
+                                <div class="flex-grow-1 me-2">
+                                    <a href="javascript:;"
+                                        class="text-gray-800 text-hover-primary fs-6 fw-bold">AAAAA</a>
+
+                                    {{-- <span class="text-muted fw-semibold d-block fs-7">
+                                        Deadline:
+
+                                        <span class="text-danger">Error: Job time deadline has passed.</span>
+
+                                    </span> --}}
+
+                                </div>
+
+                                {{-- <a title="Needed Person" href="javascript:;"
+                                    class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+                                    hgnhgng
+                                </a> --}}
+
+                            </div>
+                        </div>
+
+                        <div class="separator separator-dashed my-4"></div>
+
+
+                    </div>
+                </div>
+            </div>
+            {{-- Total Job  --}}
+
+            {{-- Middle Section  --}}
+
+            @php
+                // Set the timezone to Bangladesh
+                $hour = \Carbon\Carbon::now('Asia/Dhaka')->format('H');
+                $greeting = '';
+
+                if ($hour < 12) {
+                    $greeting = 'Good Morning';
+                } elseif ($hour < 18) {
+                    $greeting = 'Good Afternoon';
+                } else {
+                    $greeting = 'Good Evening';
+                }
+            @endphp
+
+            <div class="col-xl-4">
+                <div class="card card-flush h-xl-100">
+
+                    <div class="card-header rounded bgi-no-repeat bgi-size-cover bgi-position-y-top bgi-position-x-center align-items-start h-200px"
+                        data-bs-theme="light" style="background-color: #023154">
+                        <h2 style="font-size: 22px"
+                            class="align-items-center justify-content-center flex-column text-white pt-15">
+                            <span class="fw-bold mb-3">{{ $greeting }} :
+                                {{ Auth::guard('admin')->user()->name }}</span>
+                        </h2>
+                    </div>
+
+
+                    <div class="card-body mt-n20">
+                        <div class="mt-n20 position-relative">
+                            <div class="row g-3 g-lg-6">
+                                <div class="col-6">
+                                    <div class="bg-gray-100 bg-opacity-70 rounded-2 px-6 py-5">
+                                        <div class="symbol symbol-30px me-5 mb-8">
+                                            <span class="symbol-label">
+                                                <i class="fas fa-check" style="font-size: 30px; color: green;"></i>
+                                            </span>
+                                        </div>
+
+                                        <div class="m-0">
+                                            <h4>Total Staff</h4>
+                                            <span class="text-gray-500 fw-semibold fs-6">{{ $adminCount }}</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="bg-gray-100 bg-opacity-70 rounded-2 px-6 py-5">
+                                        <div class="symbol symbol-30px me-5 mb-8">
+                                            <span class="symbol-label">
+                                                <i class="fas fa-user" style="font-size: 30px; color: green;"></i>
+                                            </span>
+                                        </div>
+
+                                        <div class="m-0">
+                                            <h4>Total User</h4>
+
+                                            <span class="text-gray-500 fw-semibold fs-6">{{ $userCount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="bg-gray-100 bg-opacity-70 rounded-2 px-6 py-5">
+
+                                        <div class="symbol symbol-30px me-5 mb-8">
+                                            <span class="symbol-label">
+                                                <i class="fas fa-user-check" style="font-size: 30px; color: green;"></i>
+                                            </span>
+                                        </div>
+
+                                        <div class="m-0">
+                                            <h4>Total Product</h4>
+
+                                            <span class="text-gray-500 fw-semibold fs-6">{{ $productCount }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="bg-gray-100 bg-opacity-70 rounded-2 px-6 py-5">
+
+                                        <div class="symbol symbol-30px me-5 mb-8">
+                                            <span class="symbol-label">
+                                                <i class="fas fa-briefcase" style="font-size: 30px; color: green;"></i>
+                                            </span>
+                                        </div>
+
+                                        <div class="m-0">
+                                            <h4>Total Blog</h4>
+
+                                            <span class="text-gray-500 fw-semibold fs-6">{{ $productCount }}</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-xl-4">
+                <div class="card h-xl-100">
+                    <div class="card-header border-0 pt-5">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span style="font-size: 20px" class="card-label fw-bold text-gray-900">Total Client
+                                Review</span>
+                        </h3>
+                    </div>
+
+                    <div class="card-body pt-6">
+
+
+                        <div class="d-flex flex-stack">
+
+                            <div class="symbol me-5">
+                                <div class="text-inverse-danger">
+                                    <img src="https://ui-avatars.com/api/?name=R&size=40" alt="Avatar">
+                                </div>
+                            </div>
+
+
+                            <div class="d-flex align-items-center flex-row-fluid flex-wrap">
+
+                                <div class="flex-grow-1 me-2">
+                                    <a href="javascript:;"
+                                        class="text-gray-800 text-hover-primary fs-6 fw-bold">AAAAAA</a>
+
+                                    <span class="text-muted fw-semibold d-block fs-7">
+                                        Position: AAAAA
+                                    </span>
+
+                                </div>
+
+                                <a title="Needed Person" href="javascript:;" class="">
+                                    AAAAAA
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="separator separator-dashed my-4"></div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row g-5 g-xl-8 mt-5">
 
             <div class="col-12 mb-5">
 
@@ -10,92 +224,50 @@
                         <!--begin::Row-->
                         <div class="row">
 
-                            <!--begin::Col-->
-                            <div class="col-lg-3">
-                                <div class="bg-light-dark p-8 rounded-2">
-                                    <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
-                                    <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
-                                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 122.88 114.58">
-                                            <title>product</title>
-                                            <path
-                                                d="M118.13,9.54a3.25,3.25,0,0,1,2.2.41,3.28,3.28,0,0,1,2,3l.57,78.83a3.29,3.29,0,0,1-1.59,3L89.12,113.93a3.29,3.29,0,0,1-2,.65,3.07,3.07,0,0,1-.53,0L3.11,105.25A3.28,3.28,0,0,1,0,102V21.78H0A3.28,3.28,0,0,1,2,18.7L43.89.27h0A3.19,3.19,0,0,1,45.63,0l72.5,9.51Zm-37.26,1.7-24.67,14,30.38,3.88,22.5-14.18-28.21-3.7Zm-29,20L50.75,64.62,38.23,56.09,25.72,63.17l2.53-34.91L6.55,25.49V99.05l77.33,8.6V35.36l-32-4.09Zm-19.7-9.09L56.12,8,45.7,6.62,15.24,20l16.95,2.17ZM90.44,34.41v71.12l25.9-15.44-.52-71.68-25.38,16Z" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <a href="" class="text-dark fw-bold fs-6">Total User</a>
-                                    <span class="float-end fw-bolder badge bg-success">{{ $userCount }}</span>
+                            @foreach ($alladmins as $admin)
+                                @php
+
+                                    $productCountByAdmins = App\Models\Product::where('added_by', $admin->id)->count();
+                                    $brandCountByAdmins = App\Models\Brand::where('added_by', $admin->id)->count();
+                                    $categoryCountByAdmins = App\Models\Category::where(
+                                        'added_by',
+                                        $admin->id,
+                                    )->count();
+
+                                @endphp
+
+                                <!--begin::Col-->
+                                <div class="col-lg-3">
+                                    <div class="bg-light-dark p-8 rounded-2">
+
+                                        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
+                                        <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
+
+                                            <img src="{{ !empty($admin->photo) ? url('storage/admin_images/' . $admin->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($admin->name) }}"
+                                                height="70" width="70" alt="{{ $admin->name }}"
+                                                style="border-radius: 50%; object-fit: cover;">
+
+
+                                        </span>
+
+                                        <!--end::Svg Icon-->
+                                        <a href="javascript:void(0)" class="text-dark fw-bold fs-6"
+                                            title="{{ $admin->name }}">
+                                            {{ substr($admin->name, 0, 8) }}
+                                        </a>
+
+
+                                        <span class="float-end fw-bolder badge bg-dark">Brand
+                                            {{ $brandCountByAdmins }}</span>
+                                        <span class="float-end fw-bolder badge bg-info mx-1">Category
+                                            {{ $categoryCountByAdmins }}</span>
+                                        <span class="float-end fw-bolder badge bg-primary mx-1">Product
+                                            {{ $productCountByAdmins }}</span>
+                                    </div>
+
                                 </div>
-
-                            </div>
-                            <!--end::Col-->
-
-                            <!--begin::Col-->
-                            <div class="col-lg-3">
-                                <div class="bg-light-danger p-8 rounded-2">
-                                    <!--begin::Svg Icon | path: icons/duotune/finance/fin006.svg-->
-                                    <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
-                                        <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 122.88 114.58">
-                                            <title>product</title>
-                                            <path
-                                                d="M118.13,9.54a3.25,3.25,0,0,1,2.2.41,3.28,3.28,0,0,1,2,3l.57,78.83a3.29,3.29,0,0,1-1.59,3L89.12,113.93a3.29,3.29,0,0,1-2,.65,3.07,3.07,0,0,1-.53,0L3.11,105.25A3.28,3.28,0,0,1,0,102V21.78H0A3.28,3.28,0,0,1,2,18.7L43.89.27h0A3.19,3.19,0,0,1,45.63,0l72.5,9.51Zm-37.26,1.7-24.67,14,30.38,3.88,22.5-14.18-28.21-3.7Zm-29,20L50.75,64.62,38.23,56.09,25.72,63.17l2.53-34.91L6.55,25.49V99.05l77.33,8.6V35.36l-32-4.09Zm-19.7-9.09L56.12,8,45.7,6.62,15.24,20l16.95,2.17ZM90.44,34.41v71.12l25.9-15.44-.52-71.68-25.38,16Z" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <a href="" class="text-primary fw-bold fs-6">Total Staff</a>
-                                    <span class="float-end fw-bolder badge bg-primary">{{ $adminCount }}</span>
-                                </div>
-
-                            </div>
-                            <!--end::Col-->
-
-                            <!--begin::Col-->
-                            <div class="col-lg-3">
-                                <div class="bg-light-primary p-8 rounded-2">
-                                    <!--begin::Svg Icon | path: icons/duotune/abstract/abs027.svg-->
-                                    <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none">
-                                            <path opacity="0.3"
-                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <a href="{{ route('admin.product.index') }}" class="text-danger fw-bold fs-6 mt-2">Total Product</a>
-                                    <span
-                                        class="float-end fw-bolder text-light badge bg-danger">{{ $productCount }}</span>
-                                </div>
-
-                            </div>
-                            <!--end::Col-->
-
-                            <!--begin::Col-->
-                            <div class="col-lg-3">
-                                <div class="bg-light-success p-8 rounded-2">
-                                    <!--begin::Svg Icon | path: icons/duotune/communication/com010.svg-->
-                                    <span class="svg-icon svg-icon-3x svg-icon-danger d-block my-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none">
-                                            <path opacity="0.3"
-                                                d="M21.25 18.525L13.05 21.825C12.35 22.125 11.65 22.125 10.95 21.825L2.75 18.525C1.75 18.125 1.75 16.725 2.75 16.325L4.04999 15.825L10.25 18.325C10.85 18.525 11.45 18.625 12.05 18.625C12.65 18.625 13.25 18.525 13.85 18.325L20.05 15.825L21.35 16.325C22.35 16.725 22.35 18.125 21.25 18.525ZM13.05 16.425L21.25 13.125C22.25 12.725 22.25 11.325 21.25 10.925L13.05 7.62502C12.35 7.32502 11.65 7.32502 10.95 7.62502L2.75 10.925C1.75 11.325 1.75 12.725 2.75 13.125L10.95 16.425C11.65 16.725 12.45 16.725 13.05 16.425Z"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M11.05 11.025L2.84998 7.725C1.84998 7.325 1.84998 5.925 2.84998 5.525L11.05 2.225C11.75 1.925 12.45 1.925 13.15 2.225L21.35 5.525C22.35 5.925 22.35 7.325 21.35 7.725L13.05 11.025C12.45 11.325 11.65 11.325 11.05 11.025Z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <a href="" class="text-info fw-bold fs-6 mt-2">Total</a>
-                                    <span class="float-end fw-bolder badge bg-info"></span>
-                                </div>
-
-                            </div>
-                            <!--end::Col-->
+                                <!--end::Col-->
+                            @endforeach
 
                         </div>
                         <!--end::Row-->

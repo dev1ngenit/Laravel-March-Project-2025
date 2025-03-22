@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -124,6 +125,8 @@ class ProductController extends Controller
 
                 'meta_content'       => $request->meta_content,
                 'meta_description'   => $request->meta_description,
+
+                'added_by'           => Auth::guard('admin')->user()->id,
 
                 'thumbnail_image'    => $uploadedFiles['thumbnail_image']['status'] == 1 ? $uploadedFiles['thumbnail_image']['file_path'] : null,
             ]);

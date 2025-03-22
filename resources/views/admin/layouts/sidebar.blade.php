@@ -16,7 +16,9 @@
         <div id="kt_aside_toggle" class="btn btn-icon w-auto px-0 btn-active-color-primary aside-toggle active"
             data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
             data-kt-toggle-name="aside-minimize">
+
             <span class="svg-icon svg-icon-1 rotate-180">
+
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                     fill="none">
                     <path opacity="0.5"
@@ -26,7 +28,9 @@
                         d="M8.2657 11.4343L12.45 7.25C12.8642 6.83579 12.8642 6.16421 12.45 5.75C12.0358 5.33579 11.3642 5.33579 10.95 5.75L5.40712 11.2929C5.01659 11.6834 5.01659 12.3166 5.40712 12.7071L10.95 18.25C11.3642 18.6642 12.0358 18.6642 12.45 18.25C12.8642 17.8358 12.8642 17.1642 12.45 16.75L8.2657 12.5657C7.95328 12.2533 7.95328 11.7467 8.2657 11.4343Z"
                         fill="currentColor"></path>
                 </svg>
+
             </span>
+
         </div>
     </div>
     <div class="aside-menu flex-column-fluid">
@@ -39,6 +43,7 @@
                 <div class="menu-item">
                     <a class="menu-link {{ Route::is('admin.dashboard') ? 'active' : '' }}"
                         href="{{ route('admin.dashboard') }}">
+
                         <span class="menu-icon">
                             <span class="svg-icon svg-icon-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -54,6 +59,7 @@
                                 </svg>
                             </span>
                         </span>
+
                         <span class="menu-title">Dashboard</span>
                     </a>
                 </div>
@@ -82,6 +88,10 @@
                                 'admin.categories.index',
                                 'admin.categories.create',
                                 'admin.categories.edit',
+
+                                'admin.blog_category.index',
+                                'admin.blog_category.create',
+                                'admin.blog_category.edit',
 
                                 'admin.coupon.index',
                                 'admin.coupon.create',
@@ -123,6 +133,16 @@
                                         'admin.categories.edit',
                                     ],
                                     'route' => 'admin.categories.index',
+                                ],
+
+                                [
+                                    'title' => 'Blog Category',
+                                    'routes' => [
+                                        'admin.blog_category.index',
+                                        'admin.blog_category.create',
+                                        'admin.blog_category.edit',
+                                    ],
+                                    'route' => 'admin.blog_category.index',
                                 ],
 
                                 [
@@ -302,27 +322,24 @@
 
                 {{-- @if (Auth::guard('admin')->user()->can('brand.menu') || Auth::guard('admin')->user()->can('permission.menu') || Auth::guard('admin')->user()->can('role.menu') || Auth::guard('admin')->user()->can('admin.menu') || Auth::guard('admin')->user()->can('web_setting.menu')) --}}
 
-
-
                 @foreach ($menuItems as $item)
                     <div data-kt-menu-trigger="click"
                         class="menu-item menu-accordion {{ Route::is(...$item['routes'] ?? []) ? 'here show' : '' }}">
                         <span class="menu-link">
                             <span class="menu-icon">
+
                                 <span class="svg-icon svg-icon-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none">
-                                        <path
-                                            d="M21 10H13V11C13 11.6 12.6 12 12 12C11.4 12 11 11.6 11 11V10H3C2.4 10 2 10.4 2 11V13H22V11C22 10.4 21.6 10 21 10Z"
-                                            fill="currentColor" />
-                                        <path opacity="0.3"
-                                            d="M12 12C11.4 12 11 11.6 11 11V3C11 2.4 11.4 2 12 2C12.6 2 13 2.4 13 3V11C13 11.6 12.6 12 12 12Z"
-                                            fill="currentColor" />
-                                        <path opacity="0.3"
-                                            d="M18.1 21H5.9C5.4 21 4.9 20.6 4.8 20.1L3 13H21L19.2 20.1C19.1 20.6 18.6 21 18.1 21ZM13 18V15C13 14.4 12.6 14 12 14C11.4 14 11 14.4 11 15V18C11 18.6 11.4 19 12 19C12.6 19 13 18.6 13 18ZM17 18V15C17 14.4 16.6 14 16 14C15.4 14 15 14.4 15 15V18C15 18.6 15.4 19 16 19C16.6 19 17 18.6 17 18ZM9 18V15C9 14.4 8.6 14 8 14C7.4 14 7 14.4 7 15V18C7 18.6 7.4 19 8 19C8.6 19 9 18.6 9 18Z"
-                                            fill="currentColor" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100"
+                                        height="100" viewBox="0 0 48 48">
+                                        <path fill="#4caf50"
+                                            d="M44,24c0,11.045-8.955,20-20,20S4,35.045,4,24S12.955,4,24,4S44,12.955,44,24z">
+                                        </path>
+                                        <path fill="#ccff90"
+                                            d="M34.602,14.602L21,28.199l-5.602-5.598l-2.797,2.797L21,33.801l16.398-16.402L34.602,14.602z">
+                                        </path>
                                     </svg>
                                 </span>
+
                             </span>
                             <span class="menu-title">{{ $item['title'] }}</span>
                             <span class="menu-arrow"></span>
@@ -386,11 +403,11 @@
             </div>
         </div>
     </div>
+
     <div class="aside-footer flex-column-auto pt-5 pb-7 px-5" id="kt_aside_footer">
         <form method="POST" action="{{ route('admin.logout') }}">
             <a href="{{ route('admin.logout') }}" class="btn btn-custom btn-primary w-100"
-                onclick="event.preventDefault();
-      this.closest('form').submit();">
+                onclick="event.preventDefault();this.closest('form').submit();">
                 <span class="btn-label">
                     @csrf
                     {{ __('Log Out') }}
@@ -398,4 +415,5 @@
             </a>
         </form>
     </div>
+
 </div>

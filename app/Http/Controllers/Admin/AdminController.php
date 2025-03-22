@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Product;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -15,10 +15,12 @@ class AdminController extends Controller
         $admin  = Admin::findOrFail($id);
         $status = $admin->status;
 
-        $userCount  = User::where('status', 'active')->count();
-        $adminCount = Admin::where('status', 'active')->count();
+        $userCount    = User::where('status', 'active')->count();
+        $adminCount   = Admin::where('status', 'active')->count();
         $productCount = Product::where('status', 'active')->count();
 
-        return view('admin/dashboard', compact('status', 'userCount', 'adminCount','productCount'));
+        $alladmins = Admin::where('status', 'active')->latest('id')->get();
+
+        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins'));
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\Auth\PasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BuyingPolicyController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -121,6 +122,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'product'        => ProductController::class,
             'banner'         => BannerController::class,
             'categories'     => CategoryController::class,
+            'blog_category'  => BlogCategoryController::class,
             'coupon'         => CouponController::class,
             'contact'        => ContactController::class,
             'subscription'   => SubscriptionController::class,
