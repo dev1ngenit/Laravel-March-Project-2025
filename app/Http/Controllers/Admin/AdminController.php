@@ -21,6 +21,7 @@ class AdminController extends Controller
 
         $alladmins = Admin::where('status', 'active')->latest('id')->get();
 
-        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins'));
+        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins', 'notifications'));
     }
+
 }

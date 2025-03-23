@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\BuyingPolicyController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -123,6 +124,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'banner'         => BannerController::class,
             'categories'     => CategoryController::class,
             'blog_category'  => BlogCategoryController::class,
+            'blog'           => BlogController::class,
             'coupon'         => CouponController::class,
             'contact'        => ContactController::class,
             'subscription'   => SubscriptionController::class,
@@ -144,3 +146,5 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
 
 });
+
+

@@ -126,6 +126,16 @@
         });
     </script>
 
+    {{-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Select the input element with the class 'tags'
+            var input = document.querySelector(".tags");
+
+            // Initialize Tagify
+            new Tagify(input);
+        });
+    </script> --}}
+
     @include('toastr')
 
     @stack('scripts')

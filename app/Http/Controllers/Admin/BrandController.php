@@ -1,14 +1,16 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Brand;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\BrandCreatedNotification;
 
 class BrandController extends Controller
 {
@@ -109,6 +111,14 @@ class BrandController extends Controller
             ]);
 
             DB::commit();
+
+            //Send Notification
+            $admins = Admin::where('mail_status', 'mail')->get();
+
+            foreach ($admins as $admin) {
+                $admin->notify(new BrandCreatedNotification($brand));
+            }
+            //Send Notification
 
             // return response()->json(['success' => true, 'redirect_url' => route('admin.brands.edit', $brand->id)]);
             return redirect()->route('admin.brands.index');

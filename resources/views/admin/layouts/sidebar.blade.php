@@ -93,6 +93,10 @@
                                 'admin.blog_category.create',
                                 'admin.blog_category.edit',
 
+                                'admin.blog.index',
+                                'admin.blog.create',
+                                'admin.blog.edit',
+
                                 'admin.coupon.index',
                                 'admin.coupon.create',
                                 'admin.coupon.edit',
@@ -143,6 +147,12 @@
                                         'admin.blog_category.edit',
                                     ],
                                     'route' => 'admin.blog_category.index',
+                                ],
+
+                                [
+                                    'title' => 'Blog',
+                                    'routes' => ['admin.blog.index', 'admin.blog.create', 'admin.blog.edit'],
+                                    'route' => 'admin.blog.index',
                                 ],
 
                                 [

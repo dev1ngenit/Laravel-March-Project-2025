@@ -2,9 +2,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Notifications\ProductCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -94,7 +96,7 @@ class ProductController extends Controller
                 }
             }
 
-            Product::create([
+            $product = Product::create([
 
                 'name'               => $request->name,
                 'category_id'        => $request->category_id,
@@ -132,6 +134,14 @@ class ProductController extends Controller
             ]);
 
             DB::commit();
+
+            //Send Notification
+            $admins = Admin::where('mail_status', 'mail')->get();
+
+            foreach ($admins as $admin) {
+                $admin->notify(new ProductCreatedNotification($product));
+            }
+            //Send Notification
 
             return redirect()->route('admin.product.index')->with('success', 'Product created successfully');
         } catch (\Exception $e) {

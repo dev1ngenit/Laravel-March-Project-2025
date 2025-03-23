@@ -14,36 +14,42 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
 
-            $table->string('name')->nullable();
+            $table->string('name')->nullable();//
             $table->string('slug')->unique();
-            $table->foreignId('blog_category_id')->nullable()->constrained('blog_categories')->onDelete('set null');
-            $table->date('date')->nullable();
 
-            $table->string('thumbnail_image')->nullable();
+            $table->unsignedBigInteger('blog_category_id')->nullable();//
+            $table->foreign('blog_category_id')->references('id')->on('blog_categories')->onDelete('cascade');//
 
-            $table->text('short_description')->nullable();
-            $table->string('image_one')->nullable();
-            $table->longText('long_description_one')->nullable();
-            $table->string('image_two')->nullable();
-            $table->longText('long_description_two')->nullable();
-            $table->string('video')->nullable();
-            $table->text('video_description')->nullable();
+            $table->date('date')->nullable();//
 
-            $table->string('author_name')->nullable();
-            $table->string('author_image')->nullable();
-            $table->string('quote')->nullable();
+            $table->string('image')->nullable();//
 
-            $table->boolean('is_featured')->default(0);
+            $table->text('short_description')->nullable();//
 
-            $table->string('meta_title')->nullable();
-            $table->string('meta_tags')->nullable();
-            $table->longText('meta_description')->nullable();
+            $table->string('image_one')->nullable();//
+            $table->longText('long_description_one')->nullable();//
 
-            $table->string('tags')->nullable();
+            $table->string('image_two')->nullable();//
+            $table->longText('long_description_two')->nullable();//
 
-            $table->string('status')->default('active');
+            $table->string('video')->nullable();//
+            $table->text('video_description')->nullable();//
 
-            $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null');
+            $table->string('author_name')->nullable();//
+            $table->string('author_image')->nullable();//
+            $table->text('quote')->nullable();//
+
+            $table->boolean('is_featured')->nullable();
+
+            $table->string('meta_title')->nullable();//
+            $table->string('meta_tags')->nullable();//
+            $table->longText('meta_description')->nullable();//
+
+            $table->string('tags')->nullable();//
+
+            $table->string('status')->default('active');//
+
+            $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null');//
             $table->foreignId('update_by')->nullable()->constrained('admins')->onDelete('set null');
 
             $table->timestamps();

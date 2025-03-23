@@ -15,9 +15,6 @@ class HomePage extends Model
      * @var array
      */
     protected $guarded = [];
+
     
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class, 'deal_brand_id');
-    }
 }
