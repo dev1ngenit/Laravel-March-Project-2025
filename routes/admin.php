@@ -145,6 +145,5 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
 
+    Route::get('/notifications/read/{id}', [AdminController::class, 'markAsRead'])->name('notifications.read');
 });
-
-

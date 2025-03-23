@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Product;
 use App\Models\User;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -21,7 +22,18 @@ class AdminController extends Controller
 
         $alladmins = Admin::where('status', 'active')->latest('id')->get();
 
-        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins', 'notifications'));
+        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins'));
+    }
+
+    public function markAsRead($id)
+    {
+        $notification = DatabaseNotification::find($id);
+
+        if ($notification && $notification->notifiable_id == Auth::guard('admin')->id()) {
+            $notification->markAsRead();
+        }
+
+        return redirect($notification->data['url'] ?? route('admin.dashboard'));
     }
 
 }
