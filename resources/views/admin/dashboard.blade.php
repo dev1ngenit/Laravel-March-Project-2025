@@ -247,22 +247,23 @@
                                                 height="70" width="70" alt="{{ $admin->name }}"
                                                 style="border-radius: 50%; object-fit: cover;">
 
+                                            <p class="text-dark fs-6 float-end">{{ $admin->name }}
+                                                <br><span>{{ $admin->email }}</span>
+                                            </p>
 
                                         </span>
 
                                         <!--end::Svg Icon-->
-                                        <a href="javascript:void(0)" class="text-dark fw-bold fs-6"
-                                            title="{{ $admin->name }}">
-                                            {{ substr($admin->name, 0, 8) }}
-                                        </a>
 
+                                        <div class="mb-4">
+                                            <span class="float-end fw-bolder badge bg-dark">Brand
+                                                {{ $brandCountByAdmins }}</span>
+                                            <span class="float-end fw-bolder badge bg-info mx-1">Category
+                                                {{ $categoryCountByAdmins }}</span>
+                                            <span class="float-end fw-bolder badge bg-primary mx-1">Product
+                                                {{ $productCountByAdmins }}</span>
+                                        </div>
 
-                                        <span class="float-end fw-bolder badge bg-dark">Brand
-                                            {{ $brandCountByAdmins }}</span>
-                                        <span class="float-end fw-bolder badge bg-info mx-1">Category
-                                            {{ $categoryCountByAdmins }}</span>
-                                        <span class="float-end fw-bolder badge bg-primary mx-1">Product
-                                            {{ $productCountByAdmins }}</span>
                                     </div>
 
                                 </div>

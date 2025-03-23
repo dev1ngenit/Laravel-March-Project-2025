@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    // admin dashboard
     public function dashboard()
     {
         $id     = Auth::guard('admin')->user()->id;
@@ -25,6 +26,7 @@ class AdminController extends Controller
         return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins'));
     }
 
+    // markAsRead notification
     public function markAsRead($id)
     {
         $notification = DatabaseNotification::find($id);
