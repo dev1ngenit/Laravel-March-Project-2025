@@ -9,6 +9,7 @@
     </style>
 
     @if ($status == 'active')
+
         <div class="row gy-5 g-xl-8">
 
             {{-- Total Job  --}}
@@ -213,7 +214,6 @@
             </div>
 
         </div>
-
 
         <div class="row g-5 g-xl-8 mt-5">
 

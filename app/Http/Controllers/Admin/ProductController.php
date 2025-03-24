@@ -1,18 +1,20 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Product;
-use App\Notifications\ProductCreatedNotification;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Mail\ProductCreated;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\ProductCreatedNotification;
 
 class ProductController extends Controller
 {
@@ -136,12 +138,20 @@ class ProductController extends Controller
             DB::commit();
 
             //Send Notification
-            $admins = Admin::where('mail_status', 'mail')->get();
+            $admins = Admin::where('mail_status', 'mail')->where('status', 'active')->get();
 
             foreach ($admins as $admin) {
                 $admin->notify(new ProductCreatedNotification($product));
             }
             //Send Notification
+
+            // Mail Send
+            $admins = Admin::where('mail_status', 'mail')->where('status', 'active')->get();
+
+            foreach ($admins as $admin) {
+                Mail::to($admin->email)->send(new ProductCreated($product));
+            }
+            // Mail End
 
             return redirect()->route('admin.product.index')->with('success', 'Product created successfully');
         } catch (\Exception $e) {

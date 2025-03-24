@@ -1,10 +1,9 @@
 <?php
-
 namespace App\Models;
 
 use App\Traits\HasSlug;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
@@ -18,5 +17,10 @@ class Brand extends Model
      * @var array
      */
     protected $guarded = [];
+
+    public function added()
+    {
+        return $this->belongsTo(Admin::class, 'added_by');
+    }
 
 }

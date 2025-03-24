@@ -123,9 +123,12 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'product'        => ProductController::class,
             'banner'         => BannerController::class,
             'categories'     => CategoryController::class,
+
             'blog_category'  => BlogCategoryController::class,
             'blog'           => BlogController::class,
+
             'coupon'         => CouponController::class,
+
             'contact'        => ContactController::class,
             'subscription'   => SubscriptionController::class,
 

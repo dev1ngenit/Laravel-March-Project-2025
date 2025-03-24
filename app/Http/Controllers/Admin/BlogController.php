@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\BlogCreated;
 use App\Models\Admin;
 use App\Models\Blog;
 use App\Models\BlogCategory;
@@ -9,6 +10,7 @@ use App\Notifications\BlogCreatedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -139,12 +141,20 @@ class BlogController extends Controller
             DB::commit();
 
             //Send Notification
-            $admins = Admin::where('mail_status', 'mail')->get();
+            $admins = Admin::where('mail_status', 'mail')->where('status', 'active')->get();
 
             foreach ($admins as $admin) {
                 $admin->notify(new BlogCreatedNotification($blog));
             }
             //Send Notification
+
+            // Mail Send
+            $admins = Admin::where('mail_status', 'mail')->where('status', 'active')->get();
+
+            foreach ($admins as $admin) {
+                Mail::to($admin->email)->send(new BlogCreated($blog));
+            }
+            // Mail End
 
             return redirect()->route('admin.blog.index')->with('success', 'Blog Create Successfully');
 
