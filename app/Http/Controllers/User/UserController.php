@@ -90,4 +90,36 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Password Change Succeesfully');
     }
+
+    //show Verification Form
+    public function showVerificationForm(Request $request)
+    {
+        return view('user.email.auth.verify-code', ['email' => $request->query('email')]);
+    }
+
+    //verify
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'code'  => 'required|digits:6',
+        ]);
+
+        $user = User::where('email', $request->email)
+            ->where('verification_code', $request->code)
+            ->first();
+
+        if (! $user) {
+            return back()->withErrors(['code' => 'Invalid verification code.']);
+        }
+
+        $user->update([
+            'email_verified_at' => now(),
+            'verification_code' => null,
+        ]);
+
+        // return redirect('/dashboard')->with('success', 'Email verified successfully!');
+        return redirect()->route('dashboard')->with('success', 'Email verified successfully & Login your account');
+    }
+
 }

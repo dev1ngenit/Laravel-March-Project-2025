@@ -8,19 +8,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
+    //dashboard
     Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
 
     //User Profile
@@ -33,7 +25,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-
 Route::middleware(['auth:admin', 'verified'])->group(function () {
 
     //Admin Profile
@@ -45,6 +36,11 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::post('/admin/password/update/submit', [AdminProfileController::class, 'AdminPasswordUpdateSubmit'])->name('admin.password.update.submit');
 
 });
+
+// user email verfication
+Route::get('/email/verify', [UserController::class, 'showVerificationForm'])->name('verification.form');
+Route::post('/email/verify', [UserController::class, 'verify'])->name('verification.verify');
+// user email verfication
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
