@@ -61,7 +61,7 @@ class RegisteredUserController extends Controller
         // Send email
         Mail::to($user->email)->send(new VerificationMail($user, $verificationCode));
 
-        return redirect()->route('verification.form', ['email' => $user->email]);
+        return redirect()->route('verification.form', ['email' => $user->email])->with('success', 'Verification code has been sent to your email.');
     }
 
 }

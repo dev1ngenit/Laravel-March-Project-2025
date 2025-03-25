@@ -116,6 +116,13 @@
                         <p class="pb-1 text-center">Welcome Here!</p>
                         <h2 class="mb-4 fw-bold text-center">Enter Verification Code</h2>
 
+                        <!-- Display Success Message -->
+                        @if (session('success'))
+                            <div class="alert alert-success mb-4">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
                         <!-- Display Validation Errors -->
                         @if ($errors->any())
                             <div class="alert alert-danger mb-0">
