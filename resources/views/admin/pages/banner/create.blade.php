@@ -43,16 +43,19 @@
 
                     <div class="col-lg-4 mb-3">
                         <x-metronic.label for="badge"
-                            class="col-form-label fw-bold fs-6">{{ __('Badge') }}</x-metronic.label>
+                            class="col-form-label fw-bold fs-6">{{ __('Banner Badge') }}</x-metronic.label>
                         <x-metronic.input id="badge" type="text" name="badge" placeholder="Enter the badge"
                             :value="old('badge')"></x-metronic.input>
                     </div>
 
                     <div class="col-lg-4 mb-3">
                         <x-metronic.label for="name"
-                            class="col-form-label required fw-bold fs-6">{{ __('Banner Name') }}</x-metronic.label>
+                            class="col-form-label required fw-bold fs-6">{{ __('Banner Title') }}</x-metronic.label>
+                        {{-- <x-metronic.input id="name" type="text" name="name" placeholder="Enter the name"
+                            :value="old('name')" required="true"></x-metronic.input> --}}
                         <x-metronic.input id="name" type="text" name="name" placeholder="Enter the name"
-                            :value="old('name')"></x-metronic.input>
+                            :value="old('name')" maxlength="100" required="true" :error="$errors->first('name')">
+                        </x-metronic.input>
                     </div>
 
                     <div class="col-lg-6 mb-3">
@@ -73,7 +76,6 @@
                     <div class="col-lg-4 mb-3">
                         <x-metronic.label for="image" class="col-form-label fw-bold fs-6">{{ __('Thumbnail Image') }}
                         </x-metronic.label>
-
                         <x-metronic.file-input id="image" name="image" :value="old('image')"></x-metronic.file-input>
                     </div>
 

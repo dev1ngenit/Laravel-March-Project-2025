@@ -22,11 +22,11 @@ class AdminSeeder extends Seeder
         ]);
 
         Admin::factory()->create([
-            'name' => 'Ashiquzzaman',
-            'email' => 'dev2.ngenit@gmail.com',
+            'name' => 'Khandker Shahed',
+            'email' => 'khandkershahed23@gmail.com',
             'password' => Hash::make('password'),
             'status' => 'active',
         ]);
-        
+
     }
 }

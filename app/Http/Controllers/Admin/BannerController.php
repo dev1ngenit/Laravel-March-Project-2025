@@ -75,7 +75,6 @@ class BannerController extends Controller
                 'button_name' => $request->button_name,
                 'url'         => $request->url,
                 'status'      => $request->status,
-
                 'image'       => $uploadedFiles['image']['status'] == 1 ? $uploadedFiles['image']['file_path'] : null,
             ]);
 

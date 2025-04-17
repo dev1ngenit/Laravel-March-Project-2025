@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('slug')->unique();
             $table->string('image')->nullable();
-            $table->string('url')->nullable();
+            $table->text('url')->nullable();
             $table->string('button_name')->nullable();
             $table->string('status')->default('active');
 
