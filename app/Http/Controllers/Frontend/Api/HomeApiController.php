@@ -26,8 +26,10 @@ class HomeApiController extends Controller
 
     public function AllCategory()
     {
+        $admins = DB::table('admins')->pluck('name', 'id');
+        $brands = DB::table('brands')->pluck('name', 'id');
         $categories = Category::with('children', 'children.products', 'products')->whereNull('parent_id')->get()
-            ->map(function ($category) {
+            ->map(function ($category) use ($admins, $brands) {
                 // Decode JSON arrays
                 $category->description       = html_entity_decode(strip_tags($category->description));
                 // Fetch names from DB (assuming related tables exist)
@@ -37,7 +39,16 @@ class HomeApiController extends Controller
                 $category->logo                = url('storage/' . $category->logo);
                 $category->image               = url('storage/' . $category->image);
                 $category->banner_image        = url('storage/' . $category->banner_image);
-
+                $category->products->map(function ($product) use ($admins, $brands, $category) {
+                    $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
+                    $product->short_description = html_entity_decode(strip_tags($product->short_description));
+                    $product->long_description  = html_entity_decode(strip_tags($product->long_description));
+                    $product->specification     = html_entity_decode(strip_tags($product->specification));
+                    $product->added_by_name     = $admins[$product->added_by] ?? null;
+                    $product->brand_id_name     = $brands[$product->brand_id] ?? null;
+                    $product->category_id_name     = $category->name; // Avoid another DB call
+                    return $product;
+                });
                 return $category;
             });
 
