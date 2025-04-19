@@ -15,20 +15,24 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['http://localhost:3000'],
+        'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_origins_patterns' => [],
+        'allowed_methods' => ['*'], // Allow all HTTP methods
 
-    'allowed_headers' => ['*'],
+        'allowed_origins' => ['http://localhost:3000'], // <- NO trailing slash!
 
-    'exposed_headers' => [],
+        'allowed_origins_patterns' => [],
 
-    'max_age' => 0,
+        'allowed_headers' => ['*'], // Allow all headers from Next.js
 
-    'supports_credentials' => false,
+        'exposed_headers' => [],
+
+        'max_age' => 0,
+
+        'supports_credentials' => true, // Set to true if using cookies/session auth
+
+
 
 ];
