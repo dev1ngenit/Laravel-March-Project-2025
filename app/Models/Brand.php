@@ -23,4 +23,9 @@ class Brand extends Model
         return $this->belongsTo(Admin::class, 'added_by');
     }
 
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'brand_id');
+    }
+
 }

@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\Api\CategoryApiController;
 use App\Http\Controllers\User\Api\UserApiController;
+use App\Http\Controllers\Frontend\Api\HomeApiController;
+use App\Http\Controllers\Admin\Api\CategoryApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,15 @@ use App\Http\Controllers\User\Api\UserApiController;
 //     Route::put('/profile', [UserApiController::class, 'editProfile']);
 //     Route::apiResource('categories', CategoryApiController::class);
 // });
+
+
+Route::prefix('api')->group(function () {
+
+    // Home
+    Route::get('/homepage', [HomeApiController::class, 'homePage']);
+    Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
+    Route::get('/categories', [HomeApiController::class, 'AllCategory']);
+    Route::get('/brands', [HomeApiController::class, 'AllBrand']);
+
+
+});

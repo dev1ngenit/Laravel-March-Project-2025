@@ -33,4 +33,8 @@ class Category extends Model
     {
         return $query->where('status', 'active');
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
 }
