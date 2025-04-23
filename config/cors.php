@@ -17,21 +17,24 @@ return [
 
 
 
-        'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-        'allowed_methods' => ['*'], // Allow all HTTP methods
+    'allowed_methods' => ['*'],
 
-        'allowed_origins' => ['http://localhost:3000','https://micropack.vercel.app'], // <- NO trailing slash!
+    'allowed_origins' => [
+        'http://localhost:3000',
+        'https://micropack.vercel.app',
+    ],
 
-        'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => [],
 
-        'allowed_headers' => ['*'], // Allow all headers from Next.js
+    'allowed_headers' => ['*'],
 
-        'exposed_headers' => [],
+    'exposed_headers' => [],
 
-        'max_age' => 0,
+    'max_age' => 0,
 
-        'supports_credentials' => true, // Set to true if using cookies/session auth
+    'supports_credentials' => true,
 
 
 
