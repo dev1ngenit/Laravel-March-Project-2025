@@ -21,7 +21,7 @@ return [
 
         'allowed_methods' => ['*'], // Allow all HTTP methods
 
-        'allowed_origins' => ['http://localhost:3000'], // <- NO trailing slash!
+        'allowed_origins' => ['http://localhost:3000','https://micropack.vercel.app/'], // <- NO trailing slash!
 
         'allowed_origins_patterns' => [],
 
