@@ -33,6 +33,6 @@ Route::prefix('api')->group(function () {
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
     Route::get('/categories', [HomeApiController::class, 'AllCategory']);
     Route::get('/brands', [HomeApiController::class, 'AllBrand']);
-
+    Route::get('product/details/{slug}', [HomeApiController::class, 'productDetails'])->name('product.details');
 
 });

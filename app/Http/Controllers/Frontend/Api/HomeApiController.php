@@ -235,4 +235,27 @@ class HomeApiController extends Controller
 
         return $product;
     }
+
+    public function productDetails($slug)
+    {
+        $product = DB::table('products')->where('slug', $slug)->first();
+        if ($product) {
+            $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
+            $product->short_description = html_entity_decode(strip_tags($product->short_description));
+            $product->long_description  = html_entity_decode(strip_tags($product->long_description));
+            $product->specification     = html_entity_decode(strip_tags($product->specification));
+            $product->tags              = json_decode($product->tags);
+            $product->category          = DB::table('categories')->where('id', $product->category_id)->value('name');
+            $product->brand             = DB::table('brands')->where('id', $product->brand_id)->value('name');
+            return response()->json([
+                'status' => 'success',
+                'data'   => $product,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Product not found',
+            ], 404);
+        }
+    }
 }
