@@ -27,7 +27,19 @@ use App\Http\Controllers\Admin\Api\CategoryApiController;
 
 
 Route::prefix('api')->group(function () {
+    Route::post('/register', [UserApiController::class, 'register']);
+    Route::post('/login', [UserApiController::class, 'login']);
+    Route::post('/reset-password/{token}', [UserApiController::class, 'reset']);
+    Route::post('/forgot-password', [UserApiController::class, 'forgotPassword']);
 
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [UserApiController::class, 'logout']);
+        Route::get('/email-verification', [UserApiController::class, 'sendemailVerification']);
+        Route::post('/email-verification', [UserApiController::class, 'emailVerification']);
+        Route::post('/change-password', [UserApiController::class, 'updatePassword']);
+        Route::get('/profile', [UserApiController::class, 'profile']);
+        Route::put('/profile', [UserApiController::class, 'editProfile']);
+    });
     // Home
     Route::get('/homepage', [HomeApiController::class, 'homePage']);
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
