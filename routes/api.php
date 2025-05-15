@@ -27,6 +27,8 @@ use App\Http\Controllers\Admin\Api\CategoryApiController;
 
 
 Route::prefix('api')->group(function () {
+    Route::get('/register', [UserApiController::class, 'register']);
+    Route::get('/login', [UserApiController::class, 'login']);
     Route::post('/register', [UserApiController::class, 'register']);
     Route::post('/login', [UserApiController::class, 'login']);
     Route::post('/reset-password/{token}', [UserApiController::class, 'reset']);
@@ -45,6 +47,7 @@ Route::prefix('api')->group(function () {
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
     Route::get('/categories', [HomeApiController::class, 'AllCategory']);
     Route::get('/brands', [HomeApiController::class, 'AllBrand']);
+    Route::get('/products', [HomeApiController::class, 'AllProduct']);
     Route::get('product/details/{slug}', [HomeApiController::class, 'productDetails'])->name('product.details');
 
 });

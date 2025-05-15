@@ -165,6 +165,7 @@ class HomeApiController extends Controller
         ]);
     }
 
+
     public function AllBrand()
     {
         $admins     = DB::table('admins')->pluck('name', 'id');
@@ -178,6 +179,25 @@ class HomeApiController extends Controller
             'status' => 'success',
             'brands' => $brands,
             'count'  => $brands->count(),
+        ]);
+    }
+
+    public function AllProduct()
+    {
+        $admins = DB::table('admins')->pluck('name', 'id');
+        $brands = DB::table('brands')->pluck('name', 'id');
+
+        $categories = Category::with('children', 'children.products', 'products')
+            ->whereNull('parent_id')
+            ->get()
+            ->map(function ($category) use ($admins, $brands) {
+                return $this->formatCategory($category, $admins, $brands);
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $categories,
+            'count'  => $categories->count(),
         ]);
     }
 
@@ -238,7 +258,18 @@ class HomeApiController extends Controller
 
     public function productDetails($slug)
     {
+
         $product = DB::table('products')->where('slug', $slug)->first();
+        $category = DB::table('categories')->where('id', $product->category_id)->first();
+        if ($category->products) {
+            $category->products->map(function ($product) use ($category) {
+                return $this->formatProduct($product, collect(), $category->name, $brands[$product->brand_id] ?? null);
+            });
+        }
+        $related_products = $category->products->where('id', '!=', $product->id)->take(10)->map(function ($product) use ($category) {
+            return $this->formatProduct($product, collect(), $category->name, $brands[$product->brand_id] ?? null);
+        });
+        $product->related_products = $related_products;
         if ($product) {
             $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
             $product->short_description = html_entity_decode(strip_tags($product->short_description));
@@ -247,6 +278,17 @@ class HomeApiController extends Controller
             $product->tags              = json_decode($product->tags);
             $product->category          = DB::table('categories')->where('id', $product->category_id)->value('name');
             $product->brand             = DB::table('brands')->where('id', $product->brand_id)->value('name');
+            $product->images            = DB::table('brands')->where('id', $product->brand_id)->value('name');
+
+            $data = [
+                'product' => $product,
+                'category' => $category,
+                'related_products' => $related_products,
+                'product_images' => DB::table('product_images')->where('product_id', $product->id)->get()->map(function ($image) {
+                    $image->image = url('storage/' . $image->image);
+                    return $image;
+                }),
+            ];
             return response()->json([
                 'status' => 'success',
                 'data'   => $product,

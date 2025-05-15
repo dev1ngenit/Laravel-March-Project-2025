@@ -177,6 +177,17 @@ class BannerController extends Controller
     public function destroy(string $id)
     {
         $banner = Banner::findOrFail($id);
+        $files = [
+            'image'    => $banner->image,
+        ];
+        foreach ($files as $key => $file) {
+            if (!empty($file)) {
+                $oldFile = $banner->$key ?? null;
+                if ($oldFile) {
+                    Storage::delete("public/" . $oldFile);
+                }
+            }
+        }
         $banner->delete();
     }
 }
