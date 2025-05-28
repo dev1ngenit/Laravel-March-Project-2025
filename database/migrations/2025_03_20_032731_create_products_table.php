@@ -13,45 +13,70 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-
-            $table->string('name')->nullable();
-            $table->string('slug')->unique();
-
-            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
+            // Relationships
             $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('set null');
-
-            $table->string('thumbnail_image')->nullable();
-            $table->string('sku')->nullable();
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->foreignId('sub_category_id')->nullable()->constrained('categories')->onDelete('set null');
+            // $table->json('category_id')->nullable(); // For multi-category support
+            // Basic Info
+            $table->string('name', 255);
+            $table->string('slug', 255)->unique();
+            $table->string('sku_code')->nullable();
             $table->string('mf_code')->nullable();
-
-            $table->longText('short_description')->nullable();
-            $table->longText('long_description')->nullable();
+            $table->string('product_code')->nullable();
+            $table->string('barcode_id')->nullable();
+            $table->string('barcode')->nullable();
+            // Descriptions
+            $table->text('short_description')->nullable();
+            $table->longText('overview')->nullable();
+            $table->longText('long_description')->nullable(); // Alias of "description"
             $table->longText('specification')->nullable();
-
-            $table->integer('qty')->nullable();
-            $table->string('currency')->nullable();
-            $table->double('price', 10, 2)->default(0.00);
-            $table->double('discount_price', 10, 2)->nullable();
-
+            // Multimedia
+            $table->string('thumbnail', 255)->nullable(); // Primary image
+            $table->text('video_link')->nullable();
+            // Tags and attributes
+            $table->json('tags')->nullable();
+            $table->json('color')->nullable();
+            // Stock & Inventory
+            $table->integer('stock')->nullable(); // Total available stock
+            // Pricing
+            $table->double('price')->default(0.00);
+            $table->double('partner_price', 10, 2)->nullable();
+            $table->double('discount_price', 10, 2)->nullable(); // General-purpose discount
+            // Tax & Warranty
+            $table->double('vat')->nullable();
+            $table->double('tax')->nullable();
+            $table->string('warranty')->nullable();
+            // Dimensions & Weight
+            $table->integer('length')->nullable();
+            $table->integer('width')->nullable();
+            $table->integer('height')->nullable();
+            $table->string('weight')->nullable();
+            // Location & Supplier
             $table->string('supplier')->nullable();
             $table->string('warehouse_location')->nullable();
-            $table->string('weight')->nullable();
-            $table->string('tags')->nullable();
-
-            $table->boolean('is_featured')->default(0);
-            $table->boolean('is_selling')->default(0);
-            $table->boolean('is_new')->default(0);
-            $table->boolean('hot_deal')->default(0);
-
-            $table->string('status')->default('active');
-
+            // Flags
+            $table->boolean('is_featured')->default(false);
+            $table->boolean('is_selling')->default(false);
+            $table->boolean('is_refurbished')->default(false);
+            $table->boolean('is_new')->default(false);
+            $table->boolean('hot_deal')->default(false);
+            // $table->string('is_refurbished', 10)->nullable(); // e.g. "yes" or "no"
+            // Rating & Status
+            $table->integer('rating')->nullable();
+            $table->enum('status', ['published', 'draft', 'inactive', 'active'])->default('published');
+            $table->string('product_type')->nullable(); // e.g. 'accessory', 'bundle'
+            // SEO
             $table->string('meta_title')->nullable();
-            $table->string('meta_keyword')->nullable();
+            $table->json('meta_keywords')->nullable();
+            $table->string('meta_keyword')->nullable(); // Keep for backward compatibility
             $table->text('meta_content')->nullable();
             $table->longText('meta_description')->nullable();
-
+            // Admin tracking
             $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null');
-            $table->foreignId('update_by')->nullable()->constrained('admins')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()->constrained('admins')->onDelete('set null');
+            $table->string('created_by')->nullable(); // for string-based fallback
+            $table->date('create_date')->nullable();
 
             $table->timestamps();
         });

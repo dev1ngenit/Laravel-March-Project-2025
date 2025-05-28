@@ -67,19 +67,15 @@
                 {{-- Site Content  --}}
                 @php
                     $menuItems = [
-                        //====================== Frontend Management Start ============
+                        //====================== Product Management Start ============
                         [
-                            'title' => 'Frontend Management',
+                            'title' => 'Product Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
                             'routes' => [
                                 'admin.product.index',
                                 'admin.product.create',
                                 'admin.product.edit',
-
-                                'admin.banner.index',
-                                'admin.banner.create',
-                                'admin.banner.edit',
 
                                 'admin.brands.index',
                                 'admin.brands.create',
@@ -89,46 +85,17 @@
                                 'admin.categories.create',
                                 'admin.categories.edit',
 
-                                'admin.blog_category.index',
-                                'admin.blog_category.create',
-                                'admin.blog_category.edit',
-
-                                'admin.blog.index',
-                                'admin.blog.create',
-                                'admin.blog.edit',
-
                                 'admin.coupon.index',
                                 'admin.coupon.create',
                                 'admin.coupon.edit',
-
-                                'admin.contact.index',
-                                'admin.contact.create',
-                                'admin.contact.edit',
-
-                                'admin.subscription.index',
-                                'admin.subscription.create',
-                                'admin.subscription.edit',
                             ],
 
                             'subMenu' => [
-                                [
-                                    'title' => 'Product',
-                                    'routes' => ['admin.product.index', 'admin.product.create', 'admin.product.edit'],
-                                    'route' => 'admin.product.index',
-                                ],
-
-                                [
-                                    'title' => 'Banner',
-                                    'routes' => ['admin.banner.index', 'admin.banner.create', 'admin.banner.edit'],
-                                    'route' => 'admin.banner.index',
-                                ],
-
                                 [
                                     'title' => 'Brand',
                                     'routes' => ['admin.brands.index', 'admin.brands.create', 'admin.brands.edit'],
                                     'route' => 'admin.brands.index',
                                 ],
-
                                 [
                                     'title' => 'Category',
                                     'routes' => [
@@ -138,21 +105,10 @@
                                     ],
                                     'route' => 'admin.categories.index',
                                 ],
-
                                 [
-                                    'title' => 'Blog Category',
-                                    'routes' => [
-                                        'admin.blog_category.index',
-                                        'admin.blog_category.create',
-                                        'admin.blog_category.edit',
-                                    ],
-                                    'route' => 'admin.blog_category.index',
-                                ],
-
-                                [
-                                    'title' => 'Blog',
-                                    'routes' => ['admin.blog.index', 'admin.blog.create', 'admin.blog.edit'],
-                                    'route' => 'admin.blog.index',
+                                    'title' => 'Product',
+                                    'routes' => ['admin.product.index', 'admin.product.create', 'admin.product.edit'],
+                                    'route' => 'admin.product.index',
                                 ],
 
                                 [
@@ -160,36 +116,26 @@
                                     'routes' => ['admin.coupon.index', 'admin.coupon.create', 'admin.coupon.edit'],
                                     'route' => 'admin.coupon.index',
                                 ],
-
-                                [
-                                    'title' => 'Contact',
-                                    'routes' => ['admin.contact.index', 'admin.contact.create', 'admin.contact.edit'],
-                                    'route' => 'admin.contact.index',
-                                ],
-
-                                [
-                                    'title' => 'Subscription',
-
-                                    'routes' => [
-                                        'admin.subscription.index',
-                                        'admin.subscription.create',
-                                        'admin.subscription.edit',
-                                    ],
-
-                                    'route' => 'admin.subscription.index',
-                                ],
                             ],
                         ],
-                        //====================== Frontend Management End ==============
-
-                        // ========================= Setting Start ====================
+                        //====================== Product Management End ==============
+                        //====================== Site Contents Start ==============
                         [
-                            'title' => 'Web Settings',
-
+                            'title' => 'Site Content',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
                             'routes' => [
-                                'admin.settings.index',
+                                'admin.banner.index',
+                                'admin.banner.create',
+                                'admin.banner.edit',
+
+                                'admin.blog_category.index',
+                                'admin.blog_category.create',
+                                'admin.blog_category.edit',
+
+                                'admin.blog.index',
+                                'admin.blog.create',
+                                'admin.blog.edit',
 
                                 'admin.faq.index',
                                 'admin.faq.create',
@@ -213,10 +159,27 @@
                             ],
 
                             'subMenu' => [
+
                                 [
-                                    'title' => 'Setting',
-                                    'routes' => ['admin.settings.index'],
-                                    'route' => 'admin.settings.index',
+                                    'title' => 'Banner',
+                                    'routes' => ['admin.banner.index', 'admin.banner.create', 'admin.banner.edit'],
+                                    'route' => 'admin.banner.index',
+                                ],
+
+                                [
+                                    'title' => 'Blog Category',
+                                    'routes' => [
+                                        'admin.blog_category.index',
+                                        'admin.blog_category.create',
+                                        'admin.blog_category.edit',
+                                    ],
+                                    'route' => 'admin.blog_category.index',
+                                ],
+
+                                [
+                                    'title' => 'Blog',
+                                    'routes' => ['admin.blog.index', 'admin.blog.create', 'admin.blog.edit'],
+                                    'route' => 'admin.blog.index',
                                 ],
 
                                 [
@@ -262,11 +225,10 @@
                                 ],
                             ],
                         ],
-                        // ========================= Setting End ======================
-
-                        // =================== Management Section Start ===============
+                        //====================== Site Contents End ==============
+                        //====================== User Management Start ==============
                         [
-                            'title' => 'Management',
+                            'title' => 'User Management',
                             'icon' => 'icons/duotune/ecommerce/ecm002.svg',
 
                             'routes' => [
@@ -274,9 +236,76 @@
                                 'admin.user.create',
                                 'admin.user.edit',
 
+                                'admin.contact.index',
+                                'admin.contact.create',
+                                'admin.contact.edit',
+
+                                'admin.subscription.index',
+                                'admin.subscription.create',
+                                'admin.subscription.edit',
+                            ],
+
+                            'subMenu' => [
+                                [
+                                    'title' => 'User',
+                                    'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit'],
+                                    'route' => 'admin.user.index',
+                                ],
+
+                                [
+                                    'title' => 'Contact',
+                                    'routes' => ['admin.contact.index', 'admin.contact.create', 'admin.contact.edit'],
+                                    'route' => 'admin.contact.index',
+                                ],
+
+                                [
+                                    'title' => 'Subscription',
+
+                                    'routes' => [
+                                        'admin.subscription.index',
+                                        'admin.subscription.create',
+                                        'admin.subscription.edit',
+                                    ],
+
+                                    'route' => 'admin.subscription.index',
+                                ],
+                            ],
+                        ],
+                        //====================== User Management End ==============
+
+                        // ========================= Setting Start ====================
+                        [
+                            'title' => 'Web Settings',
+                            'icon' => 'icons/duotune/ecommerce/ecm002.svg',
+                            'routes' => [
+                                'admin.settings.index',
+                            ],
+
+                            'subMenu' => [
+                                [
+                                    'title' => 'Setting',
+                                    'routes' => ['admin.settings.index'],
+                                    'route' => 'admin.settings.index',
+                                ],
+                            ],
+                        ],
+                        // ========================= Setting End ======================
+
+                        // =================== Management Section Start ===============
+                        [
+                            'title' => 'Staff Management',
+                            'icon' => 'icons/duotune/ecommerce/ecm002.svg',
+
+                            'routes' => [
                                 'admin.staff.index',
                                 'admin.staff.create',
                                 'admin.staff.edit',
+
+                                'all.role',
+                                'all.permission',
+                                'all.admin.permission',
+                                'add.roles.permission',
+                                'all.roles.permission',
                             ],
 
                             'subMenu' => [
@@ -286,29 +315,6 @@
                                     'route' => 'admin.staff.index',
                                 ],
 
-                                [
-                                    'title' => 'User',
-                                    'routes' => ['admin.user.index', 'admin.user.create', 'admin.user.edit'],
-                                    'route' => 'admin.user.index',
-                                ],
-                            ],
-                        ],
-                        // =================== Management Section End =================
-
-                        // =================== Role & Permission Start ================
-                        [
-                            'title' => 'Role & Permission',
-                            'icon' => 'icons/duotune/ecommerce/ecm002.svg',
-
-                            'routes' => [
-                                'all.role',
-                                'all.permission',
-                                'all.admin.permission',
-                                'add.roles.permission',
-                                'all.roles.permission',
-                            ],
-
-                            'subMenu' => [
                                 [
                                     'title' => 'All Admin',
                                     'routes' => ['all.admin.permission'],
@@ -324,8 +330,13 @@
                                     'routes' => ['all.permission'],
                                     'route' => 'all.permission',
                                 ],
+
+
                             ],
                         ],
+                        // =================== Management Section End =================
+
+                        
                         // ================== Role & Permission End ===================
                     ];
                 @endphp

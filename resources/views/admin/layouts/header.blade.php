@@ -43,7 +43,8 @@
 
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="{{ route('admin.dashboard') }}" class="d-lg-none">
-                {{-- <img alt="Logo" src="{{ asset('admin/assets/media/logos/logo-2.svg') }}" class="h-30px" /> --}}
+                <img alt="Logo" src="{{ !empty(Auth::guard('admin')->user()->photo) ? url('storage/' . Auth::guard('admin')->user()->photo) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::guard('admin')->user()->name) }}" class="h-30px" />
+
             </a>
         </div>
 
@@ -169,19 +170,14 @@
                 {{-- Notification End  --}}
 
                 @php
-                    $id = Auth::guard('admin')->user()->id;
-                    $profileData = App\Models\Admin::find($id);
-
-                    $roles = Spatie\Permission\Models\Role::latest()->get();
-
-                    $routes = Route::current()->getName();
+                    $profileData = Auth::guard('admin')->user();
                 @endphp
 
                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                     <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="click"
                         data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
-                        <img src="{{ !empty($profileData->photo) ? asset('storage/admin_images/' . $profileData->photo) : asset('upload/no_image.jpg') }}"
-                            alt="Admin Image">
+                        <img src="{{ !empty($profileData->photo) ? asset('storage/admin_images/' . $profileData->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($profileData->name) }}"
+                            alt="{{ $profileData->name }}">
                     </div>
                     <div class="py-4 menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-primary fw-bold fs-6 w-275px"
                         data-kt-menu="true">
@@ -189,8 +185,8 @@
                             <div class="px-3 menu-content d-flex align-items-center">
                                 <div class="symbol symbol-50px me-5">
 
-                                    <img src="{{ !empty($profileData->photo) ? asset('storage/admin_images/' . $profileData->photo) : asset('upload/no_image.jpg') }}"
-                                        alt="Admin Image">
+                                    <img src="{{ !empty($profileData->photo) ? asset('storage/admin_images/' . $profileData->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($profileData->name) }}"
+                                        alt="{{ $profileData->name }}">
 
                                 </div>
                                 <div class="d-flex flex-column">

@@ -1,17 +1,6 @@
 <x-admin-app-layout :title="'New Site'">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
-    <style>
-        .bxs-star {
-            color: #f7941d;
-        }
-    </style>
-
     @if ($status == 'active')
-
         <div class="row gy-5 g-xl-8">
-
             {{-- Total Job  --}}
             <div class="col-xl-4">
                 <div class="card h-xl-100">
@@ -20,18 +9,13 @@
                             <span style="font-size: 20px" class="card-label fw-bold text-gray-900">Total</span>
                         </h3>
                     </div>
-
                     <div class="card-body pt-6">
-
-
                         <div class="d-flex flex-stack">
-
                             <div class="symbol me-5">
                                 <div class="text-inverse-danger">
                                     <img src="https://ui-avatars.com/api/?name=Job+Offer&size=40" alt="Avatar">
                                 </div>
                             </div>
-
                             <div class="d-flex align-items-center flex-row-fluid flex-wrap">
 
                                 <div class="flex-grow-1 me-2">
@@ -65,19 +49,7 @@
 
             {{-- Middle Section  --}}
 
-            @php
-                // Set the timezone to Bangladesh
-                $hour = \Carbon\Carbon::now('Asia/Dhaka')->format('H');
-                $greeting = '';
 
-                if ($hour < 12) {
-                    $greeting = 'Good Morning';
-                } elseif ($hour < 18) {
-                    $greeting = 'Good Afternoon';
-                } else {
-                    $greeting = 'Good Evening';
-                }
-            @endphp
 
             <div class="col-xl-4">
                 <div class="card card-flush h-xl-100">
@@ -105,7 +77,7 @@
 
                                         <div class="m-0">
                                             <h4>Total Staff</h4>
-                                            <span class="text-gray-500 fw-semibold fs-6">{{ $adminCount }}</span>
+                                            <span class="text-gray-500 fw-semibold fs-6">{{ $alladmins->count()}}</span>
                                         </div>
 
                                     </div>
@@ -225,48 +197,32 @@
                         <div class="row">
 
                             @foreach ($alladmins as $admin)
-                                @php
-
-                                    $productCountByAdmins = App\Models\Product::where('added_by', $admin->id)->count();
-                                    $brandCountByAdmins = App\Models\Brand::where('added_by', $admin->id)->count();
-                                    $categoryCountByAdmins = App\Models\Category::where(
-                                        'added_by',
-                                        $admin->id,
-                                    )->count();
-
-                                @endphp
-
                                 <!--begin::Col-->
-                                <div class="col-lg-3">
+                                {{-- <div class="col-lg-3"> --}}
                                     <div class="bg-light-dark p-8 rounded-2">
-
-                                        <!--begin::Svg Icon | path: icons/duotune/general/gen032.svg-->
                                         <span class="svg-icon svg-icon-3x svg-icon-primary d-block my-2">
-
                                             <img src="{{ !empty($admin->photo) ? url('storage/admin_images/' . $admin->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($admin->name) }}"
                                                 height="70" width="70" alt="{{ $admin->name }}"
                                                 style="border-radius: 50%; object-fit: cover;">
-
                                             <p class="text-dark fs-6 float-end">{{ $admin->name }}
                                                 <br><span>{{ $admin->email }}</span>
                                             </p>
-
                                         </span>
 
                                         <!--end::Svg Icon-->
 
                                         <div class="mb-4">
                                             <span class="float-end fw-bolder badge bg-dark">Brand
-                                                {{ $brandCountByAdmins }}</span>
+                                                {{ optional($admin->brands)->count() }}</span>
                                             <span class="float-end fw-bolder badge bg-info mx-1">Category
-                                                {{ $categoryCountByAdmins }}</span>
+                                                {{ optional($admin->categories)->count() }}</span>
                                             <span class="float-end fw-bolder badge bg-primary mx-1">Product
-                                                {{ $productCountByAdmins }}</span>
+                                                {{ optional($admin->products)->count() }}</span>
                                         </div>
 
                                     </div>
 
-                                </div>
+                                {{-- </div> --}}
                                 <!--end::Col-->
                             @endforeach
 

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Frontend\Api;
 
+use App\Models\Brand;
 use App\Models\Banner;
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
 
 class HomeApiController extends Controller
 {
@@ -258,46 +259,72 @@ class HomeApiController extends Controller
 
     public function productDetails($slug)
     {
+        $product = Product::with(['category', 'brand', 'images'])->where('slug', $slug)->first();
 
-        $product = DB::table('products')->where('slug', $slug)->first();
-        $category = DB::table('categories')->where('id', $product->category_id)->first();
-        if ($category->products) {
-            $category->products->map(function ($product) use ($category) {
-                return $this->formatProduct($product, collect(), $category->name, $brands[$product->brand_id] ?? null);
-            });
-        }
-        $related_products = $category->products->where('id', '!=', $product->id)->take(10)->map(function ($product) use ($category) {
-            return $this->formatProduct($product, collect(), $category->name, $brands[$product->brand_id] ?? null);
-        });
-        $product->related_products = $related_products;
-        if ($product) {
-            $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
-            $product->short_description = html_entity_decode(strip_tags($product->short_description));
-            $product->long_description  = html_entity_decode(strip_tags($product->long_description));
-            $product->specification     = html_entity_decode(strip_tags($product->specification));
-            $product->tags              = json_decode($product->tags);
-            $product->category          = DB::table('categories')->where('id', $product->category_id)->value('name');
-            $product->brand             = DB::table('brands')->where('id', $product->brand_id)->value('name');
-            $product->images            = DB::table('brands')->where('id', $product->brand_id)->value('name');
-
-            $data = [
-                'product' => $product,
-                'category' => $category,
-                'related_products' => $related_products,
-                'product_images' => DB::table('product_images')->where('product_id', $product->id)->get()->map(function ($image) {
-                    $image->image = url('storage/' . $image->image);
-                    return $image;
-                }),
-            ];
-            return response()->json([
-                'status' => 'success',
-                'data'   => $product,
-            ]);
-        } else {
+        if (!$product) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Product not found',
             ], 404);
         }
+
+        $category = $product->category;
+
+        // Get related products from the same category
+        $related_products = $category->products()
+            ->where('id', '!=', $product->id)
+            ->take(15)
+            ->get()
+            ->map(function ($relatedProduct) use ($category) {
+                return $this->formatProduct($relatedProduct, collect(), $category->name, $relatedProduct->brand->name ?? null);
+            });
+
+        $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
+        $product->short_description = html_entity_decode(strip_tags($product->short_description));
+        $product->long_description  = html_entity_decode(strip_tags($product->long_description));
+        $product->specification     = html_entity_decode(strip_tags($product->specification));
+        $product->tags              = json_decode($product->tags);
+        $product->category_name     = $category->name ?? null;
+        $product->brand_name        = $product->brand->name ?? null;
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => [
+                'product'          => $product,
+                'category'         => $category,
+                'related_products' => $related_products,
+                'product_images'   => $product->images->map(function ($image) {
+                    $image->image = url('storage/' . $image->image);
+                    return $image;
+                }),
+            ],
+        ]);
+    }
+
+    public function categoryDetails($slug)
+    {
+        $category = Category::where('slug', $slug)->first();
+        if (!$category) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Category not found',
+            ], 404);
+        }
+
+        $category->logo = $category->logo ? url('storage/' . $category->logo) : null;
+        $category->image = $category->image ? url('storage/' . $category->image) : null;
+        $category->banner_image = $category->banner_image ? url('storage/' . $category->banner_image) : null;
+
+        // Format products
+        if ($category->products) {
+            $category->products->map(function ($product) use ($category) {
+                return $this->formatProduct($product, collect(), $category->name, DB::table('brands')->where('id', $product->brand_id)->value('name'));
+            });
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $category,
+        ]);
     }
 }

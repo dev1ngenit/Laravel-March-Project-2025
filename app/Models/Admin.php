@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -74,5 +75,16 @@ class Admin extends Authenticatable
             return $hasPermission;
         }
     }
-
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'added_by', 'id');
+    }
+    public function brands()
+    {
+        return $this->hasMany(Brand::class, 'added_by', 'id');
+    }
+    public function categories()
+    {
+        return $this->hasMany(Category::class, 'added_by', 'id');
+    }
 }

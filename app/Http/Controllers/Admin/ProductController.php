@@ -1,19 +1,21 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use App\Mail\ProductCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Mail\ProductCreated;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Admin\ProductRequest;
 use App\Notifications\ProductCreatedNotification;
 
 class ProductController extends Controller
@@ -46,38 +48,34 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+
+    //  $validator = Validator::make($request->all(),
+    //         [
+    //             'name'              => 'required|string|max:200|unique:brands,name',
+
+    //             'thumbnail_image'   => 'nullable|file|mimes:webp,jpeg,png,jpg|max:2048',
+    //             'short_description' => 'nullable|string',
+    //             'description'       => 'nullable|string',
+    //             'status'            => 'required|in:active,inactive',
+    //         ],
+    //         [
+    //             'name.required'            => 'The name field is required.',
+    //             'name.unique'              => 'The name has already been taken.',
+    //             'name.max'                 => 'The name may not be greater than 200 characters.',
+
+    //             'thumbnail_image.file'     => 'The image must be a valid file.',
+    //             'thumbnail_image.mimes'    => 'The image must be a file of type: webp, jpeg, png, jpg.',
+    //             'thumbnail_image.max'      => 'The image may not be greater than 2MB.',
+
+    //             'status.required'          => 'The status field is required.',
+    //             'status.in'                => 'The selected status is invalid. It must be either active or inactive.',
+    //             'short_description.string' => 'The short description must be a valid string.',
+    //             'description.string'       => 'The description must be a valid string.',
+    //         ]);
+
+    public function store(ProductRequest $request)
     {
-        $validator = Validator::make($request->all(),
-            [
-                'name'              => 'required|string|max:200|unique:brands,name',
 
-                'thumbnail_image'   => 'nullable|file|mimes:webp,jpeg,png,jpg|max:2048',
-                'short_description' => 'nullable|string',
-                'description'       => 'nullable|string',
-                'status'            => 'required|in:active,inactive',
-            ],
-            [
-                'name.required'            => 'The name field is required.',
-                'name.unique'              => 'The name has already been taken.',
-                'name.max'                 => 'The name may not be greater than 200 characters.',
-
-                'thumbnail_image.file'     => 'The image must be a valid file.',
-                'thumbnail_image.mimes'    => 'The image must be a file of type: webp, jpeg, png, jpg.',
-                'thumbnail_image.max'      => 'The image may not be greater than 2MB.',
-
-                'status.required'          => 'The status field is required.',
-                'status.in'                => 'The selected status is invalid. It must be either active or inactive.',
-                'short_description.string' => 'The short description must be a valid string.',
-                'description.string'       => 'The description must be a valid string.',
-            ]);
-
-        if ($validator->fails()) {
-            foreach ($validator->messages()->all() as $message) {
-                Session::flash('error', $message);
-            }
-            return redirect()->back()->withInput();
-        }
 
         DB::beginTransaction();
 
@@ -99,42 +97,81 @@ class ProductController extends Controller
             }
 
             $product = Product::create([
-
-                'name'               => $request->name,
-                'category_id'        => $request->category_id,
+                // Relationships
                 'brand_id'           => $request->brand_id,
-                'sku'                => $request->sku,
-                'mf_code'            => $request->mf_code,
+                'category_id'        => $request->category_id,
+                'sub_category_id'    => $request->sub_category_id,
 
+                // Basic Info
+                'name'               => $request->name,
+                'slug'               => Str::slug($request->name),
+                'sku_code'           => $request->sku_code,
+                'mf_code'            => $request->mf_code,
+                'product_code'       => $request->product_code,
+                'barcode_id'         => $request->barcode_id,
+                'barcode'            => $request->barcode,
+
+                // Descriptions
                 'short_description'  => $request->short_description,
+                'overview'           => $request->overview,
                 'long_description'   => $request->long_description,
                 'specification'      => $request->specification,
 
-                'qty'                => $request->qty,
-                'currency'           => $request->currency,
-                'price'              => $request->price,
+                // Multimedia
+                'thumbnail'          => $thumbnailPath,
+                'video_link'         => $request->video_link,
+
+                // Tags and Attributes
+                'tags'               => json_encode($request->tags),
+                'color'              => json_encode($request->color),
+
+                // Stock & Inventory
+                'stock'              => $request->stock,
+
+                // Pricing
+                'price'              => $request->price ?? 0.00,
+                'partner_price'      => $request->partner_price,
                 'discount_price'     => $request->discount_price,
-                'supplier'           => $request->supplier,
 
-                'warehouse_location' => $request->warehouse_location,
+                // Tax & Warranty
+                'vat'                => $request->vat,
+                'tax'                => $request->tax,
+                'warranty'           => $request->warranty,
+
+                // Dimensions & Weight
+                'length'             => $request->length,
+                'width'              => $request->width,
+                'height'             => $request->height,
                 'weight'             => $request->weight,
-                'tags'               => $request->tags,
-                'is_featured'        => $request->is_featured ? true : false,
-                'is_selling'         => $request->is_selling ? true : false,
 
-                'is_new'             => $request->is_new ? true : false,
-                'hot_deal'           => $request->hot_deal ? true : false,
+                // Location & Supplier
+                'supplier'           => $request->supplier,
+                'warehouse_location' => $request->warehouse_location,
+
+                // Flags
+                'is_featured'        => $request->boolean('is_featured'),
+                'is_selling'         => $request->boolean('is_selling'),
+                'is_refurbished'     => $request->boolean('is_refurbished'),
+                'is_new'             => $request->boolean('is_new'),
+                'hot_deal'           => $request->boolean('hot_deal'),
+
+                // Rating & Status
+                'rating'             => $request->rating,
                 'status'             => $request->status,
-                'meta_title'         => $request->meta_title,
+                'product_type'       => $request->product_type,
 
+                // SEO
+                'meta_title'         => $request->meta_title,
+                'meta_keywords'      => json_encode($request->meta_keywords),
+                'meta_keyword'       => $request->meta_keyword,
                 'meta_content'       => $request->meta_content,
                 'meta_description'   => $request->meta_description,
 
-                'added_by'           => Auth::guard('admin')->user()->id,
-
-                'thumbnail_image'    => $uploadedFiles['thumbnail_image']['status'] == 1 ? $uploadedFiles['thumbnail_image']['file_path'] : null,
+                // Admin tracking
+                'added_by'           => Auth::guard('admin')->id(),
+                'created_by'         => Auth::guard('admin')->user()->name ?? null,
+                'create_date'        => now()->toDateString(),
             ]);
-
             DB::commit();
 
             //Send Notification
@@ -188,7 +225,8 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         // Validate input data
-        $validator = Validator::make($request->all(),
+        $validator = Validator::make(
+            $request->all(),
             [
                 'name'              => 'required|string|max:200|unique:brands,name,' . $id, // Exclude the current product ID from uniqueness check
                 'thumbnail_image'   => 'nullable|file|mimes:webp,jpeg,png,jpg|max:2048',
@@ -207,7 +245,8 @@ class ProductController extends Controller
                 'status.in'                => 'The selected status is invalid. It must be either active or inactive.',
                 'short_description.string' => 'The short description must be a valid string.',
                 'description.string'       => 'The description must be a valid string.',
-            ]);
+            ]
+        );
 
         // If validation fails, return to the previous page with error messages
         if ($validator->fails()) {
@@ -253,6 +292,7 @@ class ProductController extends Controller
                 'qty'                => $request->qty,
                 'currency'           => $request->currency,
                 'price'              => $request->price,
+                'partner_price'      => $request->partner_price,
                 'discount_price'     => $request->discount_price,
                 'supplier'           => $request->supplier,
                 'warehouse_location' => $request->warehouse_location,
@@ -267,6 +307,7 @@ class ProductController extends Controller
                 'meta_content'       => $request->meta_content,
                 'meta_description'   => $request->meta_description,
                 'thumbnail_image'    => $uploadedFiles['thumbnail_image']['status'] == 1 ? $uploadedFiles['thumbnail_image']['file_path'] : $product->thumbnail_image,
+                'updated_by'         => Auth::guard('admin')->user()->id,
             ]);
 
             DB::commit();

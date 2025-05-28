@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('group_names', function (Blueprint $table) {
             $table->id();
-
             $table->string('group_name')->nullable();
-
             $table->timestamps();
         });
     }

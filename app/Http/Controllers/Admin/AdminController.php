@@ -13,17 +13,14 @@ class AdminController extends Controller
     // admin dashboard
     public function dashboard()
     {
-        $id     = Auth::guard('admin')->user()->id;
-        $admin  = Admin::findOrFail($id);
-        $status = $admin->status;
+        $data = [
+            'status' => Auth::guard('admin')->user()->status,
+            'userCount' => User::where('status', 'active')->count(),
+            'productCount' => Product::where('status', 'active')->count(),
+            'alladmins' => Admin::where('status', 'active')->latest('id')->get(),
+        ];
 
-        $userCount    = User::where('status', 'active')->count();
-        $adminCount   = Admin::where('status', 'active')->count();
-        $productCount = Product::where('status', 'active')->count();
-
-        $alladmins = Admin::where('status', 'active')->latest('id')->get();
-
-        return view('admin/dashboard', compact('status', 'userCount', 'adminCount', 'productCount', 'alladmins'));
+        return view('admin.dashboard', $data);
     }
 
     // markAsRead notification

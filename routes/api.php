@@ -26,7 +26,7 @@ use App\Http\Controllers\Admin\Api\CategoryApiController;
 // });
 
 
-Route::prefix('api')->group(function () {
+Route::prefix('api/v1')->group(function () {
     Route::get('/register', [UserApiController::class, 'register']);
     Route::get('/login', [UserApiController::class, 'login']);
     Route::post('/register', [UserApiController::class, 'register']);
@@ -46,6 +46,7 @@ Route::prefix('api')->group(function () {
     Route::get('/homepage', [HomeApiController::class, 'homePage']);
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
     Route::get('/categories', [HomeApiController::class, 'AllCategory']);
+    Route::get('category/{slug}', [HomeApiController::class, 'categoryDetails'])->name('category.details');
     Route::get('/brands', [HomeApiController::class, 'AllBrand']);
     Route::get('/products', [HomeApiController::class, 'AllProduct']);
     Route::get('product/details/{slug}', [HomeApiController::class, 'productDetails'])->name('product.details');

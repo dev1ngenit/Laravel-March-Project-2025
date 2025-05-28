@@ -1,14 +1,9 @@
 <x-admin-app-layout :title="'Category Add'">
     <div class="card card-flash">
-        <!--begin::Card header-->
         <div class="card-header mt-6">
             <div class="card-title"></div>
-
-            <!--begin::Card toolbar-->
             <div class="card-toolbar">
-                <!--begin::Button-->
                 <a href="{{ route('admin.categories.index') }}" class="btn btn-light-info">
-                    <!--begin::Svg Icon | path: brands/duotune/general/gen035.svg-->
                     <span class="svg-icon svg-icon-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none">
@@ -20,7 +15,7 @@
                                 fill="currentColor" />
                         </svg>
                     </span>
-                    <!--end::Svg Icon-->Back to the list
+                    Back to the list
                 </a>
             </div>
         </div>
@@ -40,7 +35,7 @@
                         </x-metronic.select-option>
                     </div>
 
-                    <div class="col-lg-5 mb-7">
+                    <div class="col-lg-4 mb-7">
                         <x-metronic.label for="parent_id"
                             class="col-form-label fw-bold fs-6">{{ __('Select a parent Category') }}</x-metronic.label>
                         <x-metronic.select-option id="parent_id" name="parent_id" data-hide-search="false"
@@ -50,7 +45,7 @@
                         </x-metronic.select-option>
                     </div>
 
-                    <div class="col-lg-5 mb-7">
+                    <div class="col-lg-6 mb-7">
                         <x-metronic.label for="name"
                             class="col-form-label required fw-bold fs-6">{{ __('Category Name') }}</x-metronic.label>
                         <x-metronic.input id="name" type="text" name="name" placeholder="Enter the category name"
@@ -60,27 +55,23 @@
                     <div class="col-lg-12 mb-7">
                         <x-metronic.label for="description" class="col-form-label fw-bold fs-6 ">{{ __('Description') }}
                         </x-metronic.label>
-
                         <x-metronic.textarea id="description" name="description"></x-metronic.textarea>
                     </div>
 
                     <div class="col-lg-4 mb-7">
                         <x-metronic.label for="logo" class="col-form-label fw-bold fs-6 ">{{ __('Icon') }}
                         </x-metronic.label>
-
                         <x-metronic.file-input id="logo" name="logo" :value="old('logo')"></x-metronic.file-input>
                     </div>
                     <div class="col-lg-4 mb-7">
                         <x-metronic.label for="image" class="col-form-label fw-bold fs-6">{{ __('Thumbnail Image') }}
                         </x-metronic.label>
-
                         <x-metronic.file-input id="image" name="image" :value="old('image')"></x-metronic.file-input>
                     </div>
                     <div class="col-lg-4 mb-7">
                         <x-metronic.label for="banner_image"
                             class="col-form-label fw-bold fs-6 ">{{ __('Banner Image') }}
                         </x-metronic.label>
-
                         <x-metronic.file-input id="banner_image" :value="old('banner_image')"
                             name="banner_image"></x-metronic.file-input>
                     </div>

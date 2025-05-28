@@ -30,12 +30,17 @@
     {{-- Font Awesome CDN --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link href="{{ asset('admin/assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('admin/assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
     @props(['title'])
     <title>{{ $title ?? config('app.name', 'NewSite') }}</title>
+    <style>
+        .bxs-star {
+            color: #f7941d;
+        }
+    </style>
 </head>
 
 <body id="kt_body"

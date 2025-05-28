@@ -1,14 +1,16 @@
 <?php
+
 namespace App\Providers;
 
+use Exception;
+use Carbon\Carbon;
 use App\Models\Admin;
 use App\Models\Brand;
-use App\Models\Category;
 use App\Models\Setting;
-use Exception;
+use App\Models\Category;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('categories', []);
         View::share('brands', []);
         View::share('admins', []);
+        View::share('greeting','Hello');
 
         try {
 
@@ -48,6 +51,15 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('admins')) {
                 View::share('admins', Admin::orderBy('name', 'asc')->get());
             }
+            $hour = Carbon::now('Asia/Dhaka')->format('H');
+            if ($hour < 12) {
+                $greeting = 'Good Morning';
+            } elseif ($hour < 18) {
+                $greeting = 'Good Afternoon';
+            } else {
+                $greeting = 'Good Evening';
+            }
+            View::share('greeting', $greeting);
 
         } catch (Exception $e) {
             // Log the exception if needed
