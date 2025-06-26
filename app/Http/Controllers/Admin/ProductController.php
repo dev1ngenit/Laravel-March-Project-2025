@@ -142,7 +142,7 @@ class ProductController extends Controller
                 'length'             => $request->length,
                 'width'              => $request->width,
                 'height'             => $request->height,
-                'weight'             => $request->weight,
+                'weight'             => $request->weight, 
 
                 // Location & Supplier
                 'supplier'           => $request->supplier,

@@ -327,4 +327,44 @@ class HomeApiController extends Controller
             'data'   => $category,
         ]);
     }
+
+    public function allFaq()
+    {
+        $faqs = DB::table('faqs')
+            ->select('id', 'question', 'answer', 'order')
+            ->where('status', 'active')
+            ->orderBy('order')
+            ->get()
+            ->map(function ($faq) {
+                $faq->question = html_entity_decode(strip_tags($faq->question));
+                $faq->answer = html_entity_decode(strip_tags($faq->answer));
+                return $faq;
+            });
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $faqs,
+            'count'  => $faqs->count(),
+        ]);
+    }
+
+    public function allTerms()
+    {
+        $term = DB::table('terms')
+            ->select('id', 'title', 'content', 'effective_date', 'expiration_date')
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if ($term) {
+            $term->title = html_entity_decode(strip_tags($term->title));
+            $term->content = html_entity_decode(strip_tags($term->content));
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $term,
+        ]);
+    }
+    
 }
