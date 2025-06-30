@@ -6,6 +6,7 @@ use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use App\Mail\ProductCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -118,7 +119,7 @@ class ProductController extends Controller
                 'specification'      => $request->specification,
 
                 // Multimedia
-                'thumbnail'          => $thumbnailPath,
+                'thumbnail'          => $uploadedFiles['thumbnail_image']['status'] == 1 ? $uploadedFiles['thumbnail_image']['file_path'] : null,
                 'video_link'         => $request->video_link,
 
                 // Tags and Attributes
@@ -142,7 +143,7 @@ class ProductController extends Controller
                 'length'             => $request->length,
                 'width'              => $request->width,
                 'height'             => $request->height,
-                'weight'             => $request->weight, 
+                'weight'             => $request->weight,
 
                 // Location & Supplier
                 'supplier'           => $request->supplier,

@@ -147,14 +147,40 @@ class HomeApiController extends Controller
     //     ]);
     // }
 
+    // public function AllCategory()
+    // {
+    //     $admins = DB::table('admins')->pluck('name', 'id');
+    //     $brands = DB::table('brands')->pluck('name', 'id');
+
+    //     $categories = Category::with('children', 'children.products', 'products')
+    //         ->whereNull('parent_id')
+    //         ->get()
+    //         ->map(function ($category) use ($admins, $brands) {
+    //             return $this->formatCategory($category, $admins, $brands);
+    //         });
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'data'   => $categories,
+    //         'count'  => $categories->count(),
+    //     ]);
+    // }
+
+
     public function AllCategory()
     {
         $admins = DB::table('admins')->pluck('name', 'id');
         $brands = DB::table('brands')->pluck('name', 'id');
 
-        $categories = Category::with('children', 'children.products', 'products')
+        $categories = Category::with('children.products', 'products')
             ->whereNull('parent_id')
             ->get()
+            // Filter out parent categories that have no products and no children with products
+            ->filter(function ($category) {
+                return !$category->products->isEmpty() || $category->children->some(function ($child) {
+                    return !$child->products->isEmpty();
+                });
+            })
             ->map(function ($category) use ($admins, $brands) {
                 return $this->formatCategory($category, $admins, $brands);
             });
@@ -165,6 +191,11 @@ class HomeApiController extends Controller
             'count'  => $categories->count(),
         ]);
     }
+
+
+
+
+
 
 
     public function AllBrand()
@@ -183,24 +214,108 @@ class HomeApiController extends Controller
         ]);
     }
 
-    public function AllProduct()
+    public function AllProduct(Request $request)
     {
         $admins = DB::table('admins')->pluck('name', 'id');
         $brands = DB::table('brands')->pluck('name', 'id');
 
-        $categories = Category::with('children', 'children.products', 'products')
-            ->whereNull('parent_id')
-            ->get()
-            ->map(function ($category) use ($admins, $brands) {
-                return $this->formatCategory($category, $admins, $brands);
-            });
+        $query = Product::with(['category', 'brand'])->where('status', 'active');
 
-        return response()->json([
-            'status' => 'success',
-            'data'   => $categories,
-            'count'  => $categories->count(),
-        ]);
+        // === Filters ===
+        if ($request->has('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->has('sub_category_id')) {
+            $query->where('sub_category_id', $request->sub_category_id);
+        }
+
+        if ($request->has('price_min')) {
+            $query->where('price', '>=', $request->price_min);
+        }
+
+        if ($request->has('price_max')) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        if ($request->has('is_featured')) {
+            $query->where('is_featured', $request->is_featured);
+        }
+
+        if ($request->has('is_refurbished')) {
+            $query->where('is_refurbished', $request->is_refurbished);
+        }
+
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        // === Sorting ===
+        switch ($request->input('sort_by')) {
+            case 'name':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'price_low_to_high':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high_to_low':
+                $query->orderBy('price', 'desc');
+                break;
+            default:
+                $query->latest(); // default sorting
+                break;
+        }
+
+        // === Pagination ===
+        $perPage = $request->input('per_page', 20);
+
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $products */
+        $products = $query->paginate($perPage);
+
+        // Transform each product using formatProduct()
+        $products->getCollection()->transform(function ($product) use ($admins, $brands) {
+            return $this->formatProduct(
+                $product,
+                $admins,
+                collect(),
+                $product->category->name ?? null,
+                $brands[$product->brand_id] ?? null
+            );
+        });
+
+        return response()->json($products);
     }
+
+
+
+    // private function formatCategory($category, $admins, $brands)
+    // {
+    //     $category->description    = html_entity_decode(strip_tags($category->description));
+    //     $category->added_by_name  = $admins[$category->added_by] ?? null;
+    //     $category->logo           = $category->logo ? url('storage/' . $category->logo) : null;
+    //     $category->image          = $category->image ? url('storage/' . $category->image) : null;
+    //     $category->banner_image   = $category->banner_image ? url('storage/' . $category->banner_image) : null;
+
+    //     // Format products of this category
+    //     if ($category->products) {
+    //         $category->products->map(function ($product) use ($admins, $brands, $category) {
+    //             return $this->formatProduct($product, $admins, collect(), $category->name, $brands[$product->brand_id] ?? null);
+    //         });
+    //     }
+
+    //     // Recursively format children
+    //     if ($category->children) {
+    //         $category->children->map(function ($child) use ($admins, $brands) {
+    //             return $this->formatCategory($child, $admins, $brands);
+    //         });
+    //     }
+
+    //     return $category;
+    // }
 
     private function formatCategory($category, $admins, $brands)
     {
@@ -210,22 +325,29 @@ class HomeApiController extends Controller
         $category->image          = $category->image ? url('storage/' . $category->image) : null;
         $category->banner_image   = $category->banner_image ? url('storage/' . $category->banner_image) : null;
 
-        // Format products of this category
+        // Format and assign only products in this category
         if ($category->products) {
-            $category->products->map(function ($product) use ($admins, $brands, $category) {
+            $category->products = $category->products->map(function ($product) use ($admins, $brands, $category) {
                 return $this->formatProduct($product, $admins, collect(), $category->name, $brands[$product->brand_id] ?? null);
             });
         }
 
-        // Recursively format children
+        // Filter and format children with products
         if ($category->children) {
-            $category->children->map(function ($child) use ($admins, $brands) {
-                return $this->formatCategory($child, $admins, $brands);
-            });
+            $category->children = $category->children
+                ->filter(function ($child) {
+                    return !$child->products->isEmpty();
+                })
+                ->map(function ($child) use ($admins, $brands) {
+                    return $this->formatCategory($child, $admins, $brands);
+                });
         }
 
         return $category;
     }
+
+
+
 
     private function formatBrand($brand, $admins, $categories)
     {
@@ -366,5 +488,4 @@ class HomeApiController extends Controller
             'data'   => $term,
         ]);
     }
-    
 }

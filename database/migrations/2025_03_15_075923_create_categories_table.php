@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations. 
+     * Run the migrations.
      */
     public function up(): void
     {
@@ -21,10 +21,8 @@ return new class extends Migration
             $table->string('image', 255)->nullable();
             $table->string('banner_image', 255)->nullable();
             $table->text('description')->nullable();
-
             $table->foreignId('added_by')->nullable()->constrained('admins')->onDelete('set null');//
             $table->foreignId('update_by')->nullable()->constrained('admins')->onDelete('set null');//
-
             $table->string('status')->default('active')->comment('inactive,active');
 
             $table->timestamps();

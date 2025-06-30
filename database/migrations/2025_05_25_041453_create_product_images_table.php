@@ -16,7 +16,10 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained('products')->cascadeOnUpdate()->cascadeOnDelete();
             $table->string('photo')->nullable();
             $table->string('color',120)->nullable();
+            $table->string('sku',120)->nullable();
             $table->string('color_name',120)->nullable();
+            $table->string('attribute',250)->nullable();
+            $table->double('price')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
         });
