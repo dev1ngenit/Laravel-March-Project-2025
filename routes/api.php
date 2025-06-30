@@ -52,5 +52,9 @@ Route::prefix('api/v1')->group(function () {
     Route::get('product/details/{slug}', [HomeApiController::class, 'productDetails'])->name('product.details');
     Route::get('/faq', [HomeApiController::class, 'allFaq']);
     Route::get('/terms-and-condition', [HomeApiController::class, 'allTerms']);
+    Route::get('/privacy-policy', [HomeApiController::class, 'privacyPolicy']);
+    Route::get('/return-policy', [HomeApiController::class, 'returnPolicy']);
+    Route::get('/buying-policy', [HomeApiController::class, 'buyingPolicy']);
+
 
 });

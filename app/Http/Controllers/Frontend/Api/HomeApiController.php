@@ -487,4 +487,58 @@ class HomeApiController extends Controller
             'data'   => $term,
         ]);
     }
+    public function privacyPolicy()
+    {
+        $term = DB::table('support_policies')
+            ->select('id', 'title', 'content', 'effective_date', 'expiration_date')
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if ($term) {
+            $term->title = html_entity_decode(strip_tags($term->title));
+            $term->content = html_entity_decode(strip_tags($term->content));
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $term,
+        ]);
+    }
+    public function returnPolicy()
+    {
+        $term = DB::table('return_policies')
+            ->select('id', 'title', 'content', 'effective_date', 'expiration_date')
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if ($term) {
+            $term->title = html_entity_decode(strip_tags($term->title));
+            $term->content = html_entity_decode(strip_tags($term->content));
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $term,
+        ]);
+    }
+    public function buyingPolicy()
+    {
+        $term = DB::table('buying_policies')
+            ->select('id', 'title', 'content', 'effective_date', 'expiration_date')
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if ($term) {
+            $term->title = html_entity_decode(strip_tags($term->title));
+            $term->content = html_entity_decode(strip_tags($term->content));
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $term,
+        ]);
+    }
 }
