@@ -413,7 +413,6 @@ class HomeApiController extends Controller
             'status' => 'success',
             'data'   => [
                 'product'          => $product,
-                'category'         => $category,
                 'related_products' => $related_products,
                 'product_images'   => $product->images->map(function ($image) {
                     $image->image = url('storage/' . $image->image);
