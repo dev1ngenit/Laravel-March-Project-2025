@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('set null');
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->foreignId('sub_category_id')->nullable()->constrained('categories')->onDelete('set null');
+            $table->foreignId('child_category_id')->nullable()->constrained('categories')->onDelete('set null');
             // $table->json('category_id')->nullable(); // For multi-category support
             // Basic Info
             $table->string('name', 255);
@@ -39,7 +40,7 @@ return new class extends Migration
             $table->json('tags')->nullable();
             $table->json('color')->nullable();
             // Stock & Inventory
-            $table->integer('stock')->nullable(); // Total available stock
+            $table->integer('qty')->nullable(); // Total available stock
             // Pricing
             $table->double('price')->default(0.00);
             $table->double('partner_price', 10, 2)->nullable();
