@@ -175,7 +175,6 @@ class HomeApiController extends Controller
         $categories = Category::with('children.products', 'products')
             ->whereNull('parent_id')
             ->get()
-            // Filter out parent categories that have no products and no children with products
             ->filter(function ($category) {
                 return !$category->products->isEmpty() || $category->children->some(function ($child) {
                     return !$child->products->isEmpty();
@@ -183,14 +182,16 @@ class HomeApiController extends Controller
             })
             ->map(function ($category) use ($admins, $brands) {
                 return $this->formatCategory($category, $admins, $brands);
-            });
+            })
+            ->values(); // <-- This reindexes the collection and ensures it's a sequential array
 
         return response()->json([
             'status' => 'success',
-            'data'   => $categories,
+            'data'   => $categories->toArray(), // <-- Force to array here
             'count'  => $categories->count(),
         ]);
     }
+
 
 
 
@@ -478,8 +479,8 @@ class HomeApiController extends Controller
             ->first();
 
         if ($term) {
-            $term->title = html_entity_decode(strip_tags($term->title));
-            $term->content = html_entity_decode(strip_tags($term->content));
+            $term->title = $term->title;
+            $term->content = $term->content;
         }
 
         return response()->json([
@@ -496,8 +497,8 @@ class HomeApiController extends Controller
             ->first();
 
         if ($term) {
-            $term->title = html_entity_decode(strip_tags($term->title));
-            $term->content = html_entity_decode(strip_tags($term->content));
+            $term->title = $term->title;
+            $term->content = $term->content;
         }
 
         return response()->json([
@@ -514,8 +515,8 @@ class HomeApiController extends Controller
             ->first();
 
         if ($term) {
-            $term->title = html_entity_decode(strip_tags($term->title));
-            $term->content = html_entity_decode(strip_tags($term->content));
+            $term->title = $term->title;
+            $term->content = $term->content;
         }
 
         return response()->json([
@@ -532,8 +533,10 @@ class HomeApiController extends Controller
             ->first();
 
         if ($term) {
-            $term->title = html_entity_decode(strip_tags($term->title));
-            $term->content = html_entity_decode(strip_tags($term->content));
+            $term->title = $term->title;
+            $term->content = $term->content;
+            // $term->title = html_entity_decode(strip_tags($term->title));
+            // $term->content = html_entity_decode(strip_tags($term->content));
         }
 
         return response()->json([

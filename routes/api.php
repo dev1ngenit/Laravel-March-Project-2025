@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\User\Api\UserApiController;
 use App\Http\Controllers\Frontend\Api\HomeApiController;
 use App\Http\Controllers\Admin\Api\CategoryApiController;
@@ -55,6 +56,8 @@ Route::prefix('api/v1')->group(function () {
     Route::get('/privacy-policy', [HomeApiController::class, 'privacyPolicy']);
     Route::get('/return-policy', [HomeApiController::class, 'returnPolicy']);
     Route::get('/buying-policy', [HomeApiController::class, 'buyingPolicy']);
+    // post contact
+    Route::post('/contact', [ContactController::class, 'store']);
 
 
 });
