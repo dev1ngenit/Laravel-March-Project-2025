@@ -33,6 +33,7 @@ return new class extends Migration
             $table->longText('specification')->nullable();
             // Multimedia
             $table->string('thumbnail', 255)->nullable(); // Primary image
+            $table->string('thumbnail_image_2', 255)->nullable(); // Secondary image
             $table->text('video_link')->nullable();
             // Tags and attributes
             $table->json('tags')->nullable();

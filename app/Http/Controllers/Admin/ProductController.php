@@ -83,6 +83,7 @@ class ProductController extends Controller
         try {
             $files = [
                 'thumbnail_image' => $request->file('thumbnail_image'),
+                'thumbnail_image_2' => $request->file('thumbnail_image_2'),
             ];
             $uploadedFiles = [];
             foreach ($files as $key => $file) {
@@ -120,6 +121,7 @@ class ProductController extends Controller
 
                 // Multimedia
                 'thumbnail'          => $uploadedFiles['thumbnail_image']['status'] == 1 ? $uploadedFiles['thumbnail_image']['file_path'] : null,
+                'thumbnail_image_2'  => $uploadedFiles['thumbnail_image_2']['status'] == 1 ? $uploadedFiles['thumbnail_image_2']['file_path'] : null,
                 'video_link'         => $request->video_link,
 
                 // Tags and Attributes

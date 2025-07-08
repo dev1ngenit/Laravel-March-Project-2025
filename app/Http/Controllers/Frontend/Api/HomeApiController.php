@@ -217,6 +217,7 @@ class HomeApiController extends Controller
 
     public function AllProduct(Request $request)
     {
+        
         $admins = DB::table('admins')->pluck('name', 'id');
         $brands = DB::table('brands')->pluck('name', 'id');
 
@@ -253,6 +254,12 @@ class HomeApiController extends Controller
 
         if ($request->has('name')) {
             $query->where('name', 'like', '%' . $request->name . '%');
+        }
+        if ($request->has('stock') && $request->stock == '1') {
+            $query->where('stock', '>=', '1');
+        }
+        if ($request->has('stock') && $request->stock == '0') {
+            $query->where('stock', '==', '0');
         }
 
         // === Sorting ===
