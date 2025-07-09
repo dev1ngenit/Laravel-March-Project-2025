@@ -40,7 +40,8 @@ class ProductController extends Controller
     {
         $data = [
             'brands'        => Brand::latest('id')->where('status', 'active')->get(),
-            'allCategories' => Category::latest('id')->where('status', 'active')->get(),
+            'parentCategories' => Category::latest('id')->where('status', 'active')->whereNull('parent_id')->get(),
+            'subCategories' => Category::latest('id')->where('status', 'active')->whereNotNull('parent_id')->get(),
         ];
 
         return view('admin.pages.product.create', $data);

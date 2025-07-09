@@ -22,7 +22,7 @@ return new class extends Migration
             // Basic Info
             $table->string('name', 255);
             $table->string('slug', 255)->unique();
-            $table->string('sku_code')->nullable();
+            $table->string('sku')->nullable();
             $table->string('mf_code')->nullable();
             $table->string('product_code')->nullable();
             $table->string('barcode_id')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->longText('long_description')->nullable(); // Alias of "description"
             $table->longText('specification')->nullable();
             // Multimedia
-            $table->string('thumbnail', 255)->nullable(); // Primary image
+            $table->string('thumbnail_image', 255)->nullable(); // Primary image
             $table->string('thumbnail_image_2', 255)->nullable(); // Secondary image
             $table->text('video_link')->nullable();
             // Tags and attributes
@@ -44,6 +44,7 @@ return new class extends Migration
             $table->double('price')->default(0.00);
             $table->double('partner_price', 10, 2)->nullable();
             $table->double('discount_price', 10, 2)->nullable(); // General-purpose discount
+            $table->string('currency')->nullable();
             // Tax & Warranty
             $table->double('vat')->nullable();
             $table->double('tax')->nullable();

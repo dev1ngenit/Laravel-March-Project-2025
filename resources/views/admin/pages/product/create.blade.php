@@ -4,6 +4,14 @@
             background-image: url({{ asset('admin/assets/media/svg/files/blank-image.svg') }});
         }
 
+        .nav-line-tabs .nav-item {
+            margin-bottom: 2px;
+            background: white;
+            padding: 5px 10px;
+            border: 1px solid #eee;
+            border-radius: 0.8rem;
+        }
+
         /* Custom Multi file upload */
         .img-thumb {
             border: 2px solid none;
@@ -79,27 +87,27 @@
                 <div class="gap-7 gap-lg-10 col-9">
                     <ul class="border-0 nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x fs-4 fw-semibold mb-n2">
                         <li class="nav-item">
-                            <a class="pb-4 nav-link text-active-primary active" data-bs-toggle="tab"
+                            <a class="pb-2 nav-link text-active-primary active" data-bs-toggle="tab"
                                 href="#kt_ecommerce_add_product_general">General</a>
                         </li>
                         <li class="nav-item">
-                            <a class="pb-4 nav-link text-active-primary" data-bs-toggle="tab"
+                            <a class="pb-2 nav-link text-active-primary" data-bs-toggle="tab"
                                 href="#kt_ecommerce_add_product_media">Media</a>
                         </li>
                         <li class="nav-item">
-                            <a class="pb-4 nav-link text-active-primary" data-bs-toggle="tab"
+                            <a class="pb-2 nav-link text-active-primary" data-bs-toggle="tab"
                                 href="#kt_ecommerce_add_product_advanced">Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a class="pb-4 nav-link text-active-primary" data-bs-toggle="tab"
+                            <a class="pb-2 nav-link text-active-primary" data-bs-toggle="tab"
                                 href="#kt_ecommerce_add_product_price">Pricing</a>
                         </li>
                         <li class="nav-item">
-                            <a class="pb-4 nav-link text-active-primary" data-bs-toggle="tab"
+                            <a class="pb-2 nav-link text-active-primary" data-bs-toggle="tab"
                                 href="#kt_ecommerce_add_product_meta">Meta Options</a>
                         </li>
                     </ul>
-                    <div class="tab-content">
+                    <div class="tab-content mt-4">
                         <div class="tab-pane fade show active" id="kt_ecommerce_add_product_general" role="tab-panel">
                             <div class="d-flex flex-column gap-7 gap-lg-10">
                                 {{-- General Info --}}
@@ -124,32 +132,32 @@
                                             <input class="form-control" name="tags" id="product_Tags"
                                                 placeholder="Eg: tag1, tag2" value="{{ old('tags') }}" />
                                         </div>
-                                        <div class="mb-5 fv-row">
+                                        {{-- <div class="mb-5 fv-row">
                                             <x-metronic.label class="form-label">Short Description</x-metronic.label>
                                             <x-metronic.textarea id="short_description" name="short_description"
                                                 placeholder="Add Product Short Description" class="mb-2 form-control"
                                                 cols="30"
                                                 rows="3">{!! old('short_description') !!}</x-metronic.textarea>
-                                        </div>
+                                        </div> --}}
                                         <div class="mb-5 fv-row">
-                                            <x-metronic.label class="form-label">Product Overview</x-metronic.label>
-                                            <textarea name="overview" class="ckeditor">{!! old('overview') !!}</textarea>
+                                            <x-metronic.label class="form-label">Long Description</x-metronic.label>
+                                            <textarea name="long_description" class="ckeditor">{!! old('long_description') !!}</textarea>
                                             <div class="text-muted fs-7">
-                                                Add product overview here.
+                                                Add product long description here.
                                             </div>
                                         </div>
-                                        <div class="mb-5 fv-row">
-                                            <x-metronic.label class="form-label">Product Description</x-metronic.label>
+                                        {{-- <div class="mb-5 fv-row">
+                                            <x-metronic.label class="form-label">Specification</x-metronic.label>
                                             <textarea name="description" class="ckeditor">{!! old('description') !!}</textarea>
                                             <div class="text-muted fs-7">
                                                 Add product description here.
                                             </div>
-                                        </div>
-                                        <div class="mb-5 fv-row">
+                                        </div> --}}
+                                        {{-- <div class="mb-5 fv-row">
                                             <x-metronic.label class="form-label">Product
                                                 Specification</x-metronic.label>
                                             <textarea name="specification" class="ckeditor">{!! old('specification') !!}</textarea>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +165,7 @@
                         <div class="tab-pane fade" id="kt_ecommerce_add_product_media" role="tab-panel">
                             <div class="d-flex flex-column gap-7 gap-lg-10">
                                 {{-- Inventory --}}
-                                <div class="py-4 card card-flush">
+                                <div class="py-4 mt-3 card card-flush">
                                     <div class="card-header">
                                         <div class="card-title">
                                             <h2>Media</h2>
@@ -165,76 +173,29 @@
                                     </div>
                                     <div class="py-4 mt-3 card-body">
                                         <div class="row">
-                                            <div class="col-4">
-                                                <x-metronic.label for="" class="form-label">Set the product
-                                                    thumbnail image. Only *.png, *.jpg and *.jpeg image
-                                                    files are accepted</x-metronic.label>
-                                                <div class="image-input image-input-empty" data-kt-image-input="true"
-                                                    style="width: auto;
-                                                    background-size: contain;
-                                                    border: 1px solid #009ae5;">
-                                                    <div class="image-input-wrapper w-100px h-70px"></div>
-
-                                                    <label
-                                                        class="shadow btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body"
-                                                        data-kt-image-input-action="change" data-bs-toggle="tooltip"
-                                                        data-bs-dismiss="click" title="Change avatar">
-                                                        <i class="bi bi-pencil-fill fs-7"></i>
-
-                                                        <input type="file" name="thumbnail"
-                                                            accept=".png, .jpg, .jpeg" />
-                                                        <input type="hidden" name="avatar_remove" />
-                                                    </label>
-
-                                                    <span
-                                                        class="shadow btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body"
-                                                        data-kt-image-input-action="cancel" data-bs-toggle="tooltip"
-                                                        data-bs-dismiss="click" title="Cancel avatar">
-                                                        <i class="bi bi-x fs-2"></i>
-                                                    </span>
-
-                                                    <span
-                                                        class="shadow btn btn-icon btn-circle btn-color-muted btn-active-color-primary w-25px h-25px bg-body"
-                                                        data-kt-image-input-action="remove" data-bs-toggle="tooltip"
-                                                        data-bs-dismiss="click" title="Remove avatar">
-                                                        <i class="bi bi-x fs-2"></i>
-                                                    </span>
+                                            <div class="col-6">
+                                                <x-metronic.label for="" class="form-label">Primary Thumbnail
+                                                    Image</x-metronic.label>
+                                                <x-metronic.file-input id="thumbnail_image" name="thumbnail_image"
+                                                    :value="old('thumbnail_image')"></x-metronic.file-input>
+                                                <div class="text-muted fs-7">
+                                                    Set the product thumbnail image. Only *.webp, *.png,*.jpg and *.jpeg
+                                                    image
+                                                    files are accepted.
                                                 </div>
                                             </div>
-                                            {{-- Product Mutli Image --}}
-                                            {{-- <div class="col-8">
-                                                <div class="pt-5 fv-row">
-                                                    <x-metronic.label for="" class="form-label">Add the
-                                                        product multi image</x-metronic.label>
-                                                    <div class="dropzone-field">
-                                                        <label for="files" class="custom-file-upload">
-                                                            <div class="d-flex align-items-center">
-                                                                <p class="mb-0"><i
-                                                                        class="bi bi-file-earmark-arrow-up text-primary fs-3x"></i>
-                                                                </p>
-                                                                <h5 class="mb-0">Drop files here or click to upload.
-                                                                    <br>
-                                                                    <span class="text-muted"
-                                                                        style="font-size: 10px">Upload 10 File</span>
-                                                                </h5>
-                                                            </div>
-                                                        </label>
-                                                        <input type="file" id="files" name="multi_images[]"
-                                                            multiple class="form-control" style="display: none;"
-                                                            onchange="console.log(this.selected.value)" />
-                                                    </div>
-                                                </div>
-                                            </div> --}}
-                                            <div class="col-8">
-                                                <div class="pt-5 fv-row">
-                                                    <x-metronic.label for="video_link" class="form-label">Product
-                                                        Video
-                                                        Link</x-metronic.label>
-                                                    <input type="text" name="video_link" class="mb-2 form-control"
-                                                        placeholder="Product Video Link" id="video_link"
-                                                        value="{{ old('video_link') }}">
+                                            <div class="col-6">
+                                                <x-metronic.label for="" class="form-label">Secondary Thumbnail
+                                                    Image</x-metronic.label>
+                                                <x-metronic.file-input id="thumbnail_image_2" name="thumbnail_image_2"
+                                                    :value="old('thumbnail_image_2')"></x-metronic.file-input>
+                                                <div class="text-muted fs-7">
+                                                    Set the product thumbnail image. Only *.webp, *.png,*.jpg and *.jpeg
+                                                    image
+                                                    files are accepted.
                                                 </div>
                                             </div>
+
                                             <div class="col-lg-12">
                                                 <div class="p-5 mt-5" style="background-color: #eee">
                                                     <p>Product Multi image with Color Variation</p>
@@ -245,7 +206,7 @@
                                                             <div data-repeater-list="productMediaColor">
                                                                 <div data-repeater-item>
                                                                     <div class="form-group row">
-                                                                        <div class="col-md-5">
+                                                                        <div class="col-md-4">
                                                                             <x-metronic.label for="multi_images"
                                                                                 class="col-form-label fw-bold fs-6 ">{{ __('Product Image') }}
                                                                             </x-metronic.label>
@@ -258,13 +219,12 @@
                                                                                 class="col-form-label fw-bold fs-6 required">{{ __('Color') }}
                                                                             </x-metronic.label>
                                                                             <input class="form-control form-control-lg"
-                                                                                id="product_color"
-                                                                                style="height: 50px" type="color"
-                                                                                name="product_color"
+                                                                                id="product_color" style="height: 50px"
+                                                                                type="color" name="product_color"
                                                                                 value="{{ old('product_color') }}"
                                                                                 placeholder="Enter the Color">
                                                                         </div>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-3">
                                                                             <x-metronic.label for="color_name"
                                                                                 class="col-form-label fw-bold fs-6 required">{{ __('Color Name') }}
                                                                             </x-metronic.label>
@@ -273,6 +233,17 @@
                                                                                 id="color_name" type="text"
                                                                                 name="color_name"
                                                                                 value="{{ old('color_name') }}"
+                                                                                placeholder="Enter the Color Name"></x-metronic.input>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <x-metronic.label for="color_name"
+                                                                                class="col-form-label fw-bold fs-6 required">{{ __('Price') }}
+                                                                            </x-metronic.label>
+                                                                            <x-metronic.input
+                                                                                class="form-control form-control-lg"
+                                                                                id="color_price" type="text"
+                                                                                name="color_price"
+                                                                                value="{{ old('color_price') }}"
                                                                                 placeholder="Enter the Color Name"></x-metronic.input>
                                                                         </div>
 
@@ -321,9 +292,8 @@
                                     <div class="pt-0 card-body row">
                                         <div class="mb-10 fv-row col-6">
                                             <x-metronic.label class="form-label">SKU Code</x-metronic.label>
-                                            <x-metronic.input type="text" name="sku_code"
-                                                class="mb-2 form-control" placeholder="SKU Number"
-                                                :value="old('sku_code')"></x-metronic.file-input>
+                                            <x-metronic.input type="text" name="sku" class="mb-2 form-control"
+                                                placeholder="SKU Number" :value="old('sku')"></x-metronic.file-input>
                                                 <div class="text-muted fs-7">Enter the product SKU.</div>
                                         </div>
                                         <div class="mb-10 fv-row col-6">
@@ -352,52 +322,38 @@
                                 <div class="py-4 mt-3 card card-flush">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <h2>Box Pricing</h2>
+                                            <h2>Product Pricing</h2>
                                         </div>
                                     </div>
                                     <div class="pt-0 card-body row">
-                                        {{-- <div class="mb-5 fv-row col-4">
-                                            <x-metronic.label class="form-label">Box Contains</x-metronic.label>
-                                            <x-metronic.input type="number" name="box_contains" id="box_contains"
-                                                class="mb-2 form-control" placeholder="how much in a box"
-                                                :value="old('box_contains')"></x-metronic.file-input>
-                                                <div class="text-muted fs-7">How much product in a box.</div>
-                                        </div>
-                                        <div class="mb-5 fv-row col-4">
-                                            <x-metronic.label class="form-label">Box Price</x-metronic.label>
-                                            <x-metronic.input type="number" name="box_price" id="box_price"
-                                                class="mb-2 form-control" placeholder="how much the box price"
-                                                :value="old('box_price')"></x-metronic.file-input>
-                                                <div class="text-muted fs-7">How much box price.</div>
-                                        </div>
-                                        <div class="mb-5 fv-row col-4">
-                                            <x-metronic.label class="form-label">Box Discount Price</x-metronic.label>
-                                            <x-metronic.input type="number" name="box_discount_price"
-                                                id="box_discount_price" class="mb-2 form-control"
-                                                placeholder="how much the box discount price"
-                                                :value="old('box_discount_price')"></x-metronic.file-input>
-                                                <div class="text-muted fs-7">How much box discount price.</div>
-                                        </div> --}}
+
                                         <div class="mb-5 fv-row col-4">
                                             <x-metronic.label class="form-label">Price</x-metronic.label>
-                                            <x-metronic.input type="number" name="unit_price" id="unit_price"
+                                            <x-metronic.input type="number" name="price" id="price"
                                                 class="mb-2 form-control" placeholder="how much the unit price"
-                                                :value="old('unit_price')" readonly></x-metronic.file-input>
+                                                :value="old('price')" readonly></x-metronic.file-input>
                                                 <div class="text-muted fs-7">How much unit price.</div>
                                         </div>
                                         <div class="mb-5 fv-row col-4">
-                                            <x-metronic.label class="form-label">Unit Discount</x-metronic.label>
-                                            <x-metronic.input type="number" name="unit_discount_price"
-                                                id="unit_discount" class="mb-2 form-control"
-                                                placeholder="how much the unit discount price" :value="old('unit_discount_price')"
+                                            <x-metronic.label class="form-label">Partner Price</x-metronic.label>
+                                            <x-metronic.input type="number" name="partner_price" id="partner_price"
+                                                class="mb-2 form-control" placeholder="how much the unit price"
+                                                :value="old('partner_price')" readonly></x-metronic.file-input>
+                                                <div class="text-muted fs-7">How much unit price.</div>
+                                        </div>
+                                        <div class="mb-5 fv-row col-4">
+                                            <x-metronic.label class="form-label">Discounted Price</x-metronic.label>
+                                            <x-metronic.input type="number" name="discount_price" id="unit_discount"
+                                                class="mb-2 form-control"
+                                                placeholder="how much the unit discount price" :value="old('discount_price')"
                                                 readonly></x-metronic.file-input>
                                                 <div class="text-muted fs-7">How much unit discount price.</div>
                                         </div>
                                         <div class="mb-5 fv-row col-4">
                                             <x-metronic.label class="form-label">Stock</x-metronic.label>
-                                            <x-metronic.input type="number" name="stock" id="stock"
-                                                class="mb-2 form-control" placeholder="how much thestock"
-                                                :value="old('stock')">
+                                            <x-metronic.input type="number" name="qty" id="qty"
+                                                class="mb-2 form-control" placeholder="how much the qty"
+                                                :value="old('qty')">
                                                 </x-metronic.file-input>
                                                 <div class="text-muted fs-7">How much stock. Eg: 50</div>
                                         </div>
@@ -507,9 +463,8 @@
                                 class="mb-2 form-select" data-control="select2" data-hide-search="true"
                                 name="status" data-placeholder="Select an option">
                                 <option></option>
-                                <option value="published" selected>Published</option>
                                 <option value="draft">Draft</option>
-                                <option value="active">Active</option>
+                                <option value="active" selected>Active</option>
                                 <option value="inactive">Inactive</option>
                             </x-metronic.select-option>
                             <div class="text-muted fs-7">Set the product status.</div>
@@ -544,8 +499,34 @@
                                     name="category_id" data-control="select2" data-placeholder="Select an option"
                                     data-allow-clear="true">
                                     <option></option>
-                                    @foreach ($allCategories as $category)
+                                    @foreach ($parentCategories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                            <div class="fv-row">
+                                <x-metronic.label for="sub_category_id" class="col-form-label fw-bold fs-6">
+                                    {{ __('Select a SubCategory') }}</x-metronic.label>
+                                <x-metronic.select-option id="sub_category_id" class="mb-2 form-select"
+                                    name="sub_category_id" data-control="select2" data-placeholder="Select an option"
+                                    data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($subCategories as $subcategory)
+                                        <option value="{{ $subcategory->id }}">{{ $subcategory->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                            <div class="fv-row">
+                                <x-metronic.label for="child_category_id" class="col-form-label fw-bold fs-6">
+                                    {{ __('Select a Child Category') }}</x-metronic.label>
+                                <x-metronic.select-option id="child_category_id" class="mb-2 form-select"
+                                    name="child_category_id" data-control="select2"
+                                    data-placeholder="Select an option" data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($subCategories as $childcategory)
+                                        <option value="{{ $childcategory->id }}">{{ $childcategory->name }}
                                         </option>
                                     @endforeach
                                 </x-metronic.select-option>
