@@ -36,4 +36,21 @@ class Product extends Model
     {
         return $this->belongsTo(Admin::class, 'added_by');
     }
+
+    public function categories()
+    {
+        return Category::whereIn('id', $this->category_id)->get();
+    }
+
+
+    public function orderItem()
+    {
+        return $this->belongsTo(OrderItem::class,'product_id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'published');
+    }
+
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductImage extends Model
+class UserDeliveryAddress extends Model
 {
     use HasFactory;
 
@@ -14,5 +14,5 @@ class ProductImage extends Model
      *
      * @var array
      */
-    protected $guarded = []; 
+    protected $guarded = [];
 }

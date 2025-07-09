@@ -15,17 +15,20 @@ return new class extends Migration
 
             $table->id();
 
-            $table->unsignedBigInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-
-            $table->string('qty');
-            $table->float('price', 8, 2);
+            $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('SET NULL');
+            $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('SET NULL');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
+            $table->string('product_name')->nullable();
+            $table->string('product_color')->nullable();
+            $table->string('product_image')->nullable();
+            $table->string('product_sku')->nullable();
+            $table->double('price')->nullable();
+            $table->double('tax')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->double('subtotal')->nullable();
 
             $table->timestamps();
-            
+
         });
     }
 

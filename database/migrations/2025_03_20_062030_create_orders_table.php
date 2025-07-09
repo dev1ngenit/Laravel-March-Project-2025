@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('user_id')->nullable();                              //
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); //
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
 
             $table->string('order_number')->nullable();
             $table->string('invoice_number')->nullable();
 
-            $table->string('billing_name')->nullable();          //
+            $table->string('billing_first_name')->nullable();
+            $table->string('billing_last_name')->nullable();        //
             $table->string('billing_address_line1')->nullable(); //
             $table->string('billing_address_line2')->nullable();
             $table->string('billing_city')->nullable();        //
@@ -30,7 +30,8 @@ return new class extends Migration
             $table->string('billing_phone')->nullable();       //
             $table->string('billing_email')->nullable();       //
 
-            $table->string('shipping_name')->nullable();
+            $table->string('shipping_first_name')->nullable();
+            $table->string('shipping_last_name')->nullable();
             $table->string('shipping_address_line1')->nullable();
             $table->string('shipping_address_line2')->nullable();
             $table->string('shipping_city')->nullable();
@@ -46,18 +47,18 @@ return new class extends Migration
             $table->string('total_amount', 10, 2);            //
 
             $table->text('notes')->nullable();
-            $table->enum('payment_status', ['paid', 'unpaid'])->default('unpaid');
 
-            $table->string('order_date')->nullable();  //
-            $table->string('order_month')->nullable(); //
-            $table->string('order_year')->nullable();  //
-            $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'return'])->default('pending');
-
-            $table->string('processing_date')->nullable();
-            $table->string('shipped_date')->nullable();
-            $table->string('delivered_date')->nullable();
-            $table->string('return_date')->nullable();
-
+            $table->text('order_note')->nullable();
+            $table->timestamp('order_status_updated_at')->nullable();
+            $table->timestamp('order_created_at')->nullable();
+            $table->enum('payment_status', ['paid', 'unpaid', 'pending', 'failed', 'cancel'])->default('unpaid');
+            $table->enum('status', ['new', 'pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'])->default('pending');
+            
+            $table->timestamp('processing_date')->nullable();
+            $table->timestamp('shipped_date')->nullable();
+            $table->timestamp('delivered_date')->nullable();
+            $table->timestamp('return_date')->nullable();
+            $table->string('invoice')->nullable();
             $table->text('return_reason')->nullable();
             $table->string('return_amount', 10, 2)->nullable();
 

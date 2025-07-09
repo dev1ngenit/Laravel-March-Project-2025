@@ -29,7 +29,6 @@ return new class extends Migration
             $table->string('barcode')->nullable();
             // Descriptions
             $table->text('short_description')->nullable();
-            $table->longText('overview')->nullable();
             $table->longText('long_description')->nullable(); // Alias of "description"
             $table->longText('specification')->nullable();
             // Multimedia
@@ -38,7 +37,7 @@ return new class extends Migration
             $table->text('video_link')->nullable();
             // Tags and attributes
             $table->json('tags')->nullable();
-            $table->json('color')->nullable();
+            $table->json('accessories')->nullable();
             // Stock & Inventory
             $table->integer('qty')->nullable(); // Total available stock
             // Pricing
