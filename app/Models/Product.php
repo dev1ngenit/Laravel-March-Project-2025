@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Traits\HasSlug;
@@ -10,6 +11,11 @@ class Product extends Model
     use HasFactory, HasSlug;
 
     protected $slugSourceColumn = 'name';
+    // protected $casts = [
+    //     'tags' => 'array',
+    //     'accessories' => 'array',
+    //     'meta_keywords' => 'array',
+    // ];
 
     /**
      * The attributes that aren't mass assignable.
@@ -45,12 +51,15 @@ class Product extends Model
 
     public function orderItem()
     {
-        return $this->belongsTo(OrderItem::class,'product_id');
+        return $this->belongsTo(OrderItem::class, 'product_id');
     }
 
     public function scopeActive($query)
     {
         return $query->where('status', 'published');
     }
-
+    public function getAccessoriesAttribute($value)
+    {
+        return json_decode($value ?? '[]', true);
+    }
 }

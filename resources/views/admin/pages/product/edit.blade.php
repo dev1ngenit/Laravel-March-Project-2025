@@ -1,261 +1,283 @@
 <x-admin-app-layout :title="'Product Edit'">
-    <div class="card card-flash">
-        <!--begin::Card header-->
-        <div class="card-header mt-6">
-            <div class="card-title"></div>
+    <style>
+        .nav-line-tabs .nav-item {
+            margin-bottom: 2px;
+            background: white;
+            padding: 5px 10px;
+            border: 1px solid #eee;
+            border-radius: 0.8rem;
+        }
+    </style>
+    <div id="kt_app_content_container" class="app-container container-xxl">
+        <form id="kt_ecommerce_add_product_form" method="post" action="{{ route('admin.product.update', $product->id) }}"
+            enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="row">
+                <div class="gap-7 gap-lg-10 mb-7 col-lg-3">
+                    {{-- Status Card Start --}}
+                    <div class="card card-flush py-4 mb-6">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>Status</h2>
+                            </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <x-metronic.select-option id="kt_ecommerce_add_product_status_select"
+                                class="form-select mb-2" data-control="select2" data-hide-search="true" name="status"
+                                data-placeholder="Select an option">
+                                <option></option>
+                                <option value="active" @selected($product->status == 'active')>Active</option>
+                                <option value="draft" @selected($product->status == 'draft')>Draft</option>
+                                <option value="inactive" @selected($product->status == 'inactive')>Inactive</option>
+                            </x-metronic.select-option>
+                            <div class="text-muted fs-7">Set the product status.</div>
+                        </div>
+                    </div>
+                    {{-- Status Card End --}}
+                    {{-- Category Card Start --}}
+                    <div class="py-4 card card-flush">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h2>Brand & Category</h2>
+                            </div>
+                        </div>
+                        <div class="pt-0 card-body">
+                            <div class="fv-row">
+                                <x-metronic.label for="brand_id" class="col-form-label required fw-bold fs-6">
+                                    {{ __('Select Brand') }}</x-metronic.label>
+                                <x-metronic.select-option id="brand_id" class="mb-2 form-select" name="brand_id"
+                                    data-control="select2" data-placeholder="Select an option" data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}" @selected(old('brand_id', $product->brand_id) == $brand->id)>
+                                            {{ $brand->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                            <div class="fv-row">
+                                <x-metronic.label for="category_id" class="col-form-label required fw-bold fs-6">
+                                    {{ __('Select a Category') }}</x-metronic.label>
+                                <x-metronic.select-option id="category_id" class="mb-2 form-select" name="category_id"
+                                    data-control="select2" data-placeholder="Select an option" data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($parentCategories as $category)
+                                        <option value="{{ $category->id }}" @selected(old('category_id', $product->category_id) == $category->id)>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                            <div class="fv-row">
+                                <x-metronic.label for="sub_category_id" class="col-form-label fw-bold fs-6">
+                                    {{ __('Select a SubCategory') }}</x-metronic.label>
+                                <x-metronic.select-option id="sub_category_id" class="mb-2 form-select"
+                                    name="sub_category_id" data-control="select2" data-placeholder="Select an option"
+                                    data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($subCategories as $subcategory)
+                                        <option value="{{ $subcategory->id }}" @selected(old('sub_category_id', $product->sub_category_id) == $subcategory->id)>
+                                            {{ $subcategory->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                            <div class="fv-row">
+                                <x-metronic.label for="child_category_id" class="col-form-label fw-bold fs-6">
+                                    {{ __('Select a Child Category') }}</x-metronic.label>
+                                <x-metronic.select-option id="child_category_id" class="mb-2 form-select"
+                                    name="child_category_id" data-control="select2" data-placeholder="Select an option"
+                                    data-allow-clear="true">
+                                    <option></option>
+                                    @foreach ($subCategories as $childcategory)
+                                        <option value="{{ $childcategory->id }}" @selected(old('child_category_id', $product->child_category_id) == $childcategory->id)>
+                                            {{ $childcategory->name }}
+                                        </option>
+                                    @endforeach
+                                </x-metronic.select-option>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Category Card End --}}
+                </div>
+                <div class="gap-7 gap-lg-10 col-lg-9">
+                    <ul class="nav nav-custom nav-tabs nav-line-tabs nav-line-tabs-2x border-0 fs-4 fw-semibold mb-n2">
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4 active" data-bs-toggle="tab"
+                                href="#kt_ecommerce_add_product_general">General</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                href="#kt_ecommerce_add_product_media">Media</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                href="#kt_ecommerce_add_product_advanced">Inventory</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                href="#kt_ecommerce_add_product_price">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-active-primary pb-4" data-bs-toggle="tab"
+                                href="#kt_ecommerce_add_product_meta">Meta Options</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-4">
+                        @include('admin.pages.product.partials.edit_tabs')
+                    </div>
+                    <div class="d-flex justify-content-end mt-10">
+                        <a href="{{ route('admin.product.index') }}" class="btn btn-danger me-5">
+                            Back To Product List
+                        </a>
+                        {{-- <button type="submit" id="kt_ecommerce_add_product_submit" class="btn btn-primary">
+                            <span class="indicator-label"> Save Changes </span>
+                            <span class="indicator-progress">
+                                Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button> --}}
+                        <button type="submit" class="btn btn-primary">
+                            <span class="indicator-label"> Save Changes </span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    @foreach ($product->images as $image)
+        <div class="modal fade" id="multiimage_{{ $image->id }}" data-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content rounded-0 border-0 shadow-sm">
+                    <div class="modal-header p-2 rounded-0">
+                        <h5 class="modal-title ps-5">
+                            Image Update</h5>
+                        <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container px-0">
+                            <div class="card border rounded-0">
 
-            <!--begin::Card toolbar-->
-            <div class="card-toolbar">
-                <!--begin::Button-->
-                <a href="{{ route('admin.product.index') }}" class="btn btn-light-info">
-                    <!--begin::Svg Icon | path: product/duotune/general/gen035.svg-->
-                    <span class="svg-icon svg-icon-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none">
-                            <rect opacity="0.3" x="2" y="2" width="20" height="20" rx="5"
-                                fill="currentColor" />
-                            <rect x="10.8891" y="17.8033" width="12" height="2" rx="1"
-                                transform="rotate(-90 10.8891 17.8033)" fill="currentColor" />
-                            <rect x="6.01041" y="10.9247" width="12" height="2" rx="1"
-                                fill="currentColor" />
-                        </svg>
-                    </span>
-                    Back to the list
-                </a>
+                                <form action="{{ route('admin.multiimage.update', $image->id) }}" method="post"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="card-body p-1 px-2 mb-4">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <x-metronic.label for="multi_images"
+                                                    class="col-form-label fw-bold fs-6 ">{{ __('Product Image') }}
+                                                </x-metronic.label>
+                                                <x-metronic.file-input name="photo" :source="asset('storage/' . $image->photo)"
+                                                    :value="old('photo')"></x-metronic.file-input>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <x-metronic.label for="product_color"
+                                                    class="col-form-label fw-bold fs-6 required">{{ __('Color') }}
+                                                </x-metronic.label>
+                                                <input class="form-control form-control-lg" id="product_color"
+                                                    style="height: 50px" type="color" name="color"
+                                                    value="{{ old('color', $image->color) }}"
+                                                    placeholder="Enter the Color">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <x-metronic.label for="color_name"
+                                                    class="col-form-label fw-bold fs-6 required">{{ __('Color Name') }}
+                                                </x-metronic.label>
+                                                <x-metronic.input class="form-control form-control-lg" id="color_name"
+                                                    type="text" name="color_name"
+                                                    value="{{ old('color_name', $image->color_name) }}"
+                                                    placeholder="Enter the Color Name"></x-metronic.input>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <x-metronic.label for="price"
+                                                    class="col-form-label fw-bold fs-6 required">{{ __('Price') }}
+                                                </x-metronic.label>
+                                                <x-metronic.input class="form-control form-control-lg" id="color_price"
+                                                    type="text" name="price"
+                                                    value="{{ old('price', $image->price) }}"
+                                                    placeholder="Enter the Color Name"></x-metronic.input>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer p-3">
+                                        <div class="d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-primary">
+                                                <span class="indicator-label"> Update </span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="card-body pt-0">
+    @endforeach
 
-            <form method="POST" action="{{ route('admin.product.update', $product->id) }}"
-                enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="row">
+    @push('scripts')
+        <script>
+            $('#productMediaColor').repeater({
+                initEmpty: false,
 
-                    <div class="col-lg-2 mb-3">
-                        <x-metronic.label for="status" class="col-form-label required fw-bold fs-6">
-                            {{ __('Select a Status ') }}</x-metronic.label>
-                        <x-metronic.select-option id="status" name="status" data-hide-search="true"
-                            data-placeholder="Select an option">
-                            <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Active</option>
-                            <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Inactive
-                            </option>
-                        </x-metronic.select-option>
-                    </div>
+                defaultValues: {
+                    'text-input': 'foo'
+                },
 
-                    <!-- brand_id -->
-                    <div class="col-lg-2 mb-7">
-                        <x-metronic.label for="brand_id"
-                            class="col-form-label fw-bold fs-6">{{ __('Select a Brand') }}</x-metronic.label>
-                        <x-metronic.select-option id="brand_id" name="brand_id" data-hide-search="false"
-                            data-placeholder="Select an option">
-                            <option></option>
-                            @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}"
-                                    {{ $product->brand_id == $brand->id ? 'selected' : '' }}>
-                                    {{ $brand->name }}
-                                </option>
-                            @endforeach
-                        </x-metronic.select-option>
-                    </div>
+                show: function() {
+                    $(this).slideDown();
+                },
 
-                    <!-- category_id -->
-                    <div class="col-lg-2 mb-7">
-                        <x-metronic.label for="category_id"
-                            class="col-form-label fw-bold fs-6">{{ __('Select a Category') }}</x-metronic.label>
-                        <x-metronic.select-option id="category_id" name="category_id" data-hide-search="false"
-                            data-placeholder="Select an option" required>
-                            <option></option>
-                            @foreach ($allCategories as $category)
-                                <option value="{{ $category->id }}"
-                                    {{ $product->category_id == $category->id ? 'selected' : '' }}>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
-                        </x-metronic.select-option>
-                    </div>
+                hide: function(deleteElement) {
+                    $(this).slideUp(deleteElement);
+                }
+            });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // The DOM elements you wish to replace with Tagify
+                var input1 = document.querySelector("#product_Tags");
+                var input2 = document.querySelector("#product_meta_tags");
+                var input3 = document.querySelector("#product_meta_keyword");
+                var input4 = document.querySelector("#color");
 
-                    <div class="col-lg-4 mb-3">
-                        <x-metronic.label for="name"
-                            class="col-form-label required fw-bold fs-6">{{ __('Name') }}</x-metronic.label>
-                        <x-metronic.input id="name" type="text" name="name" placeholder="Enter the name"
-                            :value="old('name', $product->name)"></x-metronic.input>
-                    </div>
+                // Initialize Tagify components on the above inputs
+                new Tagify(input1);
+                new Tagify(input2);
+                new Tagify(input4);
+                new Tagify(input3);
+            });
 
-                    <div class="col-lg-2 mb-3">
-                        <x-metronic.label for="sku"
-                            class="col-form-label fw-bold fs-6">{{ __('SKU') }}</x-metronic.label>
-                        <x-metronic.input id="sku" type="text" name="sku" placeholder="Enter the sku"
-                            :value="old('sku', $product->sku)"></x-metronic.input>
-                    </div>
+            class CKEditorInitializer {
+                constructor(className) {
+                    this.className = className;
+                }
 
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="mf_code"
-                            class="col-form-label fw-bold fs-6">{{ __('Mf Code') }}</x-metronic.label>
-                        <x-metronic.input id="mf_code" type="text" name="mf_code" placeholder="Enter the mf code"
-                            :value="old('mf_code', $product->mf_code)"></x-metronic.input>
-                    </div>
+                initialize() {
+                    const elements = document.querySelectorAll(this.className);
+                    elements.forEach(element => {
+                        ClassicEditor
+                            .create(element)
+                            .then(editor => {
+                                console.log('CKEditor initialized:', editor);
+                            })
+                            .catch(error => {
+                                console.error('CKEditor initialization error:', error);
+                            });
+                    });
+                }
+            }
 
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="qty"
-                            class="col-form-label fw-bold fs-6">{{ __('Qty') }}</x-metronic.label>
-                        <x-metronic.input id="qty" type="number" name="qty" placeholder="Enter the Qty"
-                            :value="old('qty', $product->qty)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="currency"
-                            class="col-form-label fw-bold fs-6">{{ __('Currency') }}</x-metronic.label>
-                        <x-metronic.select-option id="currency" name="currency" data-hide-search="true"
-                            data-placeholder="Select an option">
-                            <option value="$" {{ $product->currency == '$' ? 'selected' : '' }}>Dollar</option>
-                            <option value="BDT" {{ $product->currency == 'BDT' ? 'selected' : '' }}>Taka</option>
-                        </x-metronic.select-option>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="price"
-                            class="col-form-label fw-bold fs-6">{{ __('Price') }}</x-metronic.label>
-                        <x-metronic.input id="price" type="text" name="price" placeholder="Enter the price"
-                            :value="old('price', $product->price)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="discount_price"
-                            class="col-form-label fw-bold fs-6">{{ __('Discount Price') }}</x-metronic.label>
-                        <x-metronic.input id="discount_price" type="text" name="discount_price"
-                            placeholder="Enter the discount price" :value="old('discount_price', $product->discount_price)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="supplier"
-                            class="col-form-label fw-bold fs-6">{{ __('Supplier') }}</x-metronic.label>
-                        <x-metronic.input id="supplier" type="text" name="supplier"
-                            placeholder="Enter the Supplier" :value="old('supplier', $product->supplier)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="warehouse_location"
-                            class="col-form-label fw-bold fs-6">{{ __('Warehouse Location') }}</x-metronic.label>
-                        <x-metronic.input id="warehouse_location" type="text" name="warehouse_location"
-                            placeholder="Warehouse Location" :value="old('warehouse_location', $product->warehouse_location)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-3 mb-3">
-                        <x-metronic.label for="weight"
-                            class="col-form-label fw-bold fs-6">{{ __('Weight') }}</x-metronic.label>
-                        <x-metronic.input id="weight" type="text" name="weight" placeholder="Weight"
-                            :value="old('weight', $product->weight)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-                        <x-metronic.label for="tags"
-                            class="col-form-label fw-bold fs-6">{{ __('Tag') }}</x-metronic.label>
-                        <x-metronic.input id="tags" type="text" name="tags" placeholder="Tags"
-                            :value="old('tags', $product->tags)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-                        <x-metronic.label for="meta_title"
-                            class="col-form-label fw-bold fs-6">{{ __('Meta Title') }}</x-metronic.label>
-                        <x-metronic.input id="meta_title" type="text" name="meta_title" placeholder="Meta Title"
-                            :value="old('meta_title', $product->meta_title)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-                        <x-metronic.label for="meta_content"
-                            class="col-form-label fw-bold fs-6">{{ __('Meta Content') }}</x-metronic.label>
-                        <x-metronic.input id="meta_content" type="text" name="meta_content"
-                            placeholder="Meta Content" :value="old('meta_content', $product->meta_content)"></x-metronic.input>
-                    </div>
-
-                    <div class="col-lg-12 mb-3">
-                        <x-metronic.label for="meta_description"
-                            class="col-form-label fw-bold fs-6">{{ __('Meta Description') }}</x-metronic.label>
-                        <x-metronic.textarea id="meta_description"
-                            name="meta_description">{{ old('meta_description', $product->meta_description) }}</x-metronic.textarea>
-                    </div>
-
-                    <div class="col-lg-12 mb-3">
-                        <x-metronic.label for="short_description"
-                            class="col-form-label fw-bold fs-6">{{ __('Short Description') }}</x-metronic.label>
-                        <x-metronic.textarea id="short_description"
-                            name="short_description">{{ old('short_description', $product->short_description) }}</x-metronic.textarea>
-                    </div>
-
-                    <div class="col-lg-12 mb-3">
-                        <x-metronic.label for="specification"
-                            class="col-form-label fw-bold fs-6">{{ __('Specification') }}</x-metronic.label>
-                        <textarea id="specification" class="ckeditor" name="specification">{{ old('specification', $product->specification) }}</textarea>
-                    </div>
-
-                    <div class="col-lg-12 mb-3">
-                        <x-metronic.label for="description"
-                            class="col-form-label fw-bold fs-6">{{ __('Description') }}</x-metronic.label>
-                        <textarea id="description" class="ckeditor" name="long_description">{{ old('long_description', $product->long_description) }}</textarea>
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <x-metronic.label for="is_featured"
-                            class="col-form-label fw-bold fs-6">{{ __('Featured') }}</x-metronic.label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="is_featured" name="is_featured"
-                                value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="is_featured">{{ __('Yes') }}</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <x-metronic.label for="is_selling"
-                            class="col-form-label fw-bold fs-6">{{ __('Selling') }}</x-metronic.label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="is_selling" name="is_selling"
-                                value="1" {{ old('is_selling', $product->is_selling) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="is_selling">{{ __('Yes') }}</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <x-metronic.label for="is_new"
-                            class="col-form-label fw-bold fs-6">{{ __('New') }}</x-metronic.label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="is_new" name="is_new"
-                                value="1" {{ old('is_new', $product->is_new) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="is_new">{{ __('Yes') }}</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <x-metronic.label for="hot_deal"
-                            class="col-form-label fw-bold fs-6">{{ __('Hot Deal') }}</x-metronic.label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="hot_deal" name="hot_deal"
-                                value="1" {{ old('hot_deal', $product->hot_deal) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="hot_deal">{{ __('Yes') }}</label>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 mb-3">
-                        <x-metronic.label for="thumbnail_image"
-                            class="col-form-label fw-bold fs-6">{{ __('Thumbnail Image') }}</x-metronic.label>
-                        <x-metronic.file-input id="thumbnail_image" name="thumbnail_image"
-                            :value="old('thumbnail_image', $product->thumbnail_image)"></x-metronic.file-input>
-
-                            <img src="{{ !empty($product->thumbnail_image) ? url('storage/' . $product->thumbnail_image) : 'https://ui-avatars.com/api/?name=' . urlencode($product->name) }}"
-                                    height="80" width="80" alt="{{ $product->name }}" class="mt-3">
-                    </div>
-
-                </div>
-
-                <div class="text-end pt-15">
-                    <x-metronic.button type="submit"
-                        class="dark rounded-1 px-5">{{ __('Update Data') }}</x-metronic.button>
-                </div>
-
-            </form>
-
-
-        </div>
-    </div>
-
+            // Example usage:
+            const ckEditorInitializer = new CKEditorInitializer('.ckeditor');
+            ckEditorInitializer.initialize();
+        </script>
+    @endpush
 </x-admin-app-layout>

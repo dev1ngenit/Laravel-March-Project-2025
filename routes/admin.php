@@ -68,7 +68,6 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         ->name('logout');
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->middleware(['verified'])->name('dashboard');
-
 });
 
 // Role In Permission
@@ -144,7 +143,8 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         ],
 
     );
-
+    Route::delete('multiimage/{id}', [ProductController::class, 'multiImageDestroy'])->name('multiimage.destroy');
+    Route::put('multiimage/update/{id}', [ProductController::class, 'multiImageUpdate'])->name('multiimage.update');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'updateOrcreateSetting'])->name('settings.updateOrCreate');
 

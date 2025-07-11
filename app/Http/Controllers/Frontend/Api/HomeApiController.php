@@ -393,14 +393,54 @@ class HomeApiController extends Controller
 
         if (!$product) {
             return response()->json([
-                'status' => 'error',
+                'status'  => 'error',
                 'message' => 'Product not found',
             ], 404);
         }
 
         $category = $product->category;
 
-        // Get related products from the same category
+        // Fix the images output
+        $product->images = $product->images->map(function ($image) {
+            return [
+                'id'         => $image->id,
+                'product_id' => $image->product_id,
+                'photo'      => url('storage/' . $image->photo),
+                'color'      => $image->color,
+                'color_name' => $image->color_name,
+                'price'      => $image->price,
+            ];
+        });
+
+        // Fix file paths
+        $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
+        $product->thumbnail_image_2 = $product->thumbnail_image_2 ? url('storage/' . $product->thumbnail_image_2) : null;
+
+        // JSON Decode: Convert JSON strings to usable arrays
+        $product->tags = collect($product->tags ?? [])
+            ->map(fn($tag) => is_array($tag) ? $tag : ['value' => $tag])
+            ->values();
+        $product->accessories = Product::whereIn('id', $product->accessories ?? [])
+            ->get()
+            ->map(function ($accessory) {
+                return [
+                    'id'              => $accessory->id,
+                    'name'            => $accessory->name,
+                    'slug'            => $accessory->slug,
+                    'price'           => $accessory->price,
+                    'thumbnail_image' => $accessory->thumbnail_image ? url('storage/' . $accessory->thumbnail_image) : null,
+                ];
+            });
+
+        $product->meta_keywords = collect($product->meta_keywords ?? [])
+            ->map(fn($kw) => is_array($kw) ? $kw : ['value' => $kw])
+            ->values();
+
+        // Add readable fields
+        $product->category_name = $category->name ?? null;
+        $product->brand_name    = $product->brand->name ?? null;
+
+        // Related products
         $related_products = $category->products()
             ->where('id', '!=', $product->id)
             ->take(15)
@@ -409,26 +449,37 @@ class HomeApiController extends Controller
                 return $this->formatProduct($relatedProduct, collect(), $category->name, $relatedProduct->brand->name ?? null);
             });
 
-        $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
-        $product->short_description = html_entity_decode(strip_tags($product->short_description));
-        $product->long_description  = html_entity_decode(strip_tags($product->long_description));
-        $product->specification     = html_entity_decode(strip_tags($product->specification));
-        $product->tags              = json_decode($product->tags);
-        $product->category_name     = $category->name ?? null;
-        $product->brand_name        = $product->brand->name ?? null;
+        // Clean up unnecessary fields
+        unset(
+            $product->short_description,
+            $product->specification,
+            $product->category,
+            $product->brand,
+            $product->barcode_id,
+            $product->barcode,
+            $product->video_link,
+            $product->vat,
+            $product->tax,
+            $product->warranty,
+            $product->length,
+            $product->width,
+            $product->height,
+            $product->weight,
+            $product->supplier,
+            $product->warehouse_location,
+            $product->rating,
+            $product->product_type
+        );
 
         return response()->json([
             'status' => 'success',
             'data'   => [
                 'product'          => $product,
                 'related_products' => $related_products,
-                'product_images'   => $product->images->map(function ($image) {
-                    $image->image = url('storage/' . $image->image);
-                    return $image;
-                }),
             ],
         ]);
     }
+
 
     public function categoryDetails($slug)
     {

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('price')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
         });
     }
 
