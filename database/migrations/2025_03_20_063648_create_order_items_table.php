@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_items', function (Blueprint $table) {
-
             $table->id();
-
             $table->foreignId('order_id')->nullable()->constrained('orders')->onDelete('SET NULL');
             $table->foreignId('product_id')->nullable()->constrained('products')->onDelete('SET NULL');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
@@ -26,9 +24,7 @@ return new class extends Migration
             $table->double('tax')->nullable();
             $table->integer('quantity')->nullable();
             $table->double('subtotal')->nullable();
-
             $table->timestamps();
-
         });
     }
 

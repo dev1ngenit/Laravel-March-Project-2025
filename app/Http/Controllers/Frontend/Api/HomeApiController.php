@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers\Frontend\Api;
 
+use App\Models\User;
 use App\Models\Brand;
+use App\Models\Order;
 use App\Models\Banner;
 use App\Models\Product;
+use App\Models\Setting;
 use App\Models\Category;
+use App\Models\OrderItem;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class HomeApiController extends Controller
 {
@@ -636,5 +645,193 @@ class HomeApiController extends Controller
         ]);
     }
 
-    
+    // public function checkoutStore(Request $request)
+    // {
+    //     ini_set('max_execution_time', 300);
+
+    //     // Step 1: Handle user login or creation
+    //     if (!Auth::check()) {
+    //         $email = $request->input('shipping_email');
+    //         $user = User::firstWhere('email', $email);
+
+    //         if ($user) {
+    //             Auth::login($user);
+    //             $request->session()->regenerate();
+    //         } else {
+    //             $password = Str::random(8);
+    //             $user = User::create([
+    //                 'first_name'  => $request->input('shipping_first_name'),
+    //                 'last_name'   => $request->input('shipping_last_name'),
+    //                 'email'       => $email,
+    //                 'phone'       => $request->input('shipping_phone'),
+    //                 'address_one' => $request->input('shipping_address'),
+    //                 'zipcode'     => $request->input('shipping_postcode'),
+    //                 'status'      => 'active',
+    //                 'password'    => Hash::make($password),
+    //             ]);
+
+    //             $setting = Setting::first();
+
+    //             try {
+    //                 Mail::to($email)->send(new UserCheckoutRegistration([
+    //                     'name'     => $request->input('shipping_first_name') . ' ' . $request->input('shipping_last_name'),
+    //                     'email'    => $email,
+    //                     'password' => $password
+    //                 ], $setting));
+    //             } catch (\Throwable $e) {
+    //                 Log::error('Error sending registration email: ' . $e->getMessage());
+    //             }
+
+    //             Auth::login($user);
+    //             $request->session()->regenerate();
+    //         }
+    //     }
+
+    //     $totalAmount = preg_replace('/[^0-9.]/', '', $request->input('total_amount'));
+
+    //     $validator = Validator::make($request->all(), [
+    //         'shipping_first_name' => 'nullable|string|max:255',
+    //         'shipping_last_name'  => 'nullable|string|max:255',
+    //         'shipping_phone'      => 'required|string|max:20',
+    //         'shipping_address'    => 'nullable|string|max:255',
+    //         'shipping_email'      => 'required|email',
+    //         'shipping_state'      => 'nullable|string|max:255',
+    //         'shipping_postcode'   => 'nullable|string|max:20',
+    //         'order_note'          => 'nullable|string',
+    //         'payment_method'      => 'required|in:cod,stripe,paypal',
+    //         'sub_total'           => 'required|numeric|min:0',
+    //         'total_amount'        => 'required|numeric|min:0',
+    //         'shipping_id'         => 'nullable|exists:shipping_methods,id',
+    //         'billing_first_name'  => 'nullable|string|max:255',
+    //         'billing_last_name'   => 'nullable|string|max:255',
+    //         'billing_email'       => 'nullable|email',
+    //         'billing_phone'       => 'nullable|string|max:20',
+    //         'billing_address_1'   => 'nullable|string|max:255',
+    //         'billing_address_2'   => 'nullable|string|max:255',
+    //         'billing_state'       => 'nullable|string|max:255',
+    //         'billing_country'     => 'nullable|string|max:255',
+    //         'billing_postcode'    => 'nullable|string|max:20',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Validation failed',
+    //             'errors'  => $validator->errors(),
+    //         ], 422);
+    //     }
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // Generate order number
+    //         $typePrefix = 'PQ';
+    //         $year       = date('Y');
+    //         $lastCode   = Order::where('order_number', 'like', "{$typePrefix}-{$year}%")->orderBy('id', 'desc')->first();
+    //         $newNumber  = $lastCode ? ((int) substr($lastCode->order_number, strlen("{$typePrefix}-{$year}")) + 1) : 1;
+    //         $orderNumber = "{$typePrefix}-{$year}{$newNumber}";
+
+    //         // Calculate shipping
+    //         $shippingId = $request->input('shipping_id');
+    //         $shippingMethod = $shippingId ? ShippingMethod::find($shippingId) : null;
+    //         $shippingCharge = $shippingMethod ? $shippingMethod->price : 0;
+
+    //         $billingAddress  = trim($request->input('billing_address_1') . ' ' . $request->input('billing_address_2'));
+    //         $shippingAddress = $request->input('shipping_address') ?: $billingAddress;
+
+    //         $order = Order::create([
+    //             'order_number'                 => $orderNumber,
+    //             'user_id'                      => auth()->id(),
+    //             'shipping_method_id'           => $shippingMethod?->id,
+    //             'sub_total'                    => $request->input('sub_total'),
+    //             'coupon'                       => $request->input('coupon', 0),
+    //             'discount'                     => $request->input('discount', 0),
+    //             'total_amount'                 => $totalAmount,
+    //             'quantity'                     => Cart::instance('cart')->count(),
+    //             'shipping_charge'              => $shippingCharge,
+    //             'payment_method'               => $request->input('payment_method'),
+    //             'payment_status'               => 'unpaid',
+    //             'status'                       => 'pending',
+    //             'shipped_to_different_address' => $request->has('ship-address') ? 'yes' : 'no',
+    //             'billing_first_name'           => $request->input('billing_first_name'),
+    //             'billing_last_name'            => $request->input('billing_last_name'),
+    //             'billing_email'                => $request->input('billing_email'),
+    //             'billing_phone'                => $request->input('billing_phone'),
+    //             'billing_address'              => $billingAddress,
+    //             'billing_zipcode'              => $request->input('billing_postcode'),
+    //             'billing_state'                => $request->input('billing_state'),
+    //             'billing_country'              => $request->input('billing_country', 'UK'),
+    //             'shipping_first_name'          => $request->input('shipping_first_name'),
+    //             'shipping_last_name'           => $request->input('shipping_last_name'),
+    //             'shipping_email'               => $request->input('shipping_email'),
+    //             'shipping_phone'               => $request->input('shipping_phone'),
+    //             'shipping_address'             => $shippingAddress,
+    //             'shipping_zipcode'             => $request->input('shipping_postcode'),
+    //             'shipping_state'               => $request->input('shipping_state'),
+    //             'shipping_country'             => $request->input('shipping_country'),
+    //             'order_note'                   => $request->input('order_note'),
+    //             'created_by'                   => auth()->id(),
+    //             'order_created_at'             => Carbon::now(),
+    //             'created_at'                   => Carbon::now(),
+    //         ]);
+
+    //         foreach (Cart::instance('cart')->content() as $item) {
+    //             OrderItem::create([
+    //                 'order_id'      => $order->id,
+    //                 'product_id'    => $item->id,
+    //                 'user_id'       => auth()->id(),
+    //                 'product_name'  => $item->name,
+    //                 'product_color' => $item->options->color ?? null,
+    //                 'product_image' => $item->options->image ?? null,
+    //                 'product_sku'   => $item->model->sku ?? null,
+    //                 'price'         => $item->price,
+    //                 'tax'           => $item->tax ?? 0,
+    //                 'quantity'      => $item->qty,
+    //                 'subtotal'      => $item->qty * $item->price,
+    //             ]);
+
+    //             $product = Product::find($item->id);
+    //             $product->decrement('box_stock', $item->qty);
+    //         }
+
+    //         DB::commit();
+
+
+    //         $order = Order::with('orderItems')->find($order->id);
+    //         $user  = Auth::user();
+
+    //         // Send order email
+    //         try {
+    //             $setting = Setting::first();
+    //             Mail::to([$request->shipping_email, $user->email])
+    //                 ->send(new UserOrderMail($user->name, [
+    //                     'order'           => $order,
+    //                     'order_items'     => $order->orderItems,
+    //                     'user'            => $user,
+    //                     'shipping_charge' => $shippingCharge,
+    //                     'shipping_method' => $shippingMethod?->title,
+    //                 ], $setting));
+    //         } catch (\Throwable $e) {
+    //             Log::error('Failed to send order email: ' . $e->getMessage());
+    //         }
+
+    //         return response()->json([
+    //             'status'  => 'success',
+    //             'message' => 'Order placed successfully',
+    //             'data'    => [
+    //                 'order_number' => $order->order_number,
+    //                 'order'        => $order,
+    //             ],
+    //         ], 201);
+    //     } catch (\Throwable $e) {
+    //         DB::rollBack();
+    //         Log::error('CheckoutStore API error: ' . $e->getMessage());
+
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Failed to place order',
+    //             'error'   => $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
 }

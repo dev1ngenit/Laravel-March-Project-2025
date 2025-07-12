@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\UserDeliveryAddress;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -282,7 +283,17 @@ class UserApiController extends Controller
     public function orderList(Request $request)
     {
         // Assuming you have an Order model and a relationship set up
-        $orders = $request->user()->orders()->with('orderItems.product')->get();
+        $user_id = $request->user_id;
+        if (!$user_id) {
+            return response()->json([
+                'message' => 'User ID is required',
+                'status' => 'error'
+            ], 400);
+        }
+        $orders = Order::with(['orderItems', 'shippingMethod'])
+            ->where('user_id', $user_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return response()->json([
             'orders' => $orders,
@@ -294,6 +305,7 @@ class UserApiController extends Controller
     public function storeDeliveryAddress(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id'        => 'required|exists:users,id',
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'address_line1'  => 'required|string|max:255',
@@ -306,6 +318,8 @@ class UserApiController extends Controller
             'company'        => 'nullable|string|max:255',
             'is_default'     => 'nullable|boolean',
         ], [
+            'user_id.required'       => 'User ID is required',
+            'user_id.exists'         => 'User ID must exist in the users table',
             'first_name.required'    => 'First name is required',
             'last_name.required'     => 'Last name is required',
             'address_line1.required' => 'Address line 1 is required',
@@ -329,7 +343,7 @@ class UserApiController extends Controller
         $userId = auth()->id(); // Assumes Sanctum or Passport auth
 
         $address = UserDeliveryAddress::create([
-            'user_id'       => $request->user()->id ?? $userId,
+            'user_id'       => $request->user_id ?? $userId,
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
             'address_line1' => $request->address_line1,
@@ -351,7 +365,15 @@ class UserApiController extends Controller
     }
     public function getDeliveryAddresses(Request $request)
     {
-        $addresses = UserDeliveryAddress::where('user_id', $request->user()->id)->get();
+        $user_id = $request->user_id;
+        if (!$user_id) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Unauthorized',
+            ], 401);
+        }
+
+        $addresses = UserDeliveryAddress::where('user_id', $user_id)->get();
 
         return response()->json([
             'status'  => 'success',

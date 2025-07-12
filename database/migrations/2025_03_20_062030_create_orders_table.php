@@ -13,55 +13,47 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
+            $table->string('order_number')->unique();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
-
-            $table->string('order_number')->nullable();
-            $table->string('invoice_number')->nullable();
-
+            $table->foreignId('shipping_method_id')->nullable()->constrained('shipping_methods')->onDelete('SET NULL');
+            $table->double('sub_total')->nullable();
+            $table->double('coupon')->nullable();
+            $table->double('discount')->nullable();
+            $table->double('total_amount')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->double('shipping_charge')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->enum('payment_status', ['paid', 'unpaid', 'pending', 'failed', 'cancel'])->default('unpaid');
+            $table->enum('status', ['new', 'pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'])->default('pending');
+            $table->string('shipped_to_different_address')->default('no')->nullable();
             $table->string('billing_first_name')->nullable();
-            $table->string('billing_last_name')->nullable();        //
-            $table->string('billing_address_line1')->nullable(); //
-            $table->string('billing_address_line2')->nullable();
-            $table->string('billing_city')->nullable();        //
-            $table->string('billing_state')->nullable();       //
-            $table->string('billing_postal_code')->nullable(); //
-            $table->string('billing_country')->nullable();     //
-            $table->string('billing_phone')->nullable();       //
-            $table->string('billing_email')->nullable();       //
-
+            $table->string('billing_last_name')->nullable();
+            $table->string('billing_email')->nullable();
+            $table->string('billing_phone')->nullable();
+            $table->text('billing_address')->nullable();
+            $table->string('billing_zipcode')->nullable();
+            $table->string('billing_state')->nullable();
+            $table->string('billing_country')->nullable();
+            $table->string('billing_company_name')->nullable();
             $table->string('shipping_first_name')->nullable();
             $table->string('shipping_last_name')->nullable();
-            $table->string('shipping_address_line1')->nullable();
-            $table->string('shipping_address_line2')->nullable();
-            $table->string('shipping_city')->nullable();
-            $table->string('shipping_state')->nullable();
-            $table->string('shipping_postal_code')->nullable();
-            $table->string('shipping_country')->nullable();
+            $table->string('shipping_email')->nullable();
             $table->string('shipping_phone')->nullable();
-
-            $table->string('shipping_charge', 10, 2); //
-
-            $table->string('payment_method')->nullable();     //
-            $table->string('transaction_number')->nullable(); //
-            $table->string('total_amount', 10, 2);            //
-
-            $table->text('notes')->nullable();
-
+            $table->text('shipping_address')->nullable();
+            $table->string('shipping_zipcode')->nullable();
+            $table->string('shipping_state')->nullable();
+            $table->string('shipping_country')->nullable();
+            $table->string('shipping_company_name')->nullable();
             $table->text('order_note')->nullable();
             $table->timestamp('order_status_updated_at')->nullable();
             $table->timestamp('order_created_at')->nullable();
-            $table->enum('payment_status', ['paid', 'unpaid', 'pending', 'failed', 'cancel'])->default('unpaid');
-            $table->enum('status', ['new', 'pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned'])->default('pending');
-            
-            $table->timestamp('processing_date')->nullable();
-            $table->timestamp('shipped_date')->nullable();
-            $table->timestamp('delivered_date')->nullable();
-            $table->timestamp('return_date')->nullable();
+            $table->string('transaction_id')->nullable();
+            $table->string('external_order_id')->nullable();
+            $table->text('customer_request')->nullable();
             $table->string('invoice')->nullable();
-            $table->text('return_reason')->nullable();
-            $table->string('return_amount', 10, 2)->nullable();
-
+            $table->foreignId('created_by')->nullable()->constrained('users')->onDelete('SET NULL');
+            $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('SET NULL');
+            $table->timestamp('fulfilled_at')->nullable();
             $table->timestamps();
         });
     }
