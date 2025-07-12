@@ -378,6 +378,7 @@ class HomeApiController extends Controller
     private function formatProduct($product, $admins, $categories, $categoryName = null, $brandName = null)
     {
         $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
+        $product->thumbnail_image_2   = $product->thumbnail_image_2 ? url('storage/' . $product->thumbnail_image_2) : null;
         $product->short_description = html_entity_decode(strip_tags($product->short_description));
         $product->long_description  = html_entity_decode(strip_tags($product->long_description));
         $product->specification     = html_entity_decode(strip_tags($product->specification));
