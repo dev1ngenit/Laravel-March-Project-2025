@@ -401,16 +401,7 @@ class HomeApiController extends Controller
         $category = $product->category;
 
         // Fix the images output
-        $product->images = $product->images->map(function ($image) {
-            return [
-                'id'         => $image->id,
-                'product_id' => $image->product_id,
-                'photo'      => url('storage/' . $image->photo),
-                'color'      => $image->color,
-                'color_name' => $image->color_name,
-                'price'      => $image->price,
-            ];
-        });
+
 
         // Fix file paths
         $product->thumbnail_image   = $product->thumbnail_image ? url('storage/' . $product->thumbnail_image) : null;
@@ -431,6 +422,26 @@ class HomeApiController extends Controller
                     'thumbnail_image' => $accessory->thumbnail_image ? url('storage/' . $accessory->thumbnail_image) : null,
                 ];
             });
+
+        $product->images = $product->images->map(function ($image) {
+            return [
+                'id'         => $image->id,
+                'product_id' => $image->product_id,
+                'photo'      => url('storage/' . $image->photo),
+                'color'      => $image->color,
+                'color_name' => $image->color_name,
+                'price'      => $image->price,
+            ];
+            unset(
+                $image->product_id,
+                $image->created_at,
+                $image->updated_at,
+                $image->created_by,
+                $image->updated_by,
+                $image->attribute,
+                $image->sku,
+            );
+        });
 
         $product->meta_keywords = collect($product->meta_keywords ?? [])
             ->map(fn($kw) => is_array($kw) ? $kw : ['value' => $kw])
