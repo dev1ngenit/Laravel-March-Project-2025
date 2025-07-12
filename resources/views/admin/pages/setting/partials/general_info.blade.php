@@ -65,7 +65,7 @@
         </x-metronic.label>
 
         <textarea name="address_line_one" id="address_line_one" cols="1" rows="1" class="form-control"
-            placeholder="Enter Address Line One">{!! $setting ? $setting->address_line_one : '' !!}</textarea>
+            placeholder="Enter Address Line One">{!! old('address_line_one',$setting->address_line_one) !!}</textarea>
     </div>
 
     <div class="col-lg-6 mb-7">
@@ -73,7 +73,7 @@
         </x-metronic.label>
 
         <textarea name="address_line_two" id="address_line_two" cols="1" rows="1" class="form-control"
-            placeholder="Enter Address Line Two'">{!! $setting ? $setting->address_line_two : '' !!}</textarea>
+            placeholder="Enter Address Line Two'">{!! old('address_line_two',$setting->address_line_two) !!}</textarea>
     </div>
 
     <div class="col-lg-4 mb-7">

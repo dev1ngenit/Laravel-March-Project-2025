@@ -121,7 +121,7 @@ class SettingController extends Controller
             return redirect()->back()->with('success', $toastrMessage);
         } catch (\Exception $e) {
             Session::flash('error', [$messages = $e->getMessage()]);
-            return redirect()->back()->with('error', [$messages = $e->getMessage()]);
+            return redirect()->back()->withInput()->with('error', [$messages = $e->getMessage()]);
         }
     }
 }
