@@ -59,5 +59,17 @@ Route::prefix('api/v1')->group(function () {
     // post contact
     Route::post('/contact', [ContactController::class, 'store']);
 
+    //User API Routes
+    //user order list
+    Route::get('/user/orders', [UserApiController::class, 'orderList']);
+    //user order details
+    //Store user delivery address
+    Route::post('/user/delivery-address', [UserApiController::class, 'storeDeliveryAddress']);
+    //Get user delivery addresses
+    Route::get('/user/delivery-addresses', [UserApiController::class, 'getDeliveryAddresses']);
+    //Get user delivery address by ID
+    Route::get('/user/delivery-address/{id}', [UserApiController::class, 'getDeliveryAddressById']);
+    //Update user delivery address
+
 
 });

@@ -635,4 +635,6 @@ class HomeApiController extends Controller
             'data'   => $term,
         ]);
     }
+
+    
 }

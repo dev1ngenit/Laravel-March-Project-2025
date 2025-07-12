@@ -5,62 +5,141 @@ namespace App\Http\Controllers\User\Api;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\UserDeliveryAddress;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class UserApiController extends Controller
 {
+
+
     public function register(Request $request)
     {
         $request->validate([
-            'name'          => 'required|string|max:255',
+            'first_name'    => 'required|string|max:255',
+            'last_name'     => 'required|string|max:255',
             'email'         => 'required|string|email|max:255|unique:users',
+            'phone'         => 'required|string|regex:/^\+?[0-9]{10,15}$/|unique:users,phone',
             'customer_type' => 'required|in:customer,partner',
             'password'      => 'required|string|min:8|confirmed',
         ], [
-            'name.required'          => 'Name is required',
+            'first_name.required'    => 'First name is required',
+            'last_name.required'     => 'Last name is required',
             'email.required'         => 'Email is required',
+            'email.email'            => 'Please enter a valid email address',
+            'email.unique'           => 'Email already exists',
+            'phone.required'         => 'Phone number is required',
+            'phone.regex'            => 'Phone number must be valid (10–15 digits, with optional +)',
+            'phone.unique'           => 'Phone number already exists',
             'password.required'      => 'Password is required',
+            'password.confirmed'     => 'Passwords do not match',
             'customer_type.required' => 'Customer Type is required',
+            'customer_type.in'       => 'Customer Type must be either customer or partner',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $user = User::create([
+                'first_name'    => $request->first_name,
+                'last_name'     => $request->last_name,
+                'email'         => $request->email,
+                'phone'         => $request->phone,
+                'customer_type' => $request->customer_type,
+                'password'      => Hash::make($request->password),
+            ]);
 
-        return response()->json([
-            'message' => 'Registration Success',
-            'status' => 'success'
-        ], 201);
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json([
+                'message' => 'Registration Success',
+                'status'  => 'success',
+                'token'   => $token
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('User Registration Failed: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Registration failed. Please try again later.',
+                'status'  => 'error'
+            ], 500);
+        }
     }
+
+
+    // public function login(Request $request)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required',
+    //     ], [
+    //         'email.required' => 'Email is required',
+    //         'password.required' => 'Password is required',
+    //     ]);
+
+    //     $user = User::where('email', $request->email)->first();
+
+    //     if (!$user || !Hash::check($request->password, $user->password)) {
+    //         return response()->json([
+    //             'message' => 'The provided credentials are incorrect.',
+    //             'status' => 'error'
+    //         ], 401);
+    //     }
+
+    //     return response()->json([
+    //         'token' => $user->createToken('token')->plainTextToken,
+    //         'message' => 'Login Success',
+    //         'status' => 'success'
+    //     ], 200);
+    // }
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+        // Validate incoming request
+        $validator = Validator::make($request->all(), [
+            'email'    => 'required|email',
+            'password' => 'required|string|min:8',
         ], [
-            'email.required' => 'Email is required',
+            'email.required'    => 'Email is required',
+            'email.email'       => 'Enter a valid email address',
             'password.required' => 'Password is required',
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation error',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        // Check user existence
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'The provided credentials are incorrect.',
-                'status' => 'error'
+                'status'  => 'error',
+                'message' => 'Invalid credentials',
             ], 401);
         }
 
+        // Create token using Sanctum
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'token' => $user->createToken('token')->plainTextToken,
-            'message' => 'Login Success',
-            'status' => 'success'
+            'status' => 'success',
+            'message' => 'Login successful',
+            'data' => [
+                'user'  => [
+                    'id'            => $user->id,
+                    'first_name'    => $user->first_name,
+                    'last_name'     => $user->last_name,
+                    'email'         => $user->email,
+                    'phone'         => $user->phone,
+                    'customer_type' => $user->customer_type,
+                ],
+                'token' => $token,
+            ]
         ], 200);
     }
 
@@ -69,7 +148,7 @@ class UserApiController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout Success',
+            'message' => 'Logged out successfully',
             'status' => 'success'
         ], 200);
     }
@@ -196,6 +275,88 @@ class UserApiController extends Controller
             'user' => $user,
             'message' => 'Profile updated successfully',
             'status' => 'success'
+        ], 200);
+    }
+
+
+    public function orderList(Request $request)
+    {
+        // Assuming you have an Order model and a relationship set up
+        $orders = $request->user()->orders()->with('orderItems.product')->get();
+
+        return response()->json([
+            'orders' => $orders,
+            'message' => 'Order list retrieved successfully',
+            'status' => 'success'
+        ], 200);
+    }
+
+    public function storeDeliveryAddress(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name'     => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'address_line1'  => 'required|string|max:255',
+            'address_line2'  => 'nullable|string|max:255',
+            'city'           => 'required|string|max:255',
+            'state'          => 'required|string|max:255',
+            'postal_code'    => 'required|string|max:20',
+            'country'        => 'required|string|max:255',
+            'phone'          => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+            'company'        => 'nullable|string|max:255',
+            'is_default'     => 'nullable|boolean',
+        ], [
+            'first_name.required'    => 'First name is required',
+            'last_name.required'     => 'Last name is required',
+            'address_line1.required' => 'Address line 1 is required',
+            'city.required'          => 'City is required',
+            'state.required'         => 'State is required',
+            'postal_code.required'   => 'Postal code is required',
+            'country.required'       => 'Country is required',
+            'phone.required'         => 'Phone number is required',
+            'phone.regex'            => 'Phone number must be valid (10–15 digits, with optional +)',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Validation error',
+                'errors'  => $validator->errors(),
+            ], 422);
+        }
+
+        // If using Auth, get the user ID from token/session
+        $userId = auth()->id(); // Assumes Sanctum or Passport auth
+
+        $address = UserDeliveryAddress::create([
+            'user_id'       => $request->user()->id ?? $userId,
+            'first_name'    => $request->first_name,
+            'last_name'     => $request->last_name,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city'          => $request->city,
+            'state'         => $request->state,
+            'postal_code'   => $request->postal_code,
+            'country'       => $request->country,
+            'phone'         => $request->phone,
+            'company'       => $request->company,
+            'is_default'    => $request->boolean('is_default', false),
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Delivery address saved successfully',
+            'data'    => $address
+        ], 201);
+    }
+    public function getDeliveryAddresses(Request $request)
+    {
+        $addresses = UserDeliveryAddress::where('user_id', $request->user()->id)->get();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Delivery addresses retrieved successfully',
+            'data'    => $addresses
         ], 200);
     }
 }
