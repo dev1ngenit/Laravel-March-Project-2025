@@ -255,29 +255,9 @@
                 new Tagify(input3);
             });
 
-            class CKEditorInitializer {
-                constructor(className) {
-                    this.className = className;
-                }
 
-                initialize() {
-                    const elements = document.querySelectorAll(this.className);
-                    elements.forEach(element => {
-                        ClassicEditor
-                            .create(element)
-                            .then(editor => {
-                                console.log('CKEditor initialized:', editor);
-                            })
-                            .catch(error => {
-                                console.error('CKEditor initialization error:', error);
-                            });
-                    });
-                }
-            }
 
-            // Example usage:
-            const ckEditorInitializer = new CKEditorInitializer('.ckeditor');
-            ckEditorInitializer.initialize();
+           
         </script>
     @endpush
 </x-admin-app-layout>

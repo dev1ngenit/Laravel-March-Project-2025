@@ -15,13 +15,15 @@ class UserApiController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'name'          => 'required|string|max:255',
+            'email'         => 'required|string|email|max:255|unique:users',
+            'customer_type' => 'required|in:customer,partner',
+            'password'      => 'required|string|min:8|confirmed',
         ], [
-            'name.required' => 'Name is required',
-            'email.required' => 'Email is required',
-            'password.required' => 'Password is required',
+            'name.required'          => 'Name is required',
+            'email.required'         => 'Email is required',
+            'password.required'      => 'Password is required',
+            'customer_type.required' => 'Customer Type is required',
         ]);
 
         $user = User::create([

@@ -223,7 +223,7 @@
                         {{ __('Accessory Products') }}
                     </x-metronic.label>
 
-                    
+
                     @php
                         $selectedAccessories = old('accessories', $product->accessories ?? []);
                     @endphp
