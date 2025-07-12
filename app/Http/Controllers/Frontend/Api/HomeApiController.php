@@ -284,6 +284,7 @@ class HomeApiController extends Controller
         /** @var \Illuminate\Pagination\LengthAwarePaginator $products */
         $products = $query->paginate($perPage);
 
+
         // Transform each product using formatProduct()
         $products->getCollection()->transform(function ($product) use ($admins, $brands) {
             return $this->formatProduct(
@@ -383,7 +384,31 @@ class HomeApiController extends Controller
         $product->added_by_name     = $admins[$product->added_by] ?? null;
         $product->category_id_name  = $categoryName;
         $product->brand_id_name     = $brandName;
-
+        unset(
+            $product->short_description,
+            $product->specification,
+            $product->category,
+            $product->brand,
+            $product->barcode_id,
+            $product->barcode,
+            $product->video_link,
+            $product->vat,
+            $product->tax,
+            $product->warranty,
+            $product->length,
+            $product->width,
+            $product->height,
+            $product->weight,
+            $product->supplier,
+            $product->warehouse_location,
+            $product->rating,
+            $product->product_type,
+            $product->added_by,
+            $product->update_by,
+            $product->created_at,
+            $product->updated_at,
+            $product->updated_at,
+        );
         return $product;
     }
 
@@ -423,15 +448,7 @@ class HomeApiController extends Controller
                 ];
             });
 
-        $product->images = $product->images->map(function ($image) {
-            return [
-                'id'         => $image->id,
-                'photo'      => url('storage/' . $image->photo),
-                'color'      => $image->color,
-                'color_name' => $image->color_name,
-                'price'      => $image->price,
-            ];
-        });
+
 
 
         $product->meta_keywords = collect($product->meta_keywords ?? [])
@@ -473,10 +490,23 @@ class HomeApiController extends Controller
             $product->product_type
         );
 
+        $product_array = $product->toArray();
+
+        // Overwrite the images field with your cleaned-up version
+        $product_array['images'] = $product->images->map(function ($image) {
+            return [
+                'id'         => $image->id,
+                'photo'      => url('storage/' . $image->photo),
+                'color'      => $image->color,
+                'color_name' => $image->color_name,
+                'price'      => $image->price,
+            ];
+        })->toArray();
+
         return response()->json([
             'status' => 'success',
             'data'   => [
-                'product'          => $product,
+                'product'          => $product_array,
                 'related_products' => $related_products,
             ],
         ]);
