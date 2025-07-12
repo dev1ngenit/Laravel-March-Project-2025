@@ -426,22 +426,13 @@ class HomeApiController extends Controller
         $product->images = $product->images->map(function ($image) {
             return [
                 'id'         => $image->id,
-                'product_id' => $image->product_id,
                 'photo'      => url('storage/' . $image->photo),
                 'color'      => $image->color,
                 'color_name' => $image->color_name,
                 'price'      => $image->price,
             ];
-            unset(
-                $image->product_id,
-                $image->created_at,
-                $image->updated_at,
-                $image->created_by,
-                $image->updated_by,
-                $image->attribute,
-                $image->sku,
-            );
         });
+
 
         $product->meta_keywords = collect($product->meta_keywords ?? [])
             ->map(fn($kw) => is_array($kw) ? $kw : ['value' => $kw])
