@@ -647,72 +647,200 @@ class HomeApiController extends Controller
         ]);
     }
 
+    // public function checkoutStore(Request $request)
+    // {
+    //     ini_set('max_execution_time', 300);
+
+    //     $totalAmount = preg_replace('/[^0-9.]/', '', $request->input('total_amount'));
+
+    //     $validator = Validator::make($request->all(), [
+    //         'shipping_first_name' => 'nullable|string|max:255',
+    //         'shipping_last_name'  => 'nullable|string|max:255',
+    //         'shipping_phone'      => 'required|string|max:20',
+    //         'shipping_address_1'  => 'nullable|string|max:255',
+    //         'shipping_address_1'  => 'nullable|string|max:255',
+    //         'shipping_email'      => 'required|email',
+    //         'shipping_state'      => 'nullable|string|max:255',
+    //         'shipping_postcode'   => 'nullable|string|max:20',
+    //         'order_note'          => 'nullable|string',
+    //         'payment_method'      => 'required|in:cod,stripe,paypal',
+    //         'sub_total'           => 'required|numeric|min:0',
+    //         'total_amount'        => 'required|numeric|min:0',
+    //         'shipping_id'         => 'nullable|exists:shipping_methods,id',
+    //         'billing_first_name'  => 'nullable|string|max:255',
+    //         'billing_last_name'   => 'nullable|string|max:255',
+    //         'billing_email'       => 'nullable|email',
+    //         'billing_phone'       => 'nullable|string|max:20',
+    //         'billing_address_1'   => 'nullable|string|max:255',
+    //         'billing_address_2'   => 'nullable|string|max:255',
+    //         'billing_state'       => 'nullable|string|max:255',
+    //         'billing_country'     => 'nullable|string|max:255',
+    //         'billing_postcode'    => 'nullable|string|max:20',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Validation failed',
+    //             'errors'  => $validator->errors(),
+    //         ], 422);
+    //     }
+
+    //     DB::beginTransaction();
+
+    //     try {
+    //         // Generate order number
+    //         $typePrefix = 'AC';
+    //         $year       = date('Y');
+    //         $lastCode   = Order::where('order_number', 'like', "{$typePrefix}-{$year}%")->orderBy('id', 'desc')->first();
+    //         $newNumber  = $lastCode ? ((int) substr($lastCode->order_number, strlen("{$typePrefix}-{$year}")) + 1) : 1;
+    //         $orderNumber = "{$typePrefix}-{$year}{$newNumber}";
+
+    //         $billingAddress  = trim($request->input('billing_address_1') . ' ' . $request->input('billing_address_2'));
+    //         $shippingAddress = trim($request->input('shipping_address_1') . ' ' . $request->input('shipping_address_2'));
+
+    //         $order = Order::create([
+    //             'order_number'                 => $orderNumber,
+    //             'user_id'                      => $request->input('user_id', null),
+    //             'sub_total'                    => $request->input('sub_total'),
+    //             'coupon'                       => $request->input('coupon', 0),
+    //             'discount'                     => $request->input('discount', 0),
+    //             'total_amount'                 => $request->input('total_amount', 0),
+    //             'quantity'                     => $request->input('quantity', 0),
+    //             'shipping_charge'              => $request->input('shipping_charge', 0),
+    //             'payment_method'               => $request->input('payment_method'),
+    //             'payment_status'               => 'unpaid',
+    //             'status'                       => 'pending',
+    //             'shipped_to_different_address' => $request->has('ship-address') ? 'yes' : 'no',
+    //             'billing_first_name'           => $request->input('billing_first_name'),
+    //             'billing_last_name'            => $request->input('billing_last_name'),
+    //             'billing_email'                => $request->input('billing_email'),
+    //             'billing_phone'                => $request->input('billing_phone'),
+    //             'billing_address'              => $billingAddress,
+    //             'billing_zipcode'              => $request->input('billing_postcode'),
+    //             'billing_state'                => $request->input('billing_state'),
+    //             'billing_country'              => $request->input('billing_country'),
+    //             'shipping_first_name'          => $request->input('shipping_first_name'),
+    //             'shipping_last_name'           => $request->input('shipping_last_name'),
+    //             'shipping_email'               => $request->input('shipping_email'),
+    //             'shipping_phone'               => $request->input('shipping_phone'),
+    //             'shipping_address'             => $shippingAddress,
+    //             'shipping_zipcode'             => $request->input('shipping_postcode'),
+    //             'shipping_state'               => $request->input('shipping_state'),
+    //             'shipping_country'             => $request->input('shipping_country'),
+    //             'order_note'                   => $request->input('order_note'),
+    //             'created_by'                   => $request->input('user_id', null),
+    //             'order_created_at'             => Carbon::now(),
+    //             'created_at'                   => Carbon::now(),
+    //         ]);
+
+    //         foreach ($request->orderItems as $item) {
+    //             OrderItem::create([
+    //                 'order_id'      => $order->id,
+    //                 'product_id'    => $item->product_id,
+    //                 'user_id'       => $request->input('user_id', null),
+    //                 'product_name'  => $item->product_name,
+    //                 'product_color' => $item->product_color ?? null,
+    //                 'product_image' => $item->product_image ?? null,
+    //                 'product_sku'   => $item->product_sku ?? null,
+    //                 'price'         => $item->price,
+    //                 'tax'           => $item->tax ?? 0,
+    //                 'quantity'      => $item->qty,
+    //                 'subtotal'      => $item->qty * $item->price,
+    //             ]);
+
+    //             $product = Product::find($item->product_id);
+    //             $product->decrement('qty', $item->qty);
+    //         }
+
+    //         DB::commit();
+
+
+    //         $order = Order::with('orderItems')->find($order->id);
+    //         $user  = User::find($request->input('user_id', null));
+
+    //         // Send order email
+    //         // try {
+    //         //     $setting = Setting::first();
+    //         //     Mail::to([$request->shipping_email, $user->email])
+    //         //         ->send(new UserOrderMail($user->name, [
+    //         //             'order'           => $order,
+    //         //             'order_items'     => $order->orderItems,
+    //         //             'user'            => $user,
+    //         //             'shipping_charge' => $shippingCharge,
+    //         //             'shipping_method' => $shippingMethod?->title,
+    //         //         ], $setting));
+    //         // } catch (\Throwable $e) {
+    //         //     Log::error('Failed to send order email: ' . $e->getMessage());
+    //         // }
+
+    //         return response()->json([
+    //             'status'  => 'success',
+    //             'message' => 'Order placed successfully',
+    //             'data'    => [
+    //                 'order_number' => $order->order_number,
+    //                 'order'        => $order,
+    //             ],
+    //         ], 201);
+    //     } catch (\Throwable $e) {
+    //         DB::rollBack();
+    //         Log::error('CheckoutStore API error: ' . $e->getMessage());
+
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Failed to place order',
+    //             'error'   => $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
     public function checkoutStore(Request $request)
     {
         ini_set('max_execution_time', 300);
 
-        // Step 1: Handle user login or creation
-        if (!Auth::check()) {
-            $email = $request->input('shipping_email');
-            $user = User::firstWhere('email', $email);
-
-            if ($user) {
-                Auth::login($user);
-                $request->session()->regenerate();
-            } else {
-                $password = Str::random(8);
-                $user = User::create([
-                    'first_name'  => $request->input('shipping_first_name'),
-                    'last_name'   => $request->input('shipping_last_name'),
-                    'email'       => $email,
-                    'phone'       => $request->input('shipping_phone'),
-                    'address_one' => $request->input('shipping_address'),
-                    'zipcode'     => $request->input('shipping_postcode'),
-                    'status'      => 'active',
-                    'password'    => Hash::make($password),
-                ]);
-
-                $setting = Setting::first();
-
-                try {
-                    Mail::to($email)->send(new UserCheckoutRegistration([
-                        'name'     => $request->input('shipping_first_name') . ' ' . $request->input('shipping_last_name'),
-                        'email'    => $email,
-                        'password' => $password
-                    ], $setting));
-                } catch (\Throwable $e) {
-                    Log::error('Error sending registration email: ' . $e->getMessage());
-                }
-
-                Auth::login($user);
-                $request->session()->regenerate();
-            }
-        }
-
-        $totalAmount = preg_replace('/[^0-9.]/', '', $request->input('total_amount'));
-
         $validator = Validator::make($request->all(), [
+            // Shipping info
             'shipping_first_name' => 'nullable|string|max:255',
             'shipping_last_name'  => 'nullable|string|max:255',
             'shipping_phone'      => 'required|string|max:20',
-            'shipping_address'    => 'nullable|string|max:255',
             'shipping_email'      => 'required|email',
+            'shipping_address_1'  => 'nullable|string|max:255',
+            'shipping_address_2'  => 'nullable|string|max:255',
             'shipping_state'      => 'nullable|string|max:255',
+            'shipping_country'    => 'nullable|string|max:255',
             'shipping_postcode'   => 'nullable|string|max:20',
-            'order_note'          => 'nullable|string',
-            'payment_method'      => 'required|in:cod,stripe,paypal',
-            'sub_total'           => 'required|numeric|min:0',
-            'total_amount'        => 'required|numeric|min:0',
-            'shipping_id'         => 'nullable|exists:shipping_methods,id',
-            'billing_first_name'  => 'nullable|string|max:255',
-            'billing_last_name'   => 'nullable|string|max:255',
-            'billing_email'       => 'nullable|email',
-            'billing_phone'       => 'nullable|string|max:20',
-            'billing_address_1'   => 'nullable|string|max:255',
-            'billing_address_2'   => 'nullable|string|max:255',
-            'billing_state'       => 'nullable|string|max:255',
-            'billing_country'     => 'nullable|string|max:255',
-            'billing_postcode'    => 'nullable|string|max:20',
+
+            // Billing info
+            'billing_first_name' => 'nullable|string|max:255',
+            'billing_last_name'  => 'nullable|string|max:255',
+            'billing_email'      => 'nullable|email',
+            'billing_phone'      => 'nullable|string|max:20',
+            'billing_address_1'  => 'nullable|string|max:255',
+            'billing_address_2'  => 'nullable|string|max:255',
+            'billing_state'      => 'nullable|string|max:255',
+            'billing_country'    => 'nullable|string|max:255',
+            'billing_postcode'   => 'nullable|string|max:20',
+
+            // Order data
+            'payment_method'     => 'required|in:cod,stripe,paypal',
+            'sub_total'          => 'required|numeric|min:0',
+            'total_amount'       => 'required|numeric|min:0',
+            'coupon'             => 'nullable|numeric|min:0',
+            'discount'           => 'nullable|numeric|min:0',
+            'shipping_charge'    => 'nullable|numeric|min:0',
+            'quantity'           => 'required|integer|min:1',
+            'shipping_id'        => 'nullable|exists:shipping_methods,id',
+            'order_note'         => 'nullable|string',
+
+            // Items
+            'orderItems'                  => 'required|array|min:1',
+            'orderItems.*.product_id'     => 'required|exists:products,id',
+            'orderItems.*.product_name'   => 'required|string',
+            'orderItems.*.product_color'  => 'nullable|string',
+            'orderItems.*.product_image'  => 'nullable|string',
+            'orderItems.*.product_sku'    => 'nullable|string',
+            'orderItems.*.price'          => 'required|numeric|min:0',
+            'orderItems.*.qty'            => 'required|integer|min:1',
         ]);
 
         if ($validator->fails()) {
@@ -726,31 +854,28 @@ class HomeApiController extends Controller
         DB::beginTransaction();
 
         try {
-            // Generate order number
-            $typePrefix = 'PQ';
-            $year       = date('Y');
-            $lastCode   = Order::where('order_number', 'like', "{$typePrefix}-{$year}%")->orderBy('id', 'desc')->first();
-            $newNumber  = $lastCode ? ((int) substr($lastCode->order_number, strlen("{$typePrefix}-{$year}")) + 1) : 1;
-            $orderNumber = "{$typePrefix}-{$year}{$newNumber}";
-
-            // Calculate shipping
-            $shippingId = $request->input('shipping_id');
-            $shippingMethod = $shippingId ? ShippingMethod::find($shippingId) : null;
-            $shippingCharge = $shippingMethod ? $shippingMethod->price : 0;
+            $typePrefix  = 'AC';
+            $year        = date('Y');
+            $lastOrder   = Order::where('order_number', 'like', "{$typePrefix}-{$year}%")
+                ->orderBy('id', 'desc')
+                ->first();
+            $newNumber   = $lastOrder ? ((int) substr($lastOrder->order_number, strlen("{$typePrefix}-{$year}")) + 1) : 1;
+            $orderNumber = "{$typePrefix}-{$year}" . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
 
             $billingAddress  = trim($request->input('billing_address_1') . ' ' . $request->input('billing_address_2'));
-            $shippingAddress = $request->input('shipping_address') ?: $billingAddress;
+            $shippingAddress = trim($request->input('shipping_address_1') . ' ' . $request->input('shipping_address_2'));
+
+            $userId = $request->input('user_id');
 
             $order = Order::create([
                 'order_number'                 => $orderNumber,
-                'user_id'                      => auth()->id(),
-                'shipping_method_id'           => $shippingMethod?->id,
+                'user_id'                      => $userId,
                 'sub_total'                    => $request->input('sub_total'),
                 'coupon'                       => $request->input('coupon', 0),
                 'discount'                     => $request->input('discount', 0),
-                'total_amount'                 => $totalAmount,
-                'quantity'                     => Cart::instance('cart')->count(),
-                'shipping_charge'              => $shippingCharge,
+                'total_amount'                 => $request->input('total_amount'),
+                'quantity'                     => $request->input('quantity'),
+                'shipping_charge'              => $request->input('shipping_charge', 0),
                 'payment_method'               => $request->input('payment_method'),
                 'payment_status'               => 'unpaid',
                 'status'                       => 'pending',
@@ -762,7 +887,7 @@ class HomeApiController extends Controller
                 'billing_address'              => $billingAddress,
                 'billing_zipcode'              => $request->input('billing_postcode'),
                 'billing_state'                => $request->input('billing_state'),
-                'billing_country'              => $request->input('billing_country', 'UK'),
+                'billing_country'              => $request->input('billing_country'),
                 'shipping_first_name'          => $request->input('shipping_first_name'),
                 'shipping_last_name'           => $request->input('shipping_last_name'),
                 'shipping_email'               => $request->input('shipping_email'),
@@ -772,50 +897,39 @@ class HomeApiController extends Controller
                 'shipping_state'               => $request->input('shipping_state'),
                 'shipping_country'             => $request->input('shipping_country'),
                 'order_note'                   => $request->input('order_note'),
-                'created_by'                   => auth()->id(),
-                'order_created_at'             => Carbon::now(),
-                'created_at'                   => Carbon::now(),
+                'created_by'                   => $userId,
+                'order_created_at'             => now(),
+                'created_at'                   => now(),
             ]);
 
-            foreach (Cart::instance('cart')->content() as $item) {
+            foreach ($request->orderItems as $item) {
+                $product = Product::lockForUpdate()->find($item['product_id']);
+
+                if (!$product || $product->qty < $item['qty']) {
+                    throw new \Exception("Insufficient stock for product: {$item['product_name']}");
+                }
+
                 OrderItem::create([
                     'order_id'      => $order->id,
-                    'product_id'    => $item->id,
-                    'user_id'       => auth()->id(),
-                    'product_name'  => $item->name,
-                    'product_color' => $item->options->color ?? null,
-                    'product_image' => $item->options->image ?? null,
-                    'product_sku'   => $item->model->sku ?? null,
-                    'price'         => $item->price,
-                    'tax'           => $item->tax ?? 0,
-                    'quantity'      => $item->qty,
-                    'subtotal'      => $item->qty * $item->price,
+                    'product_id'    => $item['product_id'],
+                    'user_id'       => $userId,
+                    'product_name'  => $item['product_name'],
+                    'product_color' => $item['product_color'] ?? null,
+                    'product_image' => $item['product_image'] ?? null,
+                    'product_sku'   => $item['product_sku'] ?? null,
+                    'price'         => $item['price'],
+                    'tax'           => $item['tax'] ?? 0,
+                    'quantity'      => $item['qty'],
+                    'subtotal'      => $item['qty'] * $item['price'],
                 ]);
 
-                $product = Product::find($item->id);
-                $product->decrement('box_stock', $item->qty);
+                $product->decrement('qty', $item['qty']);
             }
 
             DB::commit();
 
-
             $order = Order::with('orderItems')->find($order->id);
-            $user  = Auth::user();
-
-            // Send order email
-            try {
-                $setting = Setting::first();
-                Mail::to([$request->shipping_email, $user->email])
-                    ->send(new UserOrderMail($user->name, [
-                        'order'           => $order,
-                        'order_items'     => $order->orderItems,
-                        'user'            => $user,
-                        'shipping_charge' => $shippingCharge,
-                        'shipping_method' => $shippingMethod?->title,
-                    ], $setting));
-            } catch (\Throwable $e) {
-                Log::error('Failed to send order email: ' . $e->getMessage());
-            }
+            $user  = User::find($userId);
 
             return response()->json([
                 'status'  => 'success',
