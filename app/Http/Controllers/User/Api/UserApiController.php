@@ -24,9 +24,9 @@ class UserApiController extends Controller
             'first_name'    => 'required|string|max:255',
             'last_name'     => 'required|string|max:255',
             'email'         => 'required|string|email|max:255|unique:users',
-            'phone'         => 'required|string|regex:/^\+?[0-9]{10,15}$/|unique:users,phone',
+            'phone'         => 'nullable|string|regex:/^\+?[0-9]{10,15}$/|unique:users,phone',
             'customer_type' => 'required|in:customer,partner',
-            'password'      => 'required|string|min:8|confirmed',
+            'password'      => 'required|string|min:8|',
         ], [
             'first_name.required'    => 'First name is required',
             'last_name.required'     => 'Last name is required',
@@ -37,7 +37,6 @@ class UserApiController extends Controller
             'phone.regex'            => 'Phone number must be valid (10–15 digits, with optional +)',
             'phone.unique'           => 'Phone number already exists',
             'password.required'      => 'Password is required',
-            'password.confirmed'     => 'Passwords do not match',
             'customer_type.required' => 'Customer Type is required',
             'customer_type.in'       => 'Customer Type must be either customer or partner',
         ]);
