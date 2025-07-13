@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order_number')->unique();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('SET NULL');
-            $table->foreignId('shipping_method_id')->nullable()->constrained('shipping_methods')->onDelete('SET NULL');
+            $table->integer('shipping_method_id')->nullable();
             $table->double('sub_total')->nullable();
             $table->double('coupon')->nullable();
             $table->double('discount')->nullable();
