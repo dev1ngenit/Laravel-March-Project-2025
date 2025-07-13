@@ -58,6 +58,7 @@ Route::prefix('api/v1')->group(function () {
     Route::get('/buying-policy', [HomeApiController::class, 'buyingPolicy']);
     // post contact
     Route::post('/contact', [ContactController::class, 'store']);
+    Route::post('/checkout-store', [HomeApiController::class, 'checkoutStore']);
 
     //User API Routes
     //user order list
