@@ -59,7 +59,7 @@ Route::prefix('api/v1')->group(function () {
     // post contact
     Route::post('/contact', [ContactController::class, 'store']);
     Route::post('/checkout-store', [HomeApiController::class, 'checkoutStore']);
-    Route::post('/site/information', [HomeApiController::class, 'siteInformation']);
+    Route::get('/site/information', [HomeApiController::class, 'siteInformation']);
 
     //User API Routes
     //user order list
