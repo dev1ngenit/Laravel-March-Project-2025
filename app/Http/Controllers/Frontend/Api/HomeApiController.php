@@ -829,7 +829,6 @@ class HomeApiController extends Controller
             'discount'           => 'nullable|numeric|min:0',
             'shipping_charge'    => 'nullable|numeric|min:0',
             'quantity'           => 'required|integer|min:1',
-            'shipping_id'        => 'nullable|exists:shipping_methods,id',
             'order_note'         => 'nullable|string',
 
             // Items
