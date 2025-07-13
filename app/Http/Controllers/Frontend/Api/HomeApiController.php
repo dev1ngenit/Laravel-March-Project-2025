@@ -949,4 +949,29 @@ class HomeApiController extends Controller
             ], 500);
         }
     }
+
+    //siteInformation
+    public function siteInformation()
+    {
+        $siteInfo = DB::table('settings')->first();
+
+        if (!$siteInfo) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Site information not found',
+            ], 404);
+        }
+
+        // Decode JSON fields
+        $siteInfo->site_favicon     = $siteInfo->site_favicon ? url('storage/' . $siteInfo->site_favicon)      : null;
+        $siteInfo->site_logo_white  = $siteInfo->site_logo_white ? url('storage/' . $siteInfo->site_logo_white) : null;
+        $siteInfo->site_logo_black  = $siteInfo->site_logo_black ? url('storage/' . $siteInfo->site_logo_black) : null;
+        $siteInfo->meta_keywords    = json_decode($siteInfo->meta_keywords, true) ?? [];
+        $siteInfo->meta_description = html_entity_decode(strip_tags($siteInfo->meta_description));
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $siteInfo,
+        ]);
+    }
 }
