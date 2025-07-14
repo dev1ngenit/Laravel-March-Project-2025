@@ -145,7 +145,7 @@
 
     @stack('scripts')
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
-    <script>
+    {{-- <script>
         document.querySelectorAll('.ckeditor').forEach(element => {
             if (!element.classList.contains('ck-editor__editable_inline')) {
                 ClassicEditor
@@ -159,7 +159,31 @@
                     });
             }
         });
+    </script> --}}
+    <script>
+        document.querySelectorAll('.ckeditor').forEach(element => {
+            if (!element.classList.contains('ck-editor__editable_inline')) {
+                ClassicEditor
+                    .create(element, {
+                        simpleUpload: {
+                            uploadUrl: '/storage', // Change this to your actual image upload endpoint
+                            headers: {
+                                // Optional: if you're using CSRF or authentication
+                                // 'X-CSRF-TOKEN': 'your-csrf-token',
+                            }
+                        }
+                    })
+                    .then(editor => {
+                        console.log('CKEditor initialized:', editor);
+                        element.editorInstance = editor;
+                    })
+                    .catch(error => {
+                        console.error('CKEditor initialization error:', error);
+                    });
+            }
+        });
     </script>
+
     <script>
         $(document).ready(function() {
             $("#kt_datatable_example").DataTable({
