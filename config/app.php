@@ -168,11 +168,13 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\DynamicSessionServiceProvider::class,
         App\Providers\BreadcrumbServiceProvider::class,
         App\Providers\SettingServiceProvider::class,
         App\Providers\LocationServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+
     ])->toArray(),
 
     /*
