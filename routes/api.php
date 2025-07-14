@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\User\Api\UserApiController;
 use App\Http\Controllers\Frontend\Api\HomeApiController;
@@ -32,6 +33,12 @@ Route::prefix('api/v1')->group(function () {
     Route::get('/login', [UserApiController::class, 'login']);
     Route::post('/register', [UserApiController::class, 'register']);
     Route::post('/login', [UserApiController::class, 'login']);
+
+    Route::get('/api/check-auth', function (Request $request) {
+    return response()->json([
+        'auth_token' => $request->cookie('auth_token')
+    ]);
+});
     Route::post('/reset-password/{token}', [UserApiController::class, 'reset']);
     Route::post('/forgot-password', [UserApiController::class, 'forgotPassword']);
     Route::get('/me', [UserApiController::class, 'me'])->middleware('auth');

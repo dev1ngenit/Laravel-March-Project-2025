@@ -205,7 +205,7 @@ class UserApiController extends Controller
             '/',                  // path
             null,                 // domain
             true,                 // Secure (HTTPS only)
-            true,                 // HttpOnly
+            false,                 // HttpOnly
             false,
             'None'                // SameSite (required for cross-origin)
         );
