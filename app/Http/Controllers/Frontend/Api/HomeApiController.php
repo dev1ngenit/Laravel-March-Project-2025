@@ -972,4 +972,24 @@ class HomeApiController extends Controller
             'data'   => $siteInfo,
         ]);
     }
+
+    //about-us
+    public function aboutUs()
+    {
+        $aboutUs = DB::table('about_us')->first();
+
+        if (!$aboutUs) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'About Us information not found',
+            ], 404);
+        }
+
+        $aboutUs->content = $aboutUs->content;
+
+        return response()->json([
+            'status' => 'success',
+            'data'   => $aboutUs,
+        ]);
+    }
 }
