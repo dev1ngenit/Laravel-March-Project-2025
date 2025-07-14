@@ -203,7 +203,7 @@ class UserApiController extends Controller
             $token,
             60 * 24,
             '/',                  // path
-            null,                 // domain
+            'http://localhost:3000/',                 // domain
             true,                 // Secure (HTTPS only)
             false,                 // HttpOnly
             false,
