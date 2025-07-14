@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutUsController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\Auth\ConfirmablePasswordController;
@@ -136,6 +137,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
             'support-policy' => SupportPolicyController::class,
             'return-policy'  => ReturnPolicyController::class,
             'buying-policy'  => BuyingPolicyController::class,
+            'about-us'       => AboutUsController::class,
 
             'staff'          => StaffController::class,
             'user'           => UserManagementController::class,
