@@ -27,6 +27,11 @@ class DynamicSessionServiceProvider extends ServiceProvider
             Config::set('session.domain', '.micropack.vercel.app');
         } elseif (str_contains($host, 'ngengroup.org')) {
             Config::set('session.domain', '.ngengroup.org');
+        }elseif (str_contains($host, 'http://localhost:3000/')) {
+            Config::set('session.domain', 'http://localhost:3000/');
+        } else {
+            // Default domain if none of the above matches
+            Config::set('session.domain', null);
         }
     }
 }
