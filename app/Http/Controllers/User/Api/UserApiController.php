@@ -192,36 +192,34 @@ class UserApiController extends Controller
             ], 401);
         }
 
-        $request->session()->regenerate();
         $user = Auth::user();
 
-        // Set a secure HTTP-only cookie (e.g., auth_token or session identifier)
+        // You can use session ID, or preferably a JWT
+        $token = session()->getId(); // or generate JWT
+
+        // Create secure HTTP-only cookie
         $cookie = cookie(
-            'auth_token',                  // Cookie name
-            session()->getId(),            // Cookie value (you could use JWT or session ID)
-            60 * 24,                       // Expire in minutes (e.g., 1 day)
-            null,
-            null,
-            true,                          // Secure: true if HTTPS
-            true,                          // HttpOnly: JavaScript cannot access
-            false,                         // Raw
-            'Strict'                       // SameSite (can be 'Lax' or 'None' if cross-site)
+            'auth_token',
+            $token,           // session ID or JWT
+            60 * 24,          // 1 day in minutes
+            '/',              // path
+            'accessories.ngengroup.org', // domain
+            true,             // Secure (MUST be true for cross-origin)
+            true,             // HttpOnly
+            false,            // Raw
+            'None'            // SameSite=None REQUIRED for cross-origin
         );
 
         return response()->json([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => 'Login successful',
-            'data' => [
-                'id'            => $user->id,
-                'first_name'    => $user->first_name,
-                'last_name'     => $user->last_name,
-                'email'         => $user->email,
-                'phone'         => $user->phone,
-                'customer_type' => $user->customer_type,
+            'data'    => [
+                'id' => $user->id,
+                'email' => $user->email,
+                // ...
             ]
         ])->cookie($cookie);
     }
-
     // public function logout(Request $request)
     // {
     //     Auth::logout();
@@ -240,8 +238,7 @@ class UserApiController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // Expire the 'auth_token' cookie by setting it to null and past expiry
-        $cookie = Cookie::forget('auth_token');
+        $cookie = Cookie::forget('auth_token', '/', null);
 
         return response()->json([
             'message' => 'Logged out successfully',
