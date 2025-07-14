@@ -200,23 +200,26 @@ class UserApiController extends Controller
         // Create secure HTTP-only cookie
         $cookie = cookie(
             'auth_token',
-            $token,           // session ID or JWT
-            60 * 24,          // 1 day in minutes
-            '/',              // path
-            'accessories.ngengroup.org', // domain
-            true,             // Secure (MUST be true for cross-origin)
-            true,             // HttpOnly
-            false,            // Raw
-            'None'            // SameSite=None REQUIRED for cross-origin
+            $token,
+            60 * 24,
+            '/',                  // path
+            null,                 // domain
+            true,                 // Secure (HTTPS only)
+            true,                 // HttpOnly
+            false,
+            'None'                // SameSite (required for cross-origin)
         );
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Login successful',
             'data'    => [
-                'id' => $user->id,
-                'email' => $user->email,
-                // ...
+                'id'            => $user->id,
+                'email'         => $user->email,
+                'first_name'    => $user->first_name,
+                'last_name'     => $user->last_name,
+                'customer_type' => $user->customer_type,
+
             ]
         ])->cookie($cookie);
     }
