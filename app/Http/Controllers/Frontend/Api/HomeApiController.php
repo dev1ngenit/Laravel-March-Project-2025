@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Banner;
+use App\Models\AboutUs;
 use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Category;
@@ -976,7 +977,7 @@ class HomeApiController extends Controller
     //about-us
     public function aboutUs()
     {
-        $aboutUs = DB::table('about_us')->first();
+        $aboutUs = AboutUs::latest()->first();
 
         if (!$aboutUs) {
             return response()->json([
