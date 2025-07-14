@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
 class UserApiController extends Controller
@@ -129,6 +130,46 @@ class UserApiController extends Controller
     // }
 
 
+    // public function login(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'email'    => 'required|email',
+    //         'password' => 'required|string|min:8',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Validation error',
+    //             'errors'  => $validator->errors(),
+    //         ], 422);
+    //     }
+
+    //     if (!Auth::attempt($request->only('email', 'password'))) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Invalid credentials',
+    //         ], 401);
+    //     }
+
+    //     $request->session()->regenerate();
+
+    //     $user = Auth::user();
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Login successful',
+    //         'data' => [
+    //             'id'            => $user->id,
+    //             'first_name'    => $user->first_name,
+    //             'last_name'     => $user->last_name,
+    //             'email'         => $user->email,
+    //             'phone'         => $user->phone,
+    //             'customer_type' => $user->customer_type,
+    //         ]
+    //     ]);
+    // }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -152,8 +193,20 @@ class UserApiController extends Controller
         }
 
         $request->session()->regenerate();
-
         $user = Auth::user();
+
+        // Set a secure HTTP-only cookie (e.g., auth_token or session identifier)
+        $cookie = cookie(
+            'auth_token',                  // Cookie name
+            session()->getId(),            // Cookie value (you could use JWT or session ID)
+            60 * 24,                       // Expire in minutes (e.g., 1 day)
+            null,
+            null,
+            true,                          // Secure: true if HTTPS
+            true,                          // HttpOnly: JavaScript cannot access
+            false,                         // Raw
+            'Strict'                       // SameSite (can be 'Lax' or 'None' if cross-site)
+        );
 
         return response()->json([
             'status' => 'success',
@@ -166,8 +219,20 @@ class UserApiController extends Controller
                 'phone'         => $user->phone,
                 'customer_type' => $user->customer_type,
             ]
-        ]);
+        ])->cookie($cookie);
     }
+
+    // public function logout(Request $request)
+    // {
+    //     Auth::logout();
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
+
+    //     return response()->json([
+    //         'message' => 'Logged out successfully',
+    //         'status'  => 'success'
+    //     ]);
+    // }
 
     public function logout(Request $request)
     {
@@ -175,10 +240,13 @@ class UserApiController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
+        // Expire the 'auth_token' cookie by setting it to null and past expiry
+        $cookie = Cookie::forget('auth_token');
+
         return response()->json([
             'message' => 'Logged out successfully',
             'status'  => 'success'
-        ]);
+        ])->cookie($cookie);
     }
 
     public function me(Request $request)
