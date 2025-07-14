@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\User\Api;
 
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\UserDeliveryAddress;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -69,40 +70,70 @@ class UserApiController extends Controller
 
     // public function login(Request $request)
     // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
+    //     // Validate incoming request
+    //     $validator = Validator::make($request->all(), [
+    //         'email'    => 'required|email',
+    //         'password' => 'required|string|min:8',
     //     ], [
-    //         'email.required' => 'Email is required',
+    //         'email.required'    => 'Email is required',
+    //         'email.email'       => 'Enter a valid email address',
     //         'password.required' => 'Password is required',
     //     ]);
 
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'status'  => 'error',
+    //             'message' => 'Validation error',
+    //             'errors'  => $validator->errors(),
+    //         ], 422);
+    //     }
+
+    //     // Check user existence
     //     $user = User::where('email', $request->email)->first();
 
     //     if (!$user || !Hash::check($request->password, $user->password)) {
     //         return response()->json([
-    //             'message' => 'The provided credentials are incorrect.',
-    //             'status' => 'error'
+    //             'status'  => 'error',
+    //             'message' => 'Invalid credentials',
     //         ], 401);
     //     }
 
+    //     // Create token using Sanctum
+    //     $token = $user->createToken('auth_token')->plainTextToken;
+
     //     return response()->json([
-    //         'token' => $user->createToken('token')->plainTextToken,
-    //         'message' => 'Login Success',
+    //         'status' => 'success',
+    //         'message' => 'Login successful',
+    //         'data' => [
+    //             'user'  => [
+    //                 'id'            => $user->id,
+    //                 'first_name'    => $user->first_name,
+    //                 'last_name'     => $user->last_name,
+    //                 'email'         => $user->email,
+    //                 'phone'         => $user->phone,
+    //                 'customer_type' => $user->customer_type,
+    //             ],
+    //             'token' => $token,
+    //         ]
+    //     ], 200);
+    // }
+
+    // public function logout(Request $request)
+    // {
+    //     $request->user()->currentAccessToken()->delete();
+
+    //     return response()->json([
+    //         'message' => 'Logged out successfully',
     //         'status' => 'success'
     //     ], 200);
     // }
 
+
     public function login(Request $request)
     {
-        // Validate incoming request
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required|string|min:8',
-        ], [
-            'email.required'    => 'Email is required',
-            'email.email'       => 'Enter a valid email address',
-            'password.required' => 'Password is required',
         ]);
 
         if ($validator->fails()) {
@@ -113,44 +144,46 @@ class UserApiController extends Controller
             ], 422);
         }
 
-        // Check user existence
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Invalid credentials',
             ], 401);
         }
 
-        // Create token using Sanctum
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $request->session()->regenerate();
+
+        $user = Auth::user();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Login successful',
             'data' => [
-                'user'  => [
-                    'id'            => $user->id,
-                    'first_name'    => $user->first_name,
-                    'last_name'     => $user->last_name,
-                    'email'         => $user->email,
-                    'phone'         => $user->phone,
-                    'customer_type' => $user->customer_type,
-                ],
-                'token' => $token,
+                'id'            => $user->id,
+                'first_name'    => $user->first_name,
+                'last_name'     => $user->last_name,
+                'email'         => $user->email,
+                'phone'         => $user->phone,
+                'customer_type' => $user->customer_type,
             ]
-        ], 200);
+        ]);
     }
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return response()->json([
             'message' => 'Logged out successfully',
-            'status' => 'success'
-        ], 200);
+            'status'  => 'success'
+        ]);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
     }
 
     public function updatePassword(Request $request)

@@ -34,6 +34,7 @@ Route::prefix('api/v1')->group(function () {
     Route::post('/login', [UserApiController::class, 'login']);
     Route::post('/reset-password/{token}', [UserApiController::class, 'reset']);
     Route::post('/forgot-password', [UserApiController::class, 'forgotPassword']);
+    Route::get('/me', [UserApiController::class, 'me'])->middleware('auth');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [UserApiController::class, 'logout']);
