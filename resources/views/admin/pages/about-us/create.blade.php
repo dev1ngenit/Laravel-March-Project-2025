@@ -1,4 +1,4 @@
-<x-admin-app-layout :title="'Buying and Policy Create'">
+<x-admin-app-layout :title="'About US Create'">
     <div class="card card-flash">
         <!--begin::Card header-->
         <div class="card-header mt-6">
