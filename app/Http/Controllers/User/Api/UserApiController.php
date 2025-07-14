@@ -220,7 +220,8 @@ class UserApiController extends Controller
                 'last_name'     => $user->last_name,
                 'customer_type' => $user->customer_type,
 
-            ]
+            ],
+            'cookie' => $cookie,
         ])->cookie($cookie);
     }
     // public function logout(Request $request)
