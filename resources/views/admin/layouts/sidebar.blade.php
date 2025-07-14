@@ -161,6 +161,11 @@
                             'subMenu' => [
 
                                 [
+                                    'title' => 'About Us',
+                                    'routes' => ['admin.about-us.index', 'admin.about-us.create', 'admin.about-us.edit'],
+                                    'route' => 'admin.about-us.index',
+                                ],
+                                [
                                     'title' => 'Banner',
                                     'routes' => ['admin.banner.index', 'admin.banner.create', 'admin.banner.edit'],
                                     'route' => 'admin.banner.index',
@@ -336,7 +341,7 @@
                         ],
                         // =================== Management Section End =================
 
-                        
+
                         // ================== Role & Permission End ===================
                     ];
                 @endphp
