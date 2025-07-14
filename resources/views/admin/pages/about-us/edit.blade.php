@@ -73,9 +73,9 @@
                     </div>
 
                     <div class="col-lg-12 mb-3">
-                        <x-metronic.label for="content"
+                        <x-metronic.label for="summernote"
                             class="col-form-label fw-bold fs-6 ">{{ __('Content') }}</x-metronic.label>
-                        <textarea id="content" class="ckeditor" name="content">{{ old('content', $item->content) }}</textarea>
+                        <textarea id="summernote" class="" name="content">{{ old('content', $item->content) }}</textarea>
                     </div>
 
                 </div>
