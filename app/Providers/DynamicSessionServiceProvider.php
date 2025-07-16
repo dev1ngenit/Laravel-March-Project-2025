@@ -23,6 +23,7 @@ class DynamicSessionServiceProvider extends ServiceProvider
     {
         $host = Request::getHost(); // accessories.ngengroup.org or api.micropack.vercel.app
 
+        dd($host); // Debugging line to check the host
         if (str_contains($host, 'micropack.vercel.app')) {
             Config::set('session.domain', '.micropack.vercel.app');
         } elseif (str_contains($host, 'ngengroup.org')) {
