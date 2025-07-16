@@ -37,7 +37,7 @@ class BannerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'        => 'nullable',
-            'image'       => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'       => 'nullable|file|mimes:webp,jpeg,png,jpg,gif|max:2048',
             'badge'       => 'nullable|string|max:191',
             'button_name' => 'nullable|string|max:200',
             'url'         => 'nullable|string',
@@ -113,7 +113,7 @@ class BannerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'        => 'nullable',
-            'image'       => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'image'       => 'nullable|file|mimes:webp,jpeg,png,jpg,gif|max:2048',
             'badge'       => 'nullable|string|max:191',
             'button_name' => 'nullable|string|max:200',
             'url'         => 'nullable|string',
