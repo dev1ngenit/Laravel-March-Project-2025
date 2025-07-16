@@ -48,7 +48,7 @@ class StaffController extends Controller
             'designation'  => 'nullable|string|max:255',
             'status'       => 'required|in:active,inactive',
             'password'     => 'required|string|min:8|confirmed',
-            'photo'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo'        => 'nullable|image|mimes:webp,jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Create new Admin instance
@@ -117,7 +117,7 @@ class StaffController extends Controller
             'designation'  => 'nullable|string|max:255',
             'status'       => 'required|in:active,inactive',
             // 'password'     => 'nullable|string|min:8|confirmed',
-            'photo'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'photo'        => 'nullable|image|mimes:webp,jpeg,png,jpg,gif|max:2048',
         ]);
 
         $admin->fill($validated);

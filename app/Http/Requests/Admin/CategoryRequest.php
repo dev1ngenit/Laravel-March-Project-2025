@@ -32,9 +32,9 @@ class CategoryRequest extends FormRequest
                 Rule::unique('categories', 'name')->ignore($categoryId),
             ],
             'parent_id'    => 'nullable|exists:categories,id',
-            'logo'         => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
-            'image'        => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
-            'banner_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+            'logo'         => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+            'image'        => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+            'banner_image' => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
             'status'       => 'required|in:inactive,active',
         ];
     }

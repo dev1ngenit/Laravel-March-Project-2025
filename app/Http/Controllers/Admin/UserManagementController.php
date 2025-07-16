@@ -42,7 +42,7 @@ class UserManagementController extends Controller
             'phone'    => 'nullable|numeric',
             'address'  => 'nullable|string|max:255',
             'password' => 'required|min:8|confirmed', // Confirmed validation ensures passwords match
-            'image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image'    => 'nullable|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Handle file upload if an image is provided

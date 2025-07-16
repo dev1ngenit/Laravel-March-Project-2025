@@ -25,10 +25,10 @@ class BrandRequest extends FormRequest
         $brandId = $this->route('brand') ?? null;
 
         return [
-            
-            'logo'         => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
-            'image'        => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
-            'banner_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+
+            'logo'         => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+            'image'        => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
+            'banner_image' => 'sometimes|image|mimes:webp,jpeg,png,jpg,gif,svg,webp,bmp,tiff,ico|max:2048',
             'url'          => 'nullable|url|max:255',
             'status'       => 'required|in:inactive,active',
         ];

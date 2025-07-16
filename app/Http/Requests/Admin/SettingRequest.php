@@ -23,7 +23,7 @@ class SettingRequest extends FormRequest
     {
         return [
             'site_name' => 'nullable|string|max:50',
-            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'site_logo' => 'nullable|image|mimes:webp,jpeg,png,jpg,gif,svg|max:2048',
             'email' => 'nullable|email:rfc,dns|max:100',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
