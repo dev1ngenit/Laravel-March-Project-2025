@@ -172,6 +172,12 @@ class UserApiController extends Controller
 
     public function login(Request $request)
     {
+        // Inside your login controller, temporarily add this
+        dd([
+            'host' => Request::getHost(),
+            'session_domain' => config('session.domain'),
+        ]);
+
         $validator = Validator::make($request->all(), [
             'email'    => 'required|email',
             'password' => 'required|string|min:8',
@@ -196,18 +202,16 @@ class UserApiController extends Controller
         $token = session()->getId();
 
         // Get dynamically-set session domain
-        $cookieDomain = config('session.domain');
-
         $cookie = cookie(
             'auth_token',
             $token,
-            60 * 24, // 1 day
+            60 * 24,
             '/',
-            $cookieDomain,   // dynamic domain
-            true,            // Secure
-            false,           // HttpOnly
-            false,           // Raw
-            'None'           // SameSite
+            config('session.domain'),
+            true,
+            false,
+            false,
+            'None'
         );
 
         return response()->json([

@@ -8,31 +8,28 @@ use Illuminate\Support\ServiceProvider;
 
 class DynamicSessionServiceProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
-        // Fallback to host, but try reading Origin or Referer
+        // Detect request origin
         $origin = Request::header('Origin') ?? Request::header('Referer');
-        $host = parse_url($origin, PHP_URL_HOST); // e.g., localhost, accessories.ngengroup.org
+        $clientHost = parse_url($origin, PHP_URL_HOST) ?? Request::getHost();
 
-        if (str_contains($host, 'micropack.vercel.app')) {
-            Config::set('session.domain', 'micropack.vercel.app');
-        } elseif (str_contains($host, 'ngengroup.org')) {
+        // Normalize
+        $clientHost = strtolower($clientHost);
+
+        // Strict ordering — check specific domains FIRST
+        if ($clientHost === 'accessories.ngengroup.org') {
             Config::set('session.domain', 'accessories.ngengroup.org');
-        } elseif ($host === 'localhost') {
-            Config::set('session.domain', null); // allow default behavior for local dev
+        } elseif ($clientHost === 'micropack.vercel.app') {
+            Config::set('session.domain', '.micropack.vercel.app');
+        } elseif ($clientHost === 'localhost') {
+            Config::set('session.domain', null);
+        } elseif ($clientHost === 'ngengroup.org') {
+            Config::set('session.domain', 'ngengroup.org');
         } else {
-            Config::set('session.domain', null); // fallback
+            Config::set('session.domain', null);
         }
     }
 }
