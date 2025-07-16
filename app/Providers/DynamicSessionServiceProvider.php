@@ -10,26 +10,24 @@ class DynamicSessionServiceProvider extends ServiceProvider
 {
     public function register(): void {}
 
+
     public function boot(): void
     {
-        // Detect request origin
-        $origin = Request::header('Origin') ?? Request::header('Referer');
-        $clientHost = parse_url($origin, PHP_URL_HOST) ?? Request::getHost();
+        $host = request()->getHost(); // e.g., "localhost" or "accessories.ngengroup.org"
 
-        // Normalize
-        $clientHost = strtolower($clientHost);
-
-        // Strict ordering — check specific domains FIRST
-        if ($clientHost === 'accessories.ngengroup.org') {
-            Config::set('session.domain', 'accessories.ngengroup.org');
-        } elseif ($clientHost === 'micropack.vercel.app') {
+        if (str_contains($host, 'micropack.vercel.app')) {
             Config::set('session.domain', '.micropack.vercel.app');
-        } elseif ($clientHost === 'localhost') {
-            Config::set('session.domain', null);
-        } elseif ($clientHost === 'ngengroup.org') {
-            Config::set('session.domain', 'ngengroup.org');
+        } elseif (str_contains($host, 'ngengroup.org')) {
+            Config::set('session.domain', '.ngengroup.org');
+        } elseif (str_contains($host, 'localhost')) {
+            Config::set('session.domain', null); // ✅ Let browser handle it
         } else {
             Config::set('session.domain', null);
         }
+
+        logger([
+            'host' => $host,
+            'session_domain' => config('session.domain'),
+        ]);
     }
 }
