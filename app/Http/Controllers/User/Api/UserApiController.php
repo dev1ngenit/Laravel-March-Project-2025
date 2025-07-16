@@ -174,7 +174,7 @@ class UserApiController extends Controller
     {
         // Inside your login controller, temporarily add this
         dd([
-            'host' => Request::getHost(),
+            'host' => $request->getHost(),
             'session_domain' => config('session.domain'),
         ]);
 
