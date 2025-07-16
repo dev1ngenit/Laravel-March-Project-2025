@@ -26,9 +26,9 @@ class DynamicSessionServiceProvider extends ServiceProvider
         $host = parse_url($origin, PHP_URL_HOST); // e.g., localhost, accessories.ngengroup.org
 
         if (str_contains($host, 'micropack.vercel.app')) {
-            Config::set('session.domain', '.micropack.vercel.app');
+            Config::set('session.domain', 'micropack.vercel.app');
         } elseif (str_contains($host, 'ngengroup.org')) {
-            Config::set('session.domain', '.ngengroup.org');
+            Config::set('session.domain', 'accessories.ngengroup.org');
         } elseif ($host === 'localhost') {
             Config::set('session.domain', null); // allow default behavior for local dev
         } else {
