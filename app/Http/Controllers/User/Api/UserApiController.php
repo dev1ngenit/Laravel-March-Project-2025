@@ -193,21 +193,21 @@ class UserApiController extends Controller
         }
 
         $user = Auth::user();
+        $token = session()->getId();
 
-        // You can use session ID, or preferably a JWT
-        $token = session()->getId(); // or generate JWT
+        // Get dynamically-set session domain
+        $cookieDomain = config('session.domain');
 
-        // Create secure HTTP-only cookie
         $cookie = cookie(
             'auth_token',
             $token,
-            60 * 24,
-            '/',                  // path
-            'http://localhost:3000/',                 // domain
-            true,                 // Secure (HTTPS only)
-            false,                 // HttpOnly
-            false,
-            'None'                // SameSite (required for cross-origin)
+            60 * 24, // 1 day
+            '/',
+            $cookieDomain,   // dynamic domain
+            true,            // Secure
+            false,           // HttpOnly
+            false,           // Raw
+            'None'           // SameSite
         );
 
         return response()->json([
@@ -219,9 +219,7 @@ class UserApiController extends Controller
                 'first_name'    => $user->first_name,
                 'last_name'     => $user->last_name,
                 'customer_type' => $user->customer_type,
-
             ],
-            'cookie' => $cookie,
         ])->cookie($cookie);
     }
     // public function logout(Request $request)
