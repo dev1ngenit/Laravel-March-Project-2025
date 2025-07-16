@@ -21,18 +21,18 @@ class DynamicSessionServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $host = Request::getHost(); // accessories.ngengroup.org or api.micropack.vercel.app
+        // $host = Request::getHost(); // accessories.ngengroup.org or api.micropack.vercel.app
 
-        dd($host); // Debugging line to check the host
-        if (str_contains($host, 'micropack.vercel.app')) {
-            Config::set('session.domain', '.micropack.vercel.app');
-        } elseif (str_contains($host, 'ngengroup.org')) {
-            Config::set('session.domain', '.ngengroup.org');
-        }elseif (str_contains($host, 'http://localhost:3000/')) {
-            Config::set('session.domain', 'http://localhost:3000/');
-        } else {
-            // Default domain if none of the above matches
-            Config::set('session.domain', null);
-        }
+        // dd($host); // Debugging line to check the host
+        // if (str_contains($host, 'micropack.vercel.app')) {
+        //     Config::set('session.domain', '.micropack.vercel.app');
+        // } elseif (str_contains($host, 'ngengroup.org')) {
+        //     Config::set('session.domain', '.ngengroup.org');
+        // }elseif (str_contains($host, 'http://localhost:3000/')) {
+        //     Config::set('session.domain', 'http://localhost:3000/');
+        // } else {
+        //     // Default domain if none of the above matches
+        //     Config::set('session.domain', null);
+        // }
     }
 }
