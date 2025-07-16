@@ -21,16 +21,18 @@ class DynamicSessionServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $host = Request::getHost(); // returns only the hostname
+        // Fallback to host, but try reading Origin or Referer
+        $origin = Request::header('Origin') ?? Request::header('Referer');
+        $host = parse_url($origin, PHP_URL_HOST); // e.g., localhost, accessories.ngengroup.org
 
         if (str_contains($host, 'micropack.vercel.app')) {
             Config::set('session.domain', '.micropack.vercel.app');
         } elseif (str_contains($host, 'ngengroup.org')) {
             Config::set('session.domain', '.ngengroup.org');
         } elseif ($host === 'localhost') {
-            Config::set('session.domain', null); // Let Laravel use default for local
+            Config::set('session.domain', null); // allow default behavior for local dev
         } else {
-            Config::set('session.domain', null); // Fallback
+            Config::set('session.domain', null); // fallback
         }
     }
 }
