@@ -24,5 +24,6 @@ class VerifyCsrfToken extends Middleware
         'profile', // Exclude profile routes
         'profile/edit', // Exclude profile edit route
         'categories', // Exclude categories API route
+        
     ];
 }

@@ -13,6 +13,7 @@ use App\Models\Setting;
 use App\Models\Category;
 use App\Models\OrderItem;
 use Illuminate\Support\Str;
+use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -992,5 +993,35 @@ class HomeApiController extends Controller
             'status' => 'success',
             'data'   => $aboutUs,
         ]);
+    }
+
+    // subscriptionStore
+    public function subscriptionStore(Request $request)
+    {
+        // Validate request data
+        $validator = Validator::make($request->all(), [
+            'name'  => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:subscriptions,email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation errors',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
+        // Create the subscription
+        $subscription = Subscription::create([
+            'name'  => $request->input('name'),
+            'email' => $request->input('email'),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Subscription created successfully',
+            'data'    => $subscription
+        ], 201);
     }
 }
