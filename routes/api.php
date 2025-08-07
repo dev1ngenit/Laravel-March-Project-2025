@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\User\Api\UserApiController;
 use App\Http\Controllers\Frontend\Api\HomeApiController;
 use App\Http\Controllers\Admin\Api\CategoryApiController;
+use App\Http\Controllers\Frontend\ClerkWebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,6 +63,7 @@ Route::prefix('api/v1')->group(function () {
         Route::put('/profile', [UserApiController::class, 'editProfile']);
     });
     // Home
+    Route::post('/user-authentication/webhook', [ClerkWebhookController::class, 'handle']);
     Route::get('/homepage', [HomeApiController::class, 'homePage']);
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
     Route::get('/categories', [HomeApiController::class, 'AllCategory']);
