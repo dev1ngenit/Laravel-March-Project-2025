@@ -77,7 +77,7 @@ Route::prefix('api/v1')->group(function () {
     Route::get('/buying-policy', [HomeApiController::class, 'buyingPolicy']);
     // post contact
     Route::post('/subscription', [HomeApiController::class, 'subscriptionStore']);
-    Route::post('/contact', [ContactController::class, 'store']);
+    Route::post('/contact', [HomeApiController::class, 'contactStore']);
     Route::post('/checkout-store', [HomeApiController::class, 'checkoutStore']);
     Route::get('/site/information', [HomeApiController::class, 'siteInformation']);
 
