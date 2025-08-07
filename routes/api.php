@@ -27,18 +27,28 @@ use App\Http\Controllers\Admin\Api\CategoryApiController;
 //     Route::apiResource('categories', CategoryApiController::class);
 // });
 
-
+// Public routes (no auth)
 Route::prefix('api/v1')->group(function () {
     Route::get('/register', [UserApiController::class, 'register']);
-    Route::get('/login', [UserApiController::class, 'login']);
     Route::post('/register', [UserApiController::class, 'register']);
+    Route::get('/login', [UserApiController::class, 'login']);
     Route::post('/login', [UserApiController::class, 'login']);
 
-    Route::get('/api/check-auth', function (Request $request) {
-    return response()->json([
-        'auth_token' => $request->cookie('auth_token')
-    ]);
-});
+
+    // Protected routes (requires Clerk auth)
+    Route::middleware(['clerk.auth'])->prefix('api/v1')->group(function () {
+        Route::post('/logout', [UserApiController::class, 'logout']);
+        Route::post('/change-password', [UserApiController::class, 'updatePassword']);
+        Route::get('/profile', [UserApiController::class, 'profile']);
+        Route::put('/profile', [UserApiController::class, 'editProfile']);
+        Route::get('/api/check-auth', function (Request $request) {
+            return response()->json([
+                'auth_token' => $request->cookie('auth_token')
+            ]);
+        });
+    });
+
+
     Route::post('/reset-password/{token}', [UserApiController::class, 'reset']);
     Route::post('/forgot-password', [UserApiController::class, 'forgotPassword']);
     Route::get('/me', [UserApiController::class, 'me'])->middleware('auth');
@@ -66,7 +76,7 @@ Route::prefix('api/v1')->group(function () {
     Route::get('/return-policy', [HomeApiController::class, 'returnPolicy']);
     Route::get('/buying-policy', [HomeApiController::class, 'buyingPolicy']);
     // post contact
-    Route::post('/subscription', [HomeApiController::class, 'subscriptionStore']); 
+    Route::post('/subscription', [HomeApiController::class, 'subscriptionStore']);
     Route::post('/contact', [ContactController::class, 'store']);
     Route::post('/checkout-store', [HomeApiController::class, 'checkoutStore']);
     Route::get('/site/information', [HomeApiController::class, 'siteInformation']);
