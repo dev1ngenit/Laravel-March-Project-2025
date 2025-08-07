@@ -34,8 +34,9 @@ class ClerkService
 
         $state = AuthenticateRequest::authenticateRequest($psrRequest, $options);
 
-        return $state->isSignedIn() ? $state->payload['sub'] : null;
+        return $state->isSignedIn() ? $state->getPayload()['sub'] : null;
     }
+
 
     private function convertToPsrRequest(LaravelRequest $laravelRequest): PsrRequest
     {

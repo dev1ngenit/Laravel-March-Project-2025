@@ -1001,7 +1001,7 @@ class HomeApiController extends Controller
         // Validate request data
         $validator = Validator::make($request->all(), [
             'name'  => 'nullable|string|max:255',
-            'email' => 'rquired|email|unique:subscriptions,email',
+            'email' => 'required|email|unique:subscriptions,email',
         ]);
 
         if ($validator->fails()) {
