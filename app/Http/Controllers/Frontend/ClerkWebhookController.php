@@ -88,10 +88,21 @@ class ClerkWebhookController extends Controller
             Log::info('Clerk Webhook Verified', ['event' => $event]);
 
             // Example: create or update user
-            // Handle events like user.created, user.updated, etc.
+            // Handle events like user.created, user.updated, user.deleted etc.
             if ($event['type'] === 'user.created') {
-                // Add user logic here...
+                Log::info('Received user.created webhook');
+                $this->handleUserCreated($event['data']);
+            } elseif ($event['type'] === 'user.updated') {
+                Log::info('Received user.updated webhook');
+                $this->handleUserUpdated($event['data']);
+            } elseif ($event['type'] === 'user.deleted') {
+                Log::info('Received user.deleted webhook');
+                $this->handleUserDeleted($event['data']);
+            } else {
+                Log::info('Unhandled event type: ' . $event['type']);
             }
+
+
 
             return response()->json(['message' => 'Webhook handled'], 200);
         } catch (\Exception $e) {
@@ -160,5 +171,26 @@ class ClerkWebhookController extends Controller
         $expectedSignature = hash_hmac('sha256', $payload, $secret);
 
         return hash_equals($expectedSignature, $signature);
+    }
+
+    private function handleUserDeleted(array $userData)
+    {
+        $email = $userData['email_addresses'][0]['email_address'] ?? null;
+
+        if (!$email) {
+            Log::warning('Missing email in user.deleted webhook.');
+            return;
+        }
+
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            Log::info('User not found for deletion: ' . $email);
+            return;
+        }
+
+        $user->delete();
+
+        Log::info('User deleted: ' . $email);
     }
 }
