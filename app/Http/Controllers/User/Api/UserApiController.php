@@ -408,7 +408,7 @@ class UserApiController extends Controller
     public function storeDeliveryAddress(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'        => 'required',
+            'user_email'     => 'required',
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'address_line1'  => 'required|string|max:255',
@@ -444,10 +444,10 @@ class UserApiController extends Controller
         }
 
         // If using Auth, get the user ID from token/session
-        $userId = auth()->id(); // Assumes Sanctum or Passport auth
+        $userId = User::where('email' , $request->input('user_email'))->value('id'); // Assumes Sanctum or Passport auth
 
         $address = UserDeliveryAddress::create([
-            'user_id'       => $request->user_id ?? $userId,
+            'user_id'       => $userId,
             'first_name'    => $request->first_name,
             'last_name'     => $request->last_name,
             'address_line1' => $request->address_line1,
