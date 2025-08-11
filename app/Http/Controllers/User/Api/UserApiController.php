@@ -444,7 +444,7 @@ class UserApiController extends Controller
         }
 
         // If using Auth, get the user ID from token/session
-        $userId = User::where('email' , $request->input('user_email'))->value('id'); // Assumes Sanctum or Passport auth
+        $userId = User::where('email', $request->input('user_email'))->value('id'); // Assumes Sanctum or Passport auth
 
         $address = UserDeliveryAddress::create([
             'user_id'       => $userId,
@@ -470,7 +470,10 @@ class UserApiController extends Controller
     public function getDeliveryAddresses(Request $request)
     {
         $user_email = $request->user_email;
+
+        // Get user ID based on email
         $user_id = User::where('email', $user_email)->value('id');
+
         if (!$user_id) {
             return response()->json([
                 'status'  => 'error',
@@ -478,12 +481,37 @@ class UserApiController extends Controller
             ], 401);
         }
 
-        $addresses = UserDeliveryAddress::where('user_id', $user_id)->get();
+        // Build query
+        $query = UserDeliveryAddress::where('user_id', $user_id);
+
+        // Optional filter by is_default
+        if ($request->has('is_default')) {
+            $isDefault = filter_var($request->input('is_default'), FILTER_VALIDATE_BOOLEAN); // convert to boolean
+            $query->where('is_default', $isDefault);
+        }
+
+        // Get results
+        $addresses = $query->get()->map(function ($address) use ($user_email) {
+            return [
+                'user_email'    => $user_email,
+                'first_name'    => $address->first_name,
+                'last_name'     => $address->last_name,
+                'address_line1' => $address->address_line1,
+                'address_line2' => $address->address_line2,
+                'city'          => $address->city,
+                'state'         => $address->state,
+                'postal_code'   => $address->postal_code,
+                'country'       => $address->country,
+                'phone'         => $address->phone,
+                'company'       => $address->company,
+                'is_default'    => $address->is_default,
+            ];
+        });
 
         return response()->json([
             'status'  => 'success',
             'message' => 'Delivery addresses retrieved successfully',
-            'data'    => $addresses
+            'data'    => $addresses,
         ], 200);
     }
 }
