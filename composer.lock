@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3f236c1a2b1bd720daba0644cc67681",
+    "content-hash": "cd86777c5c9b23dab518e4aa8645bd75",
     "packages": [
         {
             "name": "anayarojo/shoppingcart",
@@ -5152,6 +5152,58 @@
                 }
             ],
             "time": "2025-03-06T21:06:09+00:00"
+        },
+        {
+            "name": "svix/svix",
+            "version": "v1.71.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/svix/svix-webhooks.git",
+                "reference": "90ebecbc060d4ce79b672b917367e52176d17d26"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/svix/svix-webhooks/zipball/90ebecbc060d4ce79b672b917367e52176d17d26",
+                "reference": "90ebecbc060d4ce79b672b917367e52176d17d26",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.0",
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Svix\\": "php/src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Svix",
+                    "email": "support@svix.com",
+                    "homepage": "http://www.svix.com"
+                }
+            ],
+            "description": "Svix PHP Library",
+            "homepage": "https://www.svix.com",
+            "keywords": [
+                "api",
+                "webhooks"
+            ],
+            "support": {
+                "issues": "https://github.com/svix/svix-webhooks/issues",
+                "source": "https://github.com/svix/svix-webhooks/tree/v1.71.0"
+            },
+            "time": "2025-08-07T17:40:52+00:00"
         },
         {
             "name": "symfony/console",

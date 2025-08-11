@@ -19,6 +19,7 @@
         "mcamara/laravel-localization": "^2.0",
         "php-flasher/flasher-laravel": "^1.15",
         "spatie/laravel-permission": "^6.3",
+        "svix/svix": "^1.71",
         "yajra/laravel-datatables": "10.0"
     },
     "require-dev": {

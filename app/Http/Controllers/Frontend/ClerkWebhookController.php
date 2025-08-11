@@ -2,56 +2,102 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
+use Svix\Webhook;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
 class ClerkWebhookController extends Controller
 {
+    // public function handle(Request $request)
+    // {
+    //     // Get the raw request payload
+    //     $payload = $request->getContent();
+
+    //     // Get the Clerk signature from the header
+    //     $signature = $request->header('Clerk-Signature');
+
+    //     // Validate signature (optional but recommended)
+    //     $webhookSecret = env('CLERK_WEBHOOK_SECRET');
+    //     if (!$this->isValidSignature($payload, $signature, $webhookSecret)) {
+    //         Log::warning('Invalid Clerk webhook signature.');
+    //         return response()->json(['message' => 'Invalid signature'], 401);
+    //     }
+
+    //     // Decode the JSON payload
+    //     $data = json_decode($payload, true);
+
+    //     if (!isset($data['type']) || !isset($data['data'])) {
+    //         Log::warning('Invalid Clerk webhook structure.');
+    //         return response()->json(['message' => 'Invalid payload'], 400);
+    //     }
+
+    //     $eventType = $data['type'];
+    //     $userData = $data['data'];
+
+    //     // Handle specific event types
+    //     switch ($eventType) {
+    //         case 'user.created':
+    //             $this->handleUserCreated($userData);
+    //             break;
+
+    //         case 'user.updated':
+    //             $this->handleUserUpdated($userData);
+    //             break;
+
+    //         default:
+    //             Log::info('Unhandled Clerk webhook event: ' . $eventType);
+    //             break;
+    //     }
+
+    //     return response()->json(['message' => 'Webhook processed'], 200);
+    // }
+
     public function handle(Request $request)
     {
-        // Get the raw request payload
+        $webhookSecret = env('CLERK_WEBHOOK_SECRET');
+
+        if (!$webhookSecret) {
+            return response()->json(['message' => 'Webhook secret not set'], 500);
+        }
+
+        $headers = getallheaders();
+
+        $svixId = $headers['svix-id'] ?? null;
+        $svixTimestamp = $headers['svix-timestamp'] ?? null;
+        $svixSignature = $headers['svix-signature'] ?? null;
+
+        if (!$svixId || !$svixTimestamp || !$svixSignature) {
+            return response()->json(['message' => 'Missing Svix headers'], 400);
+        }
+
         $payload = $request->getContent();
 
-        // Get the Clerk signature from the header
-        $signature = $request->header('Clerk-Signature');
+        $webhook = new Webhook($webhookSecret);
 
-        // Validate signature (optional but recommended)
-        $webhookSecret = env('CLERK_WEBHOOK_SECRET');
-        if (!$this->isValidSignature($payload, $signature, $webhookSecret)) {
-            Log::warning('Invalid Clerk webhook signature.');
+        try {
+            $event = $webhook->verify($payload, [
+                'svix-id' => $svixId,
+                'svix-timestamp' => $svixTimestamp,
+                'svix-signature' => $svixSignature,
+            ]);
+
+            // Log or process the event
+            Log::info('Clerk Webhook Verified', ['event' => $event]);
+
+            // Example: create or update user
+            // Handle events like user.created, user.updated, etc.
+            if ($event['type'] === 'user.created') {
+                // Add user logic here...
+            }
+
+            return response()->json(['message' => 'Webhook handled'], 200);
+        } catch (\Exception $e) {
+            Log::error('Invalid Clerk webhook signature', ['error' => $e->getMessage()]);
             return response()->json(['message' => 'Invalid signature'], 401);
         }
-
-        // Decode the JSON payload
-        $data = json_decode($payload, true);
-
-        if (!isset($data['type']) || !isset($data['data'])) {
-            Log::warning('Invalid Clerk webhook structure.');
-            return response()->json(['message' => 'Invalid payload'], 400);
-        }
-
-        $eventType = $data['type'];
-        $userData = $data['data'];
-
-        // Handle specific event types
-        switch ($eventType) {
-            case 'user.created':
-                $this->handleUserCreated($userData);
-                break;
-
-            case 'user.updated':
-                $this->handleUserUpdated($userData);
-                break;
-
-            default:
-                Log::info('Unhandled Clerk webhook event: ' . $eventType);
-                break;
-        }
-
-        return response()->json(['message' => 'Webhook processed'], 200);
     }
 
     private function handleUserCreated(array $userData)
