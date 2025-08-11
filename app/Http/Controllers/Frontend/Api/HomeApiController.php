@@ -806,6 +806,7 @@ class HomeApiController extends Controller
             'shipping_first_name' => 'nullable|string|max:255',
             'shipping_last_name'  => 'nullable|string|max:255',
             'shipping_phone'      => 'required|string|max:20',
+            'user_email'          => 'required|email|exists:users,email',
             'shipping_email'      => 'required|email',
             'shipping_address_1'  => 'nullable|string|max:255',
             'shipping_address_2'  => 'nullable|string|max:255',
@@ -866,7 +867,7 @@ class HomeApiController extends Controller
             $billingAddress  = trim($request->input('billing_address_1') . ' ' . $request->input('billing_address_2'));
             $shippingAddress = trim($request->input('shipping_address_1') . ' ' . $request->input('shipping_address_2'));
 
-            $userId = $request->input('user_id');
+            $userId = User::where('email' , $request->input('user_email'))->value('id');
 
             $order = Order::create([
                 'order_number'                 => $orderNumber,
