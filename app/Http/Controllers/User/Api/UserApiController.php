@@ -469,7 +469,8 @@ class UserApiController extends Controller
     }
     public function getDeliveryAddresses(Request $request)
     {
-        $user_id = $request->user_id;
+        $user_email = $request->user_email;
+        $user_id = User::where('email', $user_email)->value('id');
         if (!$user_id) {
             return response()->json([
                 'status'  => 'error',
