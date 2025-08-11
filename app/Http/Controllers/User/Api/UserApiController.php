@@ -460,7 +460,7 @@ class UserApiController extends Controller
             'company'       => $request->company,
             'is_default'    => $request->boolean('is_default', false),
         ]);
-        $address->email = $request->input('user_email'); // Add email to the address object
+        $address->user_email = $request->input('user_email'); // Add email to the address object
         return response()->json([
             'status'  => 'success',
             'message' => 'Delivery address saved successfully',
