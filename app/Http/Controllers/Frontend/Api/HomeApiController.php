@@ -904,7 +904,7 @@ class HomeApiController extends Controller
                 'created_at'                   => now(),
             ]);
 
-            foreach ($request->orderItems as $item) {
+            foreach ($request->order_items as $item) {
                 $product = Product::lockForUpdate()->find($item['product_id']);
 
                 if (!$product || $product->qty < $item['qty']) {
