@@ -64,6 +64,7 @@ Route::prefix('api/v1')->group(function () {
     });
     // Home
     Route::post('/user-authentication/webhook', [ClerkWebhookController::class, 'handle']);
+    
     Route::get('/homepage', [HomeApiController::class, 'homePage']);
     Route::get('/home-sliders', [HomeApiController::class, 'homeSliders']);
     Route::get('/categories', [HomeApiController::class, 'AllCategory']);

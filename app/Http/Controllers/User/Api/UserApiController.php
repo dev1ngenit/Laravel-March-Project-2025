@@ -408,16 +408,17 @@ class UserApiController extends Controller
     public function storeDeliveryAddress(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id'        => 'required|exists:users,id',
+            'user_id'        => 'required',
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'address_line1'  => 'required|string|max:255',
             'address_line2'  => 'nullable|string|max:255',
             'city'           => 'required|string|max:255',
-            'state'          => 'required|string|max:255',
+            'state'          => 'nullable|string|max:255',
             'postal_code'    => 'required|string|max:20',
             'country'        => 'required|string|max:255',
-            'phone'          => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+            // 'phone'          => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+            'phone'          => 'required|string',
             'company'        => 'nullable|string|max:255',
             'is_default'     => 'nullable|boolean',
         ], [
