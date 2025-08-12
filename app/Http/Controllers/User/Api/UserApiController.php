@@ -386,7 +386,9 @@ class UserApiController extends Controller
     public function orderList(Request $request)
     {
         // Assuming you have an Order model and a relationship set up
-        $user_id = $request->user_id;
+        $user_email = $request->user_email;
+        $user_id = User::where('email', $user_email)->value('id');
+
         if (!$user_id) {
             return response()->json([
                 'message' => 'User ID is required',
@@ -397,7 +399,11 @@ class UserApiController extends Controller
             ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')
             ->get();
-
+        // $orders = $orders->map(function ($order) use ($user_email) {
+        //     return [
+        //         'user_email'    => $user_email,
+        //     ];
+        // });
         return response()->json([
             'orders' => $orders,
             'message' => 'Order list retrieved successfully',
