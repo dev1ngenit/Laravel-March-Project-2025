@@ -395,15 +395,11 @@ class UserApiController extends Controller
                 'status' => 'error'
             ], 400);
         }
-        $orders = Order::with(['orderItems', 'shippingMethod'])
+        $orders = Order::with('orderItems')
             ->where('user_id', $user_id)
             ->orderBy('created_at', 'desc')
             ->get();
-        // $orders = $orders->map(function ($order) use ($user_email) {
-        //     return [
-        //         'user_email'    => $user_email,
-        //     ];
-        // });
+
         return response()->json([
             'orders' => $orders,
             'message' => 'Order list retrieved successfully',
