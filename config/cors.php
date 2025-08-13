@@ -25,6 +25,7 @@ return [
     'allowed_origins' => [
         'http://localhost:3000',
         'https://micropack.vercel.app',
+        'https://accessories.ngengroup.org',
     ],
 
     'allowed_origins_patterns' => [],
