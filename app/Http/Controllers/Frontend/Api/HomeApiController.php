@@ -931,6 +931,11 @@ class HomeApiController extends Controller
             DB::commit();
 
             $order = Order::with('orderItems')->find($order->id);
+            $order->orderItems->map(function ($orderItem) {
+                return [
+                    'product_slug' => Product::find($orderItem->product_id)->slug ?? null,
+                ];
+            });
             $user  = User::find($userId);
 
             return response()->json([
