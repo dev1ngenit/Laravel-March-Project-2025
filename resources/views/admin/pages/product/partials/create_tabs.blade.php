@@ -22,13 +22,12 @@
                     <input class="form-control" name="tags" id="product_Tags" placeholder="Eg: tag1, tag2"
                         value="{{ old('tags') }}" />
                 </div>
-                {{-- <div class="mb-5 fv-row">
-                                            <x-metronic.label class="form-label">Short Description</x-metronic.label>
-                                            <x-metronic.textarea id="short_description" name="short_description"
-                                                placeholder="Add Product Short Description" class="mb-2 form-control"
-                                                cols="30"
-                                                rows="3">{!! old('short_description') !!}</x-metronic.textarea>
-                                        </div> --}}
+                <div class="mb-5 fv-row">
+                    <x-metronic.label class="form-label">Short Description</x-metronic.label>
+                    <x-metronic.textarea id="short_description" name="short_description"
+                        placeholder="Add Product Short Description" class="mb-2 form-control" cols="30"
+                        rows="3">{!! old('short_description') !!}</x-metronic.textarea>
+                </div>
                 <div class="mb-5 fv-row">
                     <x-metronic.label class="form-label">Long Description</x-metronic.label>
                     <textarea name="long_description" class="ckeditor">{!! old('long_description') !!}</textarea>
@@ -43,11 +42,11 @@
                                                 Add product description here.
                                             </div>
                                         </div> --}}
-                {{-- <div class="mb-5 fv-row">
-                                            <x-metronic.label class="form-label">Product
-                                                Specification</x-metronic.label>
-                                            <textarea name="specification" class="ckeditor">{!! old('specification') !!}</textarea>
-                                        </div> --}}
+                <div class="mb-5 fv-row">
+                    <x-metronic.label class="form-label">Product
+                        Specification</x-metronic.label>
+                    <textarea name="specification" class="ckeditor">{!! old('specification') !!}</textarea>
+                </div>
             </div>
         </div>
     </div>
@@ -274,8 +273,8 @@
                     <div class="mb-5 fv-row">
                         <x-metronic.label class="form-label">Product Meta
                             Title</x-metronic.label>
-                        <x-metronic.input class="form-control" name="meta_title" type="text" placeholder="Meta tag name"
-                            id="meta_title" :value="old('meta_title')"></x-metronic.input>
+                        <x-metronic.input class="form-control" name="meta_title" type="text"
+                            placeholder="Meta tag name" id="meta_title" :value="old('meta_title')"></x-metronic.input>
                     </div>
                     <div class="text-muted fs-7">
                         Add Product Meta Title.

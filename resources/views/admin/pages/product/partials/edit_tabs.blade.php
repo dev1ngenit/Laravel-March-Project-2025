@@ -23,8 +23,22 @@
                         value="{{ old('tags', $product->tags) }}" />
                 </div>
                 <div class="mb-5 fv-row">
+                    <x-metronic.label class="form-label">Short Description</x-metronic.label>
+                    <textarea name="short_description" class="ckeditor">{!! old('short_description', $product->short_description) !!}</textarea>
+                    <div class="text-muted fs-7">
+                        Add product long description here.
+                    </div>
+                </div>
+                <div class="mb-5 fv-row">
                     <x-metronic.label class="form-label">Long Description</x-metronic.label>
                     <textarea name="long_description" class="ckeditor">{!! old('long_description', $product->long_description) !!}</textarea>
+                    <div class="text-muted fs-7">
+                        Add product long description here.
+                    </div>
+                </div>
+                <div class="mb-5 fv-row">
+                    <x-metronic.label class="form-label">Specification</x-metronic.label>
+                    <textarea name="specification" class="ckeditor">{!! old('specification', $product->specification) !!}</textarea>
                     <div class="text-muted fs-7">
                         Add product long description here.
                     </div>
