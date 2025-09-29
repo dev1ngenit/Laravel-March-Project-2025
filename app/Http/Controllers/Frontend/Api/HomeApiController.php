@@ -485,8 +485,8 @@ class HomeApiController extends Controller
 
         // Clean up unnecessary fields
         unset(
-            $product->short_description,
-            $product->specification,
+            // $product->short_description,
+            // $product->specification,
             $product->category,
             $product->brand,
             $product->barcode_id,
